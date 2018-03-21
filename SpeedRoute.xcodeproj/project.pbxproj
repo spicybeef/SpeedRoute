@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		D03DACA92061E2DE00C0DA88 /* OpenCL.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D03DACA82061E2DE00C0DA88 /* OpenCL.framework */; };
 		D0D773D1205E47AD0076B37E /* ResourcePath.mm in Sources */ = {isa = PBXBuildFile; fileRef = D0D773D0205E47AD0076B37E /* ResourcePath.mm */; };
 		D0D773D4205E47AD0076B37E /* main.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D0D773D3205E47AD0076B37E /* main.cpp */; };
 		D0D773D7205E47AD0076B37E /* cute_image.jpg in Resources */ = {isa = PBXBuildFile; fileRef = D0D773D6205E47AD0076B37E /* cute_image.jpg */; };
@@ -16,6 +17,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		D03DACA82061E2DE00C0DA88 /* OpenCL.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = OpenCL.framework; path = System/Library/Frameworks/OpenCL.framework; sourceTree = SDKROOT; };
 		D0D773CB205E47AD0076B37E /* SpeedRoute.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SpeedRoute.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		D0D773CF205E47AD0076B37E /* SpeedRoute-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "SpeedRoute-Info.plist"; sourceTree = "<group>"; };
 		D0D773D0205E47AD0076B37E /* ResourcePath.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = ResourcePath.mm; sourceTree = "<group>"; };
@@ -32,17 +34,27 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				D03DACA92061E2DE00C0DA88 /* OpenCL.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		D03DACA72061E2DE00C0DA88 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				D03DACA82061E2DE00C0DA88 /* OpenCL.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
 		D0D773C1205E47AD0076B37E = {
 			isa = PBXGroup;
 			children = (
 				D0D773CD205E47AD0076B37E /* SpeedRoute */,
 				D0D773CC205E47AD0076B37E /* Products */,
+				D03DACA72061E2DE00C0DA88 /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
