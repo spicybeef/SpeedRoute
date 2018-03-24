@@ -255,6 +255,8 @@
 					/usr/local/Cellar/boost/1.66.0/lib,
 				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SYMROOT = ./build;
+				VALID_ARCHS = x86_64;
 			};
 			name = Debug;
 		};
@@ -272,6 +274,8 @@
 					/usr/local/Cellar/boost/1.66.0/lib,
 				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SYMROOT = ./build;
+				VALID_ARCHS = x86_64;
 			};
 			name = Release;
 		};
