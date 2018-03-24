@@ -10,6 +10,8 @@
 		D07E337B2063645F00A2B7F8 /* main.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D07E337A2063645F00A2B7F8 /* main.cpp */; };
 		D07E3388206364D900A2B7F8 /* OpenCL.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D07E3387206364D900A2B7F8 /* OpenCL.framework */; };
 		D07E338A206364F400A2B7F8 /* libboost_program_options-mt.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = D07E3389206364F400A2B7F8 /* libboost_program_options-mt.dylib */; };
+		D0E9B0C2206708FD00934BBF /* FileParser.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D0E9B0C0206708FD00934BBF /* FileParser.cpp */; };
+		D0E9B0C52067145B00934BBF /* Util.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D0E9B0C42067145B00934BBF /* Util.cpp */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -18,6 +20,11 @@
 		D07E33802063645F00A2B7F8 /* icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = icon.png; sourceTree = "<group>"; };
 		D07E3387206364D900A2B7F8 /* OpenCL.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = OpenCL.framework; path = System/Library/Frameworks/OpenCL.framework; sourceTree = SDKROOT; };
 		D07E3389206364F400A2B7F8 /* libboost_program_options-mt.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = "libboost_program_options-mt.dylib"; path = "../../../../usr/local/Cellar/boost/1.66.0/lib/libboost_program_options-mt.dylib"; sourceTree = "<group>"; };
+		D0E9B0BF2067060C00934BBF /* Types.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = Types.hpp; sourceTree = "<group>"; };
+		D0E9B0C0206708FD00934BBF /* FileParser.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = FileParser.cpp; sourceTree = "<group>"; };
+		D0E9B0C1206708FD00934BBF /* FileParser.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = FileParser.hpp; sourceTree = "<group>"; };
+		D0E9B0C32067145B00934BBF /* Util.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = Util.hpp; sourceTree = "<group>"; };
+		D0E9B0C42067145B00934BBF /* Util.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Util.cpp; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -53,8 +60,13 @@
 		D07E33792063645F00A2B7F8 /* SpeedRoute */ = {
 			isa = PBXGroup;
 			children = (
+				D0E9B0C42067145B00934BBF /* Util.cpp */,
+				D0E9B0C32067145B00934BBF /* Util.hpp */,
 				D07E337A2063645F00A2B7F8 /* main.cpp */,
 				D07E337C2063645F00A2B7F8 /* Resources */,
+				D0E9B0BF2067060C00934BBF /* Types.hpp */,
+				D0E9B0C0206708FD00934BBF /* FileParser.cpp */,
+				D0E9B0C1206708FD00934BBF /* FileParser.hpp */,
 			);
 			path = SpeedRoute;
 			sourceTree = "<group>";
@@ -132,6 +144,8 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				D0E9B0C52067145B00934BBF /* Util.cpp in Sources */,
+				D0E9B0C2206708FD00934BBF /* FileParser.cpp in Sources */,
 				D07E337B2063645F00A2B7F8 /* main.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -231,6 +245,11 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				CODE_SIGN_STYLE = Automatic;
+				HEADER_SEARCH_PATHS = (
+					/usr/local/include/,
+					/usr/local/Cellar/boost/1.66.0/include,
+					"$(inherited)",
+				);
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
 					/usr/local/Cellar/boost/1.66.0/lib,
@@ -243,6 +262,11 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				CODE_SIGN_STYLE = Automatic;
+				HEADER_SEARCH_PATHS = (
+					/usr/local/include/,
+					/usr/local/Cellar/boost/1.66.0/include,
+					"$(inherited)",
+				);
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
 					/usr/local/Cellar/boost/1.66.0/lib,
