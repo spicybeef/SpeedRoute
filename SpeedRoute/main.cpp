@@ -7,14 +7,14 @@
 #include <vector>
 #include <iterator>
 
-// OpenCL Includes
-
 // Boost includes
 #include <boost/program_options.hpp>
 namespace po = boost::program_options;
 
 // SFML Includes
 #include <SFML/Graphics.hpp>
+
+#include "OpenCLApp.h"
 
 int main(int argc, char *argv[])
 {
@@ -52,7 +52,7 @@ int main(int argc, char *argv[])
     }
     if (openClInfoFlag)
     {
-        std::cout << "OpenCL info goes here" << std::endl;
+        OpenCL_DeviceWalk();
         return 1;
     }
     if (vm.count("netfile"))

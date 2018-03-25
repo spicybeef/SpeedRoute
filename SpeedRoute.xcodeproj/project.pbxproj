@@ -12,6 +12,7 @@
 		D07E338A206364F400A2B7F8 /* libboost_program_options-mt.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = D07E3389206364F400A2B7F8 /* libboost_program_options-mt.dylib */; };
 		D0E9B0C2206708FD00934BBF /* FileParser.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D0E9B0C0206708FD00934BBF /* FileParser.cpp */; };
 		D0E9B0C52067145B00934BBF /* Util.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D0E9B0C42067145B00934BBF /* Util.cpp */; };
+		D0E9B0C82067289400934BBF /* OpenCLApp.c in Sources */ = {isa = PBXBuildFile; fileRef = D0E9B0C72067289400934BBF /* OpenCLApp.c */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -25,6 +26,8 @@
 		D0E9B0C1206708FD00934BBF /* FileParser.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = FileParser.hpp; sourceTree = "<group>"; };
 		D0E9B0C32067145B00934BBF /* Util.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = Util.hpp; sourceTree = "<group>"; };
 		D0E9B0C42067145B00934BBF /* Util.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Util.cpp; sourceTree = "<group>"; };
+		D0E9B0C62067289400934BBF /* OpenCLApp.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = OpenCLApp.h; sourceTree = "<group>"; };
+		D0E9B0C72067289400934BBF /* OpenCLApp.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = OpenCLApp.c; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -67,6 +70,8 @@
 				D0E9B0BF2067060C00934BBF /* Types.hpp */,
 				D0E9B0C0206708FD00934BBF /* FileParser.cpp */,
 				D0E9B0C1206708FD00934BBF /* FileParser.hpp */,
+				D0E9B0C62067289400934BBF /* OpenCLApp.h */,
+				D0E9B0C72067289400934BBF /* OpenCLApp.c */,
 			);
 			path = SpeedRoute;
 			sourceTree = "<group>";
@@ -146,6 +151,7 @@
 			files = (
 				D0E9B0C52067145B00934BBF /* Util.cpp in Sources */,
 				D0E9B0C2206708FD00934BBF /* FileParser.cpp in Sources */,
+				D0E9B0C82067289400934BBF /* OpenCLApp.c in Sources */,
 				D07E337B2063645F00A2B7F8 /* main.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
