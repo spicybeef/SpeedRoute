@@ -17,10 +17,16 @@ int main(int argc, char *argv[])
     std::string netFilenameIn;
     std::string placementFilenameIn;
     bool openClInfoFlag = false;
-    Graphics graphics;
+    programOptions_t options;
+    
     ProgramOptions programOptions(argc, argv);
+    FileParser fileParse;
+    Graphics graphics;
 
     programOptions.validate();
+    options = programOptions.getOptions();
+    fileParse.setFilenames(options.netFilenameIn, options.placementFilenameIn);
+    fileParse.parseInput();
     graphics.run();
     
     return EXIT_SUCCESS;

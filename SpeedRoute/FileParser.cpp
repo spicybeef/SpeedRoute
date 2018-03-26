@@ -8,6 +8,16 @@
 
 #include "FileParser.hpp"
 
+FileParser::FileParser(void)
+{
+    
+}
+
+FileParser::~FileParser(void)
+{
+    
+}
+
 void FileParser::setFilenames(std::string netFilename, std::string placementFilename)
 {
     mNetFilename = netFilename;

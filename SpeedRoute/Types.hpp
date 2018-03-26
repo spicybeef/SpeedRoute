@@ -9,8 +9,8 @@
 #ifndef Types_h
 #define Types_h
 
-// typedef helpers to make things legible
-typedef std::vector<std::vector<unsigned int>>  netVec;
+// Net vector typdef
+typedef std::vector<std::vector<unsigned int>> netVec;
 
 // Col/row position struct
 typedef struct
@@ -19,6 +19,7 @@ typedef struct
     unsigned int                row;                    ///< Row
 } posStruct_t;
 
+// Position vector typedef
 typedef std::vector<posStruct_t> posVec;
 
 // Parsed input struct

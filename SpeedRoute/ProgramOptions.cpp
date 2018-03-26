@@ -7,18 +7,26 @@
 //
 
 #include "ProgramOptions.hpp"
-#include "OpenCLApp.h"
+#include "OpenClApp.h"
+
+#define DEBUG_TO_BENCHMARKS_FOLDER_PATH "../../../../../benchmarks/"
+#define DEFAULT_NET_FILE "C880.txt"
+#define DEFAULT_PLACEMENT_FILE "C880_placement.txt"
 
 ProgramOptions::ProgramOptions(int argc, char *argv[]):
     mDesc("Usage")
 {
+    std::string defaultPath = DEBUG_TO_BENCHMARKS_FOLDER_PATH;
+    std::string defaultNetFile = DEFAULT_NET_FILE;
+    std::string defaultPlacementFile = DEFAULT_PLACEMENT_FILE;
+    
     try
     {
         mDesc.add_options()
         ("help", "produce help message")
-        ("netfile", po::value<std::string>(&(programOptions.netFilenameIn))->default_value("..\\benchmarks\\C880.txt"), "the input net file")
-        ("placementfile", po::value<std::string>(&(programOptions.placementFilenameIn))->default_value("..\\benchmarks\\C880_placement.txt"), "the input placement file")
-        ("openclinfo", po::bool_switch(&(programOptions.openClInfoFlag)), "displays the OpenCL device support summart");
+        ("netfile", po::value<std::string>(&(mProgramOptions.netFilenameIn))->default_value(defaultPath + defaultNetFile), "the input net file")
+        ("placementfile", po::value<std::string>(&(mProgramOptions.placementFilenameIn))->default_value(defaultPath + defaultPlacementFile), "the input placement file")
+        ("openclinfo", po::bool_switch(&(mProgramOptions.openClInfoFlag)), "displays the OpenCL device support summary");
         
         po::store(po::command_line_parser(argc, argv).
                   options(mDesc).positional(mPosOptDesc).run(), mVarMap);
@@ -39,7 +47,7 @@ void ProgramOptions::validate(void)
         std::cout << mDesc << std::endl;
         return EXIT_SUCCESS;
     }
-    if (programOptions.openClInfoFlag)
+    if (mProgramOptions.openClInfoFlag)
     {
         OpenCl_DeviceWalk();
         return EXIT_SUCCESS;
@@ -54,4 +62,9 @@ void ProgramOptions::validate(void)
         std::cout << "Placement file: "
         << mVarMap["placementfile"].as<std::string>() << std::endl;
     }
+}
+
+programOptions_t ProgramOptions::getOptions(void)
+{
+    return mProgramOptions;
 }

@@ -31,13 +31,14 @@ public:
     ProgramOptions(int argc, char *argv[]);
     
     void validate(void);
+    programOptions_t getOptions(void);
     
 private:
     po::options_description mDesc;
     po::variables_map mVarMap;
     po::positional_options_description mPosOptDesc;
     
-    programOptions_t programOptions;
+    programOptions_t mProgramOptions;
 };
 
 #endif /* ProgramOptions_hpp */
