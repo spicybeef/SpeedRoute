@@ -1,3 +1,11 @@
+//
+//  RouterGraphics.cpp
+//  SpeedRoute
+//
+//  Created by Michel Kakulphimp on 2018-03-18.
+//  Copyright © 2018 Michel Kakulphimp. All rights reserved.
+//
+
 // C++ Includes
 #include <iostream>
 #include <iomanip>
@@ -11,11 +19,9 @@
 #include <boost/program_options.hpp>
 namespace po = boost::program_options;
 
-// SFML Includes
-#include <SFML/Graphics.hpp>
-
 // Program Includes
 #include "ResourcePath.hpp"
+#include "FileParser.hpp"
 #include "RouterGraphics.hpp"
 #include "OpenCLApp.h"
 
