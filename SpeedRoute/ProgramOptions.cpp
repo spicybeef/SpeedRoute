@@ -39,7 +39,7 @@ void ProgramOptions::validate(void)
         std::cout << mDesc << std::endl;
         return EXIT_SUCCESS;
     }
-    if (true)//programOptions.openClInfoFlag)
+    if (programOptions.openClInfoFlag)
     {
         OpenCl_DeviceWalk();
         return EXIT_SUCCESS;
