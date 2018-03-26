@@ -1,24 +1,24 @@
 //
-//  RouterGraphics.hpp
+//  Graphics.hpp
 //  SpeedRoute
 //
 //  Created by Michel Kakulphimp on 2018-03-25.
 //  Copyright © 2018 Michel Kakulphimp. All rights reserved.
 //
 
-#ifndef RouterGraphics_hpp
-#define RouterGraphics_hpp
+#ifndef Graphics_hpp
+#define Graphics_hpp
 
 #include "SFML/Graphics.hpp"
 
 #define WIDTH 1000
 #define HEIGHT 500
 
-class RouterGraphics
+class Graphics
 {
 // Public members
 public:
-    RouterGraphics(void);
+    Graphics(void);
     void run(void);
     
 // Private members
@@ -35,4 +35,4 @@ private:
     const unsigned int FRAMERATE_LIM = 60;
 };
 
-#endif /* RouterGraphics_hpp */
+#endif /* Graphics_hpp */

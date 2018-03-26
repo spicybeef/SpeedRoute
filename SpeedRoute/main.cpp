@@ -22,7 +22,7 @@ namespace po = boost::program_options;
 // Program Includes
 #include "ResourcePath.hpp"
 #include "FileParser.hpp"
-#include "RouterGraphics.hpp"
+#include "Graphics.hpp"
 #include "OpenCLApp.h"
 
 int main(int argc, char *argv[])

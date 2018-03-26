@@ -1,20 +1,20 @@
 //
-//  RouterGraphics.cpp
+//  Graphics.cpp
 //  SpeedRoute
 //
 //  Created by Michel Kakulphimp on 2018-03-25.
 //  Copyright © 2018 Michel Kakulphimp. All rights reserved.
 //
 
-#include "RouterGraphics.hpp"
+#include "Graphics.hpp"
 
-RouterGraphics::RouterGraphics(void) :
+Graphics::Graphics(void) :
     window(sf::VideoMode(WINDOW_WIDTH, WINDOW_HEIGHT), "Speed Route")
 {
     window.setFramerateLimit(FRAMERATE_LIM);
 }
 
-void RouterGraphics::run(void)
+void Graphics::run(void)
 {
     while (window.isOpen())
     {
@@ -24,7 +24,7 @@ void RouterGraphics::run(void)
     }
 }
 
-void RouterGraphics::processEvents(void)
+void Graphics::processEvents(void)
 {
     sf::Event event;
     while (window.pollEvent(event))
@@ -86,11 +86,11 @@ void RouterGraphics::processEvents(void)
     }
 }
 
-void RouterGraphics::update(void)
+void Graphics::update(void)
 {
 }
 
-void RouterGraphics::render(void)
+void Graphics::render(void)
 {
     window.clear();
     
