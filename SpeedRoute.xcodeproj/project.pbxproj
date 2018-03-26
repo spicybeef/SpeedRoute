@@ -7,88 +7,101 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		D07E337B2063645F00A2B7F8 /* main.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D07E337A2063645F00A2B7F8 /* main.cpp */; };
-		D07E3388206364D900A2B7F8 /* OpenCL.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D07E3387206364D900A2B7F8 /* OpenCL.framework */; };
-		D07E338A206364F400A2B7F8 /* libboost_program_options-mt.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = D07E3389206364F400A2B7F8 /* libboost_program_options-mt.dylib */; };
-		D0E9B0C2206708FD00934BBF /* FileParser.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D0E9B0C0206708FD00934BBF /* FileParser.cpp */; };
-		D0E9B0C52067145B00934BBF /* Util.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D0E9B0C42067145B00934BBF /* Util.cpp */; };
-		D0E9B0C82067289400934BBF /* OpenCLApp.c in Sources */ = {isa = PBXBuildFile; fileRef = D0E9B0C72067289400934BBF /* OpenCLApp.c */; };
+		D0246AE52068B12A00858977 /* ResourcePath.mm in Sources */ = {isa = PBXBuildFile; fileRef = D0246AE42068B12A00858977 /* ResourcePath.mm */; };
+		D0246B0B2068B18A00858977 /* FileParser.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D0246B062068B18900858977 /* FileParser.cpp */; };
+		D0246B0C2068B18A00858977 /* OpenCLApp.c in Sources */ = {isa = PBXBuildFile; fileRef = D0246B072068B18A00858977 /* OpenCLApp.c */; };
+		D0246B0D2068B18A00858977 /* main.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D0246B082068B18A00858977 /* main.cpp */; };
+		D0246B0E2068B18A00858977 /* Util.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D0246B0A2068B18A00858977 /* Util.cpp */; };
+		D0246B112068B1C300858977 /* OpenCL.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D0246B102068B1C300858977 /* OpenCL.framework */; };
+		D0246B132068B1FC00858977 /* libboost_program_options-mt.a in Frameworks */ = {isa = PBXBuildFile; fileRef = D0246B122068B1FC00858977 /* libboost_program_options-mt.a */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
-		D07E33772063645F00A2B7F8 /* SpeedRoute */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = SpeedRoute; sourceTree = BUILT_PRODUCTS_DIR; };
-		D07E337A2063645F00A2B7F8 /* main.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = main.cpp; sourceTree = "<group>"; };
-		D07E33802063645F00A2B7F8 /* icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = icon.png; sourceTree = "<group>"; };
-		D07E3387206364D900A2B7F8 /* OpenCL.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = OpenCL.framework; path = System/Library/Frameworks/OpenCL.framework; sourceTree = SDKROOT; };
-		D07E3389206364F400A2B7F8 /* libboost_program_options-mt.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = "libboost_program_options-mt.dylib"; path = "../../../../usr/local/Cellar/boost/1.66.0/lib/libboost_program_options-mt.dylib"; sourceTree = "<group>"; };
-		D0E9B0BF2067060C00934BBF /* Types.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = Types.hpp; sourceTree = "<group>"; };
-		D0E9B0C0206708FD00934BBF /* FileParser.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = FileParser.cpp; sourceTree = "<group>"; };
-		D0E9B0C1206708FD00934BBF /* FileParser.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = FileParser.hpp; sourceTree = "<group>"; };
-		D0E9B0C32067145B00934BBF /* Util.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = Util.hpp; sourceTree = "<group>"; };
-		D0E9B0C42067145B00934BBF /* Util.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Util.cpp; sourceTree = "<group>"; };
-		D0E9B0C62067289400934BBF /* OpenCLApp.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = OpenCLApp.h; sourceTree = "<group>"; };
-		D0E9B0C72067289400934BBF /* OpenCLApp.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = OpenCLApp.c; sourceTree = "<group>"; };
+		D0246ADF2068B12A00858977 /* SpeedRoute.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SpeedRoute.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		D0246AE32068B12A00858977 /* SpeedRoute-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "SpeedRoute-Info.plist"; sourceTree = "<group>"; };
+		D0246AE42068B12A00858977 /* ResourcePath.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = ResourcePath.mm; sourceTree = "<group>"; };
+		D0246AE62068B12A00858977 /* ResourcePath.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = ResourcePath.hpp; sourceTree = "<group>"; };
+		D0246B032068B18900858977 /* Types.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = Types.hpp; sourceTree = "<group>"; };
+		D0246B042068B18900858977 /* Util.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = Util.hpp; sourceTree = "<group>"; };
+		D0246B052068B18900858977 /* FileParser.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = FileParser.hpp; sourceTree = "<group>"; };
+		D0246B062068B18900858977 /* FileParser.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = FileParser.cpp; sourceTree = "<group>"; };
+		D0246B072068B18A00858977 /* OpenCLApp.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = OpenCLApp.c; sourceTree = "<group>"; };
+		D0246B082068B18A00858977 /* main.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = main.cpp; sourceTree = "<group>"; };
+		D0246B092068B18A00858977 /* OpenCLApp.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OpenCLApp.h; sourceTree = "<group>"; };
+		D0246B0A2068B18A00858977 /* Util.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Util.cpp; sourceTree = "<group>"; };
+		D0246B102068B1C300858977 /* OpenCL.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = OpenCL.framework; path = System/Library/Frameworks/OpenCL.framework; sourceTree = SDKROOT; };
+		D0246B122068B1FC00858977 /* libboost_program_options-mt.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = "libboost_program_options-mt.a"; path = "../../../../usr/local/Cellar/boost/1.66.0/lib/libboost_program_options-mt.a"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
-		D07E33752063645F00A2B7F8 /* Frameworks */ = {
+		D0246ADB2068B12A00858977 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				D07E338A206364F400A2B7F8 /* libboost_program_options-mt.dylib in Frameworks */,
-				D07E3388206364D900A2B7F8 /* OpenCL.framework in Frameworks */,
+				D0246B132068B1FC00858977 /* libboost_program_options-mt.a in Frameworks */,
+				D0246B112068B1C300858977 /* OpenCL.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		D07E336F2063645F00A2B7F8 = {
+		D0246AD52068B12A00858977 = {
 			isa = PBXGroup;
 			children = (
-				D07E33792063645F00A2B7F8 /* SpeedRoute */,
-				D07E33782063645F00A2B7F8 /* Products */,
-				D07E3386206364D800A2B7F8 /* Frameworks */,
+				D0246AE12068B12A00858977 /* SpeedRoute */,
+				D0246AE02068B12A00858977 /* Products */,
+				D0246B0F2068B1C200858977 /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
-		D07E33782063645F00A2B7F8 /* Products */ = {
+		D0246AE02068B12A00858977 /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				D07E33772063645F00A2B7F8 /* SpeedRoute */,
+				D0246ADF2068B12A00858977 /* SpeedRoute.app */,
 			);
 			name = Products;
 			sourceTree = "<group>";
 		};
-		D07E33792063645F00A2B7F8 /* SpeedRoute */ = {
+		D0246AE12068B12A00858977 /* SpeedRoute */ = {
 			isa = PBXGroup;
 			children = (
-				D0E9B0C42067145B00934BBF /* Util.cpp */,
-				D0E9B0C32067145B00934BBF /* Util.hpp */,
-				D07E337A2063645F00A2B7F8 /* main.cpp */,
-				D07E337C2063645F00A2B7F8 /* Resources */,
-				D0E9B0BF2067060C00934BBF /* Types.hpp */,
-				D0E9B0C0206708FD00934BBF /* FileParser.cpp */,
-				D0E9B0C1206708FD00934BBF /* FileParser.hpp */,
-				D0E9B0C62067289400934BBF /* OpenCLApp.h */,
-				D0E9B0C72067289400934BBF /* OpenCLApp.c */,
+				D0246B062068B18900858977 /* FileParser.cpp */,
+				D0246B052068B18900858977 /* FileParser.hpp */,
+				D0246B082068B18A00858977 /* main.cpp */,
+				D0246B072068B18A00858977 /* OpenCLApp.c */,
+				D0246B092068B18A00858977 /* OpenCLApp.h */,
+				D0246B032068B18900858977 /* Types.hpp */,
+				D0246B0A2068B18A00858977 /* Util.cpp */,
+				D0246B042068B18900858977 /* Util.hpp */,
+				D0246AE42068B12A00858977 /* ResourcePath.mm */,
+				D0246AE62068B12A00858977 /* ResourcePath.hpp */,
+				D0246AE92068B12A00858977 /* Resources */,
+				D0246AE22068B12A00858977 /* Supporting Files */,
 			);
 			path = SpeedRoute;
 			sourceTree = "<group>";
 		};
-		D07E337C2063645F00A2B7F8 /* Resources */ = {
+		D0246AE22068B12A00858977 /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
-				D07E33802063645F00A2B7F8 /* icon.png */,
+				D0246AE32068B12A00858977 /* SpeedRoute-Info.plist */,
+			);
+			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		D0246AE92068B12A00858977 /* Resources */ = {
+			isa = PBXGroup;
+			children = (
 			);
 			name = Resources;
 			sourceTree = "<group>";
 		};
-		D07E3386206364D800A2B7F8 /* Frameworks */ = {
+		D0246B0F2068B1C200858977 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
-				D07E3389206364F400A2B7F8 /* libboost_program_options-mt.dylib */,
-				D07E3387206364D900A2B7F8 /* OpenCL.framework */,
+				D0246B122068B1FC00858977 /* libboost_program_options-mt.a */,
+				D0246B102068B1C300858977 /* OpenCL.framework */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -96,12 +109,14 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
-		D07E33762063645F00A2B7F8 /* SpeedRoute */ = {
+		D0246ADE2068B12A00858977 /* SpeedRoute */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = D07E33832063645F00A2B7F8 /* Build configuration list for PBXNativeTarget "SpeedRoute" */;
+			buildConfigurationList = D0246AF42068B12A00858977 /* Build configuration list for PBXNativeTarget "SpeedRoute" */;
 			buildPhases = (
-				D07E33742063645F00A2B7F8 /* Sources */,
-				D07E33752063645F00A2B7F8 /* Frameworks */,
+				D0246ADA2068B12A00858977 /* Sources */,
+				D0246ADB2068B12A00858977 /* Frameworks */,
+				D0246ADC2068B12A00858977 /* Resources */,
+				D0246ADD2068B12A00858977 /* ShellScript */,
 			);
 			buildRules = (
 			);
@@ -109,57 +124,84 @@
 			);
 			name = SpeedRoute;
 			productName = SpeedRoute;
-			productReference = D07E33772063645F00A2B7F8 /* SpeedRoute */;
-			productType = "com.apple.product-type.tool";
+			productReference = D0246ADF2068B12A00858977 /* SpeedRoute.app */;
+			productType = "com.apple.product-type.application";
 		};
 /* End PBXNativeTarget section */
 
 /* Begin PBXProject section */
-		D07E33702063645F00A2B7F8 /* Project object */ = {
+		D0246AD62068B12A00858977 /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
 				LastUpgradeCheck = 0920;
 				ORGANIZATIONNAME = "Michel Kakulphimp";
 				TargetAttributes = {
-					D07E33762063645F00A2B7F8 = {
+					D0246ADE2068B12A00858977 = {
 						CreatedOnToolsVersion = 9.2;
 						ProvisioningStyle = Automatic;
 					};
 				};
 			};
-			buildConfigurationList = D07E33732063645F00A2B7F8 /* Build configuration list for PBXProject "SpeedRoute" */;
+			buildConfigurationList = D0246AD92068B12A00858977 /* Build configuration list for PBXProject "SpeedRoute" */;
 			compatibilityVersion = "Xcode 8.0";
 			developmentRegion = en;
 			hasScannedForEncodings = 0;
 			knownRegions = (
 				en,
 			);
-			mainGroup = D07E336F2063645F00A2B7F8;
-			productRefGroup = D07E33782063645F00A2B7F8 /* Products */;
+			mainGroup = D0246AD52068B12A00858977;
+			productRefGroup = D0246AE02068B12A00858977 /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
-				D07E33762063645F00A2B7F8 /* SpeedRoute */,
+				D0246ADE2068B12A00858977 /* SpeedRoute */,
 			);
 		};
 /* End PBXProject section */
 
+/* Begin PBXResourcesBuildPhase section */
+		D0246ADC2068B12A00858977 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		D0246ADD2068B12A00858977 /* ShellScript */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "# This shell script simply copies required SFML dylibs/frameworks into the application bundle frameworks folder.\n# If you're using static libraries (which is not recommended) you should remove this script from your project.\n\n# SETTINGS\nCMAKE_INSTALL_FRAMEWORK_PREFIX=\"/Library/Frameworks\"\nCMAKE_INSTALL_LIB_PREFIX=\"/usr/local/lib\"\nFRAMEWORKS_FULL_PATH=\"$BUILT_PRODUCTS_DIR/$FRAMEWORKS_FOLDER_PATH/\"\n\n# Are we building a project that uses frameworks or dylibs?\ncase \"$SFML_BINARY_TYPE\" in\n    DYLIBS)\n        frameworks=\"false\"\n        ;;\n    *)\n        frameworks=\"true\"\n        ;;\nesac\n\n# Echoes to stderr\nerror () # $* message to display\n{\n    echo $* 1>&2\n    exit 2\n}\n\nassert () # $1 is a boolean, $2...N is an error message\n{\n    if [ $# -lt 2 ]\n    then\n        error \"Internal error in assert: not enough args\"\n    fi\n\n    if [ $1 -ne 0 ]\n    then\n        shift\n        error \"$*\"\n    fi\n}\n\nforce_remove () # $@ is some paths\n{\n    test $# -ge 1\n    assert $? \"force_remove() requires at least one parameter\"\n    rm -fr $@\n    assert $? \"couldn't remove $@\"\n}\n\ncopy () # $1 is a source, $2 is a destination\n{\n    test $# -eq 2\n    assert $? \"copy() requires two parameters\"\n    ditto \"$1\" \"$2\"\n    assert $? \"couldn't copy $1 to $2\"\n}\n\nrequire () # $1 is a SFML module like 'system' or 'audio'\n{\n    dest=\"$BUILT_PRODUCTS_DIR/$FRAMEWORKS_FOLDER_PATH/\"\n\n    if [ -z \"$1\" ]\n    then\n        error \"require() requires one parameter!\"\n    else\n        # clean potentially old stuff\n        force_remove \"$dest/libsfml-$1\"*\n        force_remove \"$dest/sfml-$1.framework\"\n\n        # copy SFML libraries\n        if [ \"$frameworks\" = \"true\" ]\n        then\n            source=\"$CMAKE_INSTALL_FRAMEWORK_PREFIX/sfml-$1.framework\"\n            target=\"sfml-$1.framework\"\n        elif [ \"$SFML_LINK_DYLIBS_SUFFIX\" = \"-d\" ]\n        then\n            source=\"$CMAKE_INSTALL_LIB_PREFIX/libsfml-$1-d.dylib\"\n            target=\"`readlink $source`\"\n        else\n            source=\"$CMAKE_INSTALL_LIB_PREFIX/libsfml-$1.dylib\"\n            target=\"`readlink $source`\"\n        fi\n\n        copy \"$source\" \"$dest/$target\"\n\n        # copy extra dependencies\n        if [ \"$1\" = \"audio\" ]\n        then\n            # copy \"FLAC\" \"ogg\" \"vorbis\" \"vorbisenc\" \"vorbisfile\" \"OpenAL\" frameworks too\n            for f in \"FLAC\" \"ogg\" \"vorbis\" \"vorbisenc\" \"vorbisfile\" \"OpenAL\"\n            do\n                copy \"$CMAKE_INSTALL_FRAMEWORK_PREFIX/$f.framework\" \"$dest/$f.framework\"\n            done\n        elif [ \"$1\" = \"graphics\" ]\n        then\n            copy \"$CMAKE_INSTALL_FRAMEWORK_PREFIX/freetype.framework\" \"$dest/freetype.framework\"\n        fi\n    fi\n}\n\nif [ -n \"$SFML_SYSTEM\" ]\nthen\n    require \"system\"\nfi\n\nif [ -n \"$SFML_AUDIO\" ]\nthen\n    require \"audio\"\nfi\n\nif [ -n \"$SFML_NETWORK\" ]\nthen\n    require \"network\"\nfi\n\nif [ -n \"$SFML_WINDOW\" ]\nthen\n    require \"window\"\nfi\n\nif [ -n \"$SFML_GRAPHICS\" ]\nthen\n    require \"graphics\"\nfi\n\n                ";
+		};
+/* End PBXShellScriptBuildPhase section */
+
 /* Begin PBXSourcesBuildPhase section */
-		D07E33742063645F00A2B7F8 /* Sources */ = {
+		D0246ADA2068B12A00858977 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				D0E9B0C52067145B00934BBF /* Util.cpp in Sources */,
-				D0E9B0C2206708FD00934BBF /* FileParser.cpp in Sources */,
-				D0E9B0C82067289400934BBF /* OpenCLApp.c in Sources */,
-				D07E337B2063645F00A2B7F8 /* main.cpp in Sources */,
+				D0246B0B2068B18A00858977 /* FileParser.cpp in Sources */,
+				D0246B0C2068B18A00858977 /* OpenCLApp.c in Sources */,
+				D0246B0D2068B18A00858977 /* main.cpp in Sources */,
+				D0246AE52068B12A00858977 /* ResourcePath.mm in Sources */,
+				D0246B0E2068B18A00858977 /* Util.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXSourcesBuildPhase section */
 
 /* Begin XCBuildConfiguration section */
-		D07E33812063645F00A2B7F8 /* Debug */ = {
+		D0246AF22068B12A00858977 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ARCHS = "$(NATIVE_ARCH_ACTUAL)";
@@ -203,7 +245,7 @@
 			};
 			name = Debug;
 		};
-		D07E33822063645F00A2B7F8 /* Release */ = {
+		D0246AF32068B12A00858977 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ARCHS = "$(NATIVE_ARCH_ACTUAL)";
@@ -247,66 +289,64 @@
 			};
 			name = Release;
 		};
-		D07E33842063645F00A2B7F8 /* Debug */ = {
+		D0246AF52068B12A00858977 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				CODE_SIGN_STYLE = Automatic;
 				HEADER_SEARCH_PATHS = (
-					/usr/local/include/,
-					/usr/local/Cellar/boost/1.66.0/include,
 					"$(inherited)",
+					/usr/local/Cellar/boost/1.66.0/include,
 				);
+				INFOPLIST_FILE = "SpeedRoute/SpeedRoute-Info.plist";
+				LD_RUNPATH_SEARCH_PATHS = "@loader_path/../Frameworks";
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
 					/usr/local/Cellar/boost/1.66.0/lib,
 				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				SYMROOT = ./build;
-				VALID_ARCHS = x86_64;
 			};
 			name = Debug;
 		};
-		D07E33852063645F00A2B7F8 /* Release */ = {
+		D0246AF62068B12A00858977 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				CODE_SIGN_STYLE = Automatic;
 				HEADER_SEARCH_PATHS = (
-					/usr/local/include/,
-					/usr/local/Cellar/boost/1.66.0/include,
 					"$(inherited)",
+					/usr/local/Cellar/boost/1.66.0/include,
 				);
+				INFOPLIST_FILE = "SpeedRoute/SpeedRoute-Info.plist";
+				LD_RUNPATH_SEARCH_PATHS = "@loader_path/../Frameworks";
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
 					/usr/local/Cellar/boost/1.66.0/lib,
 				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				SYMROOT = ./build;
-				VALID_ARCHS = x86_64;
 			};
 			name = Release;
 		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		D07E33732063645F00A2B7F8 /* Build configuration list for PBXProject "SpeedRoute" */ = {
+		D0246AD92068B12A00858977 /* Build configuration list for PBXProject "SpeedRoute" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
-				D07E33812063645F00A2B7F8 /* Debug */,
-				D07E33822063645F00A2B7F8 /* Release */,
+				D0246AF22068B12A00858977 /* Debug */,
+				D0246AF32068B12A00858977 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		D07E33832063645F00A2B7F8 /* Build configuration list for PBXNativeTarget "SpeedRoute" */ = {
+		D0246AF42068B12A00858977 /* Build configuration list for PBXNativeTarget "SpeedRoute" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
-				D07E33842063645F00A2B7F8 /* Debug */,
-				D07E33852063645F00A2B7F8 /* Release */,
+				D0246AF52068B12A00858977 /* Debug */,
+				D0246AF62068B12A00858977 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};
-	rootObject = D07E33702063645F00A2B7F8 /* Project object */;
+	rootObject = D0246AD62068B12A00858977 /* Project object */;
 }

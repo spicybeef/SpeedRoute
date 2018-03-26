@@ -19,6 +19,8 @@ typedef struct
     unsigned int                row;                    ///< Row
 } posStruct_t;
 
+typedef std::vector<posStruct_t> posVec;
+
 // Parsed input struct
 typedef struct
 {
@@ -29,7 +31,7 @@ typedef struct
     unsigned int                numConnections;         ///< The number of connections
     
     netVec                      nets;                   ///< Parsed nets
-    std::vector<posStruct_t>    placement;              ///< Parsed placement information for the nodes
+    posVec                      placement;              ///< Parsed placement information for the nodes
     
 } parsedInputStruct_t;
 

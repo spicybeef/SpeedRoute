@@ -14,6 +14,8 @@ namespace po = boost::program_options;
 // SFML Includes
 #include <SFML/Graphics.hpp>
 
+// Program Includes
+#include "ResourcePath.hpp"
 #include "OpenCLApp.h"
 
 int main(int argc, char *argv[])
