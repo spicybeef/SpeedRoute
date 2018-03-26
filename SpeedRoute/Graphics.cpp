@@ -9,14 +9,32 @@
 #include "Graphics.hpp"
 
 Graphics::Graphics(void) :
-    window(sf::VideoMode(WINDOW_WIDTH, WINDOW_HEIGHT), "Speed Route")
+    mWindow(sf::VideoMode(WINDOW_WIDTH, WINDOW_HEIGHT), "Speed Route"),
+    mIcon(),
+    mTexture(),
+    mSprite()
 {
-    window.setFramerateLimit(FRAMERATE_LIM);
+    // Set a framerate limit
+    mWindow.setFramerateLimit(FRAMERATE_LIM);
+    
+    // Set the Icon
+    if (!mIcon.loadFromFile(resourcePath() + "icon.png"))
+    {
+        return EXIT_FAILURE;
+    }
+    mWindow.setIcon(mIcon.getSize().x, mIcon.getSize().y, mIcon.getPixelsPtr());
+    
+    // Set the texture
+    if (!mTexture.loadFromFile(resourcePath() + "cute_image.jpg"))
+    {
+        return EXIT_FAILURE;
+    }
+    mSprite.setTexture(mTexture);
 }
 
 void Graphics::run(void)
 {
-    while (window.isOpen())
+    while (mWindow.isOpen())
     {
         processEvents();
         update();
@@ -27,12 +45,12 @@ void Graphics::run(void)
 void Graphics::processEvents(void)
 {
     sf::Event event;
-    while (window.pollEvent(event))
+    while (mWindow.pollEvent(event))
     {
         switch (event.type)
         {
             case sf::Event::Closed:
-                window.close();
+                mWindow.close();
                 break;
             case sf::Event::Resized:
                 break;
@@ -92,9 +110,10 @@ void Graphics::update(void)
 
 void Graphics::render(void)
 {
-    window.clear();
+    mWindow.clear();
     
-    //draw()
+    // Draw the sprite
+    mWindow.draw(mSprite);
     
-    window.display();
+    mWindow.display();
 }

@@ -9,10 +9,11 @@
 #ifndef Graphics_hpp
 #define Graphics_hpp
 
+#include <iostream>
+
 #include "SFML/Graphics.hpp"
 
-#define WIDTH 1000
-#define HEIGHT 500
+#include "ResourcePath.hpp"
 
 class Graphics
 {
@@ -28,11 +29,17 @@ private:
     void render(void);
     
     // Windows object
-    sf::RenderWindow window;
+    sf::RenderWindow mWindow;
+    // Icon
+    sf::Image mIcon;
+    // Texture
+    sf::Texture mTexture;
+    sf::Sprite mSprite;
     
-    const unsigned int WINDOW_WIDTH = 1920;
-    const unsigned int WINDOW_HEIGHT = 1080;
-    const unsigned int FRAMERATE_LIM = 60;
+    // Graphics constants
+    static const unsigned int WINDOW_WIDTH = 1920;
+    static const unsigned int WINDOW_HEIGHT = 1080;
+    static const unsigned int FRAMERATE_LIM = 60;
 };
 
 #endif /* Graphics_hpp */
