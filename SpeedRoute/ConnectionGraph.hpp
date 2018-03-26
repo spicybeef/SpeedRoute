@@ -14,7 +14,7 @@
 // Direction enum
 typedef enum
 {
-    DIR_NORTH,
+    DIR_NORTH = 0,
     DIR_EAST,
     DIR_SOUTH,
     DIR_WEST,

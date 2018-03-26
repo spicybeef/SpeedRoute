@@ -10,8 +10,8 @@
 #include "OpenClApp.h"
 
 #define DEBUG_TO_BENCHMARKS_FOLDER_PATH "../../../../../benchmarks/"
-#define DEFAULT_NET_FILE "C880.txt"
-#define DEFAULT_PLACEMENT_FILE "C880_placement.txt"
+#define DEFAULT_NET_FILE "apex4.txt"
+#define DEFAULT_PLACEMENT_FILE "apex4_placement.txt"
 
 ProgramOptions::ProgramOptions(int argc, char *argv[]):
     mDesc("Usage")

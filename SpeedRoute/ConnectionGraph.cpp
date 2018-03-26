@@ -20,7 +20,7 @@ ConnectionGraph::~ConnectionGraph(void)
 
 void ConnectionGraph::generateGraph(int sideLen)
 {
-    unsigned int row, col;
+    unsigned int row, col, dir;
     std::vector<vertex_t> tempCol;
     vertex_t tempVertex;
     vertex_t *tempVertexPointer;
@@ -35,7 +35,7 @@ void ConnectionGraph::generateGraph(int sideLen)
         // Fill up a row
         for(row = 0; row < mSideLength; row++)
         {
-            tempVertex.id = row + (col * row);
+            tempVertex.id = row + (col * sideLen);
             
             tempVertex.neighbour[DIR_NORTH] = -1;
             tempVertex.neighbour[DIR_EAST] = -1;
@@ -73,6 +73,24 @@ void ConnectionGraph::generateGraph(int sideLen)
             if(col > 0)
             {
                 tempVertexPointer->neighbour[DIR_WEST] = mGrid[col - 1][row].id;
+            }
+        }
+    }
+    
+    // Now create the vectors that will form the C arrays
+    for(col = 0; col < mSideLength; col++)
+    {
+        for(row = 0; row < mSideLength; row++)
+        {
+            // Push back the current size of the edge vector, this determines the index to use in it
+            mVertexVector.push_back(mEdgeVector.size());
+            for(dir = DIR_NORTH; dir < DIR_NUM; dir++)
+            {
+                // For every neighbour, push back a corresponding edge
+                if(mGrid[col][row].neighbour[dir] != -1)
+                {
+                    mEdgeVector.push_back(mGrid[col][row].neighbour[dir]);
+                }
             }
         }
     }
