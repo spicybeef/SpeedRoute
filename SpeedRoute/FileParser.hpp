@@ -14,8 +14,34 @@
 #include <vector>
 #include <fstream>
 
-#include "Types.hpp"
 #include "Util.hpp"
+
+// Net vector typdef
+typedef std::vector<std::vector<unsigned int>> netVec;
+
+// Col/row position struct
+typedef struct
+{
+    unsigned int                col;                    ///< Column
+    unsigned int                row;                    ///< Row
+} posStruct_t;
+
+// Position vector typedef
+typedef std::vector<posStruct_t> posVec;
+
+// Parsed input struct
+typedef struct
+{
+    unsigned int                numRows;                ///< Number of parsed rows
+    unsigned int                numCols;                ///< Number of parsed columns
+    
+    unsigned int                numNodes;               ///< Number of nodes to place
+    unsigned int                numConnections;         ///< The number of connections
+    
+    netVec                      nets;                   ///< Parsed nets
+    posVec                      placement;              ///< Parsed placement information for the nodes
+    
+} parsedInputStruct_t;
 
 class FileParser
 {

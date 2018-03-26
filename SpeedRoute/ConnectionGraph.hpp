@@ -9,6 +9,38 @@
 #ifndef ConnectionGraph_hpp
 #define ConnectionGraph_hpp
 
-#include <stdio.h>
+#include <vector>
+
+// Direction enum
+typedef enum
+{
+    DIR_NORTH,
+    DIR_EAST,
+    DIR_SOUTH,
+    DIR_WEST,
+    DIR_NUM
+} dir_e;
+
+// Vertex struct
+typedef struct
+{
+    int     id;
+    int     neighbour[DIR_NUM];
+} vertex_t;
+
+class ConnectionGraph
+{
+public:
+    ConnectionGraph(void);
+    ~ConnectionGraph(void);
+    
+    void generateGraph(int sideLen);
+    
+private:
+    int                                 mSideLength;
+    std::vector<std::vector<vertex_t>>  mGrid;
+    std::vector<int>                    mVertexVector;
+    std::vector<int>                    mEdgeVector;
+};
 
 #endif /* ConnectionGraph_hpp */
