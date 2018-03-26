@@ -16,6 +16,7 @@ namespace po = boost::program_options;
 
 // Program Includes
 #include "ResourcePath.hpp"
+#include "RouterGraphics.hpp"
 #include "OpenCLApp.h"
 
 int main(int argc, char *argv[])
@@ -23,6 +24,7 @@ int main(int argc, char *argv[])
     std::string netFilenameIn;
     std::string placementFilenameIn;
     bool openClInfoFlag = false;
+    RouterGraphics routerGraphics;
     
     // Declare the supported options
     po::options_description desc("Usage");
@@ -68,5 +70,7 @@ int main(int argc, char *argv[])
         << vm["placementfile"].as<std::string>() << std::endl;
     }
 
+    routerGraphics.run();
+    
     return EXIT_SUCCESS;
 }
