@@ -6,24 +6,24 @@
 //  Copyright © 2018 Michel Kakulphimp. All rights reserved.
 //
 
-#ifndef OpenCLApp_h
-#define OpenCLApp_h
+#ifndef OpenClApp_h
+#define OpenClApp_h
 
 #include <stdio.h>
 
 // OpenCL Includes
-#include <OpenCL/opencl.h>
+#include <OpenCl/opencl.h>
 
 #ifdef __cplusplus
 extern "C"
 {
 #endif /* __cplusplus */
     
-void OpenCL_PrintDeviceInfo(cl_device_id device);
-void OpenCL_DeviceWalk(void);
+void OpenCl_PrintDeviceInfo(cl_device_id device);
+void OpenCl_DeviceWalk(void);
 
 #ifdef __cplusplus
 }
 #endif /* __cplusplus */
     
-#endif /* OpenCLApp_h */
+#endif /* OpenClApp_h */

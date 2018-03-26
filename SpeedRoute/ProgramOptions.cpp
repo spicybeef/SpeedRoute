@@ -39,9 +39,9 @@ void ProgramOptions::validate(void)
         std::cout << mDesc << std::endl;
         return EXIT_SUCCESS;
     }
-    if (programOptions.openClInfoFlag)
+    if (true)//programOptions.openClInfoFlag)
     {
-        OpenCL_DeviceWalk();
+        OpenCl_DeviceWalk();
         return EXIT_SUCCESS;
     }
     if (mVarMap.count("netfile"))

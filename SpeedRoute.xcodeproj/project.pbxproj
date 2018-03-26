@@ -9,11 +9,11 @@
 /* Begin PBXBuildFile section */
 		D0246AE52068B12A00858977 /* ResourcePath.mm in Sources */ = {isa = PBXBuildFile; fileRef = D0246AE42068B12A00858977 /* ResourcePath.mm */; };
 		D0246B0B2068B18A00858977 /* FileParser.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D0246B062068B18900858977 /* FileParser.cpp */; };
-		D0246B0C2068B18A00858977 /* OpenCLApp.c in Sources */ = {isa = PBXBuildFile; fileRef = D0246B072068B18A00858977 /* OpenCLApp.c */; };
 		D0246B0D2068B18A00858977 /* main.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D0246B082068B18A00858977 /* main.cpp */; };
 		D0246B0E2068B18A00858977 /* Util.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D0246B0A2068B18A00858977 /* Util.cpp */; };
 		D0246B112068B1C300858977 /* OpenCL.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D0246B102068B1C300858977 /* OpenCL.framework */; };
 		D0246B132068B1FC00858977 /* libboost_program_options-mt.a in Frameworks */ = {isa = PBXBuildFile; fileRef = D0246B122068B1FC00858977 /* libboost_program_options-mt.a */; };
+		D06891FD2069651B00912AD3 /* OpenClApp.c in Sources */ = {isa = PBXBuildFile; fileRef = D06891FC2069651B00912AD3 /* OpenClApp.c */; };
 		D0CD4A802068C261009430C0 /* Router.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D0CD4A7E2068C261009430C0 /* Router.cpp */; };
 		D0CD4A832068C327009430C0 /* Graphics.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D0CD4A812068C327009430C0 /* Graphics.cpp */; };
 		D0CD4A862068C778009430C0 /* ConnectionGraph.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D0CD4A842068C778009430C0 /* ConnectionGraph.cpp */; };
@@ -31,12 +31,12 @@
 		D0246B042068B18900858977 /* Util.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = Util.hpp; sourceTree = "<group>"; };
 		D0246B052068B18900858977 /* FileParser.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = FileParser.hpp; sourceTree = "<group>"; };
 		D0246B062068B18900858977 /* FileParser.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = FileParser.cpp; sourceTree = "<group>"; };
-		D0246B072068B18A00858977 /* OpenCLApp.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = OpenCLApp.c; sourceTree = "<group>"; };
 		D0246B082068B18A00858977 /* main.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = main.cpp; sourceTree = "<group>"; };
-		D0246B092068B18A00858977 /* OpenCLApp.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OpenCLApp.h; sourceTree = "<group>"; };
 		D0246B0A2068B18A00858977 /* Util.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Util.cpp; sourceTree = "<group>"; };
 		D0246B102068B1C300858977 /* OpenCL.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = OpenCL.framework; path = System/Library/Frameworks/OpenCL.framework; sourceTree = SDKROOT; };
 		D0246B122068B1FC00858977 /* libboost_program_options-mt.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = "libboost_program_options-mt.a"; path = "../../../../usr/local/Cellar/boost/1.66.0/lib/libboost_program_options-mt.a"; sourceTree = "<group>"; };
+		D06891FB2069651B00912AD3 /* OpenClApp.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OpenClApp.h; sourceTree = "<group>"; };
+		D06891FC2069651B00912AD3 /* OpenClApp.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = OpenClApp.c; sourceTree = "<group>"; };
 		D0CD4A7E2068C261009430C0 /* Router.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = Router.cpp; sourceTree = "<group>"; };
 		D0CD4A7F2068C261009430C0 /* Router.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = Router.hpp; sourceTree = "<group>"; };
 		D0CD4A812068C327009430C0 /* Graphics.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Graphics.cpp; sourceTree = "<group>"; };
@@ -82,13 +82,13 @@
 		D0246AE12068B12A00858977 /* SpeedRoute */ = {
 			isa = PBXGroup;
 			children = (
+				D06891FC2069651B00912AD3 /* OpenClApp.c */,
+				D06891FB2069651B00912AD3 /* OpenClApp.h */,
 				D0CD4A812068C327009430C0 /* Graphics.cpp */,
 				D0CD4A822068C327009430C0 /* Graphics.hpp */,
 				D0246B062068B18900858977 /* FileParser.cpp */,
 				D0246B052068B18900858977 /* FileParser.hpp */,
 				D0246B082068B18A00858977 /* main.cpp */,
-				D0246B072068B18A00858977 /* OpenCLApp.c */,
-				D0246B092068B18A00858977 /* OpenCLApp.h */,
 				D0246B032068B18900858977 /* Types.hpp */,
 				D0246B0A2068B18A00858977 /* Util.cpp */,
 				D0246B042068B18900858977 /* Util.hpp */,
@@ -219,13 +219,13 @@
 			buildActionMask = 2147483647;
 			files = (
 				D0246B0B2068B18A00858977 /* FileParser.cpp in Sources */,
-				D0246B0C2068B18A00858977 /* OpenCLApp.c in Sources */,
 				D0246B0D2068B18A00858977 /* main.cpp in Sources */,
 				D0246AE52068B12A00858977 /* ResourcePath.mm in Sources */,
 				D0CD4A802068C261009430C0 /* Router.cpp in Sources */,
 				D0CD4A832068C327009430C0 /* Graphics.cpp in Sources */,
 				D0CD4A892068CAF1009430C0 /* ProgramOptions.cpp in Sources */,
 				D0CD4A862068C778009430C0 /* ConnectionGraph.cpp in Sources */,
+				D06891FD2069651B00912AD3 /* OpenClApp.c in Sources */,
 				D0246B0E2068B18A00858977 /* Util.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
