@@ -9,7 +9,9 @@
 #ifndef ConnectionGraph_hpp
 #define ConnectionGraph_hpp
 
+#ifdef __cplusplus
 #include <vector>
+#endif /* _cplusplus */
 
 // Direction enum
 typedef enum
@@ -28,6 +30,7 @@ typedef struct
     int     neighbour[DIR_NUM];
 } vertex_t;
 
+#ifdef __cplusplus
 typedef std::vector<std::vector<vertex_t>> vertexGrid;
 
 class ConnectionGraph
@@ -37,9 +40,14 @@ public:
     ~ConnectionGraph(void);
     
     void generateGraph(int sideLen);
+    
     vertexGrid getGrid(void);
     std::vector<int> getVertexVector(void);
     std::vector<int> getEdgeVector(void);
+    int * getVertexArrayPointer(void);
+    int * getEdgeArrayPointer(void);
+    int getVertexArraySize(void);
+    int getEdgeArraySize(void);
     
 private:
     int                                 mSideLength;
@@ -49,5 +57,20 @@ private:
     std::vector<int>                    mCongestionVector;
     std::vector<int>                    mCountVector;
 };
+#else /* __cplusplus */
+typedef struct ConnectionGraph ConnectionGraph;
+#endif /* __cplusplus */
+
+#ifdef __cplusplus
+extern "C"
+{
+#endif /* __cplusplus */
+int * ConnectionGraph_GetVertexArrayPointer(ConnectionGraph * cgPointer);
+int * ConnectionGraph_GetEdgeArrayPointer(ConnectionGraph * cgPointer);
+int ConnectionGraph_GetVertexArraySize(ConnectionGraph * cgPointer);
+int ConnectionGraph_GetEdgeArraySize(ConnectionGraph * cgPointer);
+#ifdef __cplusplus
+}
+#endif /* __cplusplus */
 
 #endif /* ConnectionGraph_hpp */

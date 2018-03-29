@@ -117,3 +117,43 @@ std::vector<int> ConnectionGraph::getEdgeVector(void)
 {
     return mEdgeVector;
 }
+
+int * ConnectionGraph::getVertexArrayPointer(void)
+{
+    return mVertexVector.data();
+}
+
+int * ConnectionGraph::getEdgeArrayPointer(void)
+{
+    return mEdgeVector.data();
+}
+
+int ConnectionGraph::getVertexArraySize(void)
+{
+    return mVertexVector.size();
+}
+
+int ConnectionGraph::getEdgeArraySize(void)
+{
+    return mEdgeVector.size();
+}
+
+int * ConnectionGraph_GetVertexArrayPointer(ConnectionGraph * cgPointer)
+{
+    return cgPointer->getVertexArrayPointer();
+}
+
+int * ConnectionGraph_GetEdgeArrayPointer(ConnectionGraph * cgPointer)
+{
+    return cgPointer->getEdgeArrayPointer();
+}
+
+int ConnectionGraph_GetVertexArraySize(ConnectionGraph * cgPointer)
+{
+    return cgPointer->getVertexArraySize();
+}
+
+int ConnectionGraph_GetEdgeArraySize(ConnectionGraph * cgPointer)
+{
+    return cgPointer->getEdgeArraySize();
+}

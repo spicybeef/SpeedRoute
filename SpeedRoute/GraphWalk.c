@@ -5,8 +5,32 @@
 //  Created by Michel Kakulphimp on 2018-03-28.
 //  Copyright © 2018 Michel Kakulphimp. All rights reserved.
 //
+#include <stdio.h>
 
 #include "GraphWalk.h"
+
+void GraphWalk_Test(ConnectionGraph * cgPointer)
+{
+    int i, arraySize, value;
+    
+    arraySize = ConnectionGraph_GetVertexArraySize(cgPointer);
+    printf("Vertex array: ");
+    for(i = 0; i < arraySize; i++)
+    {
+        value = ConnectionGraph_GetVertexArrayPointer(cgPointer)[i];
+        printf("%i ", value);
+    }
+    printf("\n");
+    
+    arraySize = ConnectionGraph_GetEdgeArraySize(cgPointer);
+    printf("Edge array: ");
+    for(i = 0; i < arraySize; i++)
+    {
+        value = ConnectionGraph_GetEdgeArrayPointer(cgPointer)[i];
+        printf("%i ", value);
+    }
+    printf("\n");
+}
 
 // Need the following (mostly obtained from ConnectionGraph)
 // TODO: Create a C API to return pointers to these things from the ConnectionGraph class
