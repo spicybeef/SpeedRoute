@@ -47,7 +47,10 @@ private:
     std::vector<int>                    mVertexVector;
     std::vector<int>                    mEdgeVector;
     std::vector<int>                    mCongestionVector;
+<<<<<<< HEAD
     std::vector<int>                    mCountVector;
+=======
+>>>>>>> eed9d003b9d8771e8ec855cb75da655da475b15b
 };
 
 #endif /* ConnectionGraph_hpp */

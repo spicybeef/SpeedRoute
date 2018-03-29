@@ -102,3 +102,18 @@ void ConnectionGraph::generateGraph(int sideLen)
         mCountVector.push_back(-1);
     }
 }
+
+vertexGrid getGrid(void)
+{
+    return mGrid;
+}
+
+std::vector<int> getVertexVector(void)
+{
+    return mVertexVector;
+}
+
+std::vector<int> getEdgeVector(void)
+{
+    return mEdgeVector;
+}

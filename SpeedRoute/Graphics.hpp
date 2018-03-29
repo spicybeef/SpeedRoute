@@ -13,7 +13,15 @@
 
 #include "SFML/Graphics.hpp"
 
+#ifdef __APPLE__
 #include "ResourcePath.hpp"
+#else /* __APPLE__ */
+string ResourcePath(void)
+{
+    return "";
+}
+#endif /*__APPLE__ */
+
 
 class Graphics
 {

@@ -11,8 +11,11 @@
 
 #include <stdio.h>
 
-// OpenCL Includes
-#include <OpenCl/opencl.h>
+#ifdef __APPLE__
+#include <OpenCL/opencl.h>
+#else /* __APPLE__ */
+#include <CL/cl.h>
+#endif /*__APPLE__ */
 
 #ifdef __cplusplus
 extern "C"

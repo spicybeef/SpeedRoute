@@ -11,8 +11,6 @@
 
 #include <vector>
 
-typedef vertexGrid std::vector<std::vector<vertex_t>>;
-
 // Direction enum
 typedef enum
 {
@@ -37,13 +35,10 @@ public:
     ~ConnectionGraph(void);
     
     void generateGraph(int sideLen);
-    vertexGrid getGrid(void);
-    std::vector<int> getVertexVector(void);
-    std::vector<int> getEdgeVector(void);
     
 private:
     int                                 mSideLength;
-    vertexGrid                          mGrid;
+    std::vector<std::vector<vertex_t>>  mGrid;
     std::vector<int>                    mVertexVector;
     std::vector<int>                    mEdgeVector;
     std::vector<int>                    mCongestionVector;
