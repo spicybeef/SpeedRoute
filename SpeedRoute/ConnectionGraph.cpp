@@ -20,7 +20,7 @@ ConnectionGraph::~ConnectionGraph(void)
 
 void ConnectionGraph::generateGraph(int sideLen)
 {
-    unsigned int row, col, dir;
+    unsigned int row, col, dir, i;
     std::vector<vertex_t> tempCol;
     vertex_t tempVertex;
     vertex_t *tempVertexPointer;
@@ -93,5 +93,12 @@ void ConnectionGraph::generateGraph(int sideLen)
                 }
             }
         }
+    }
+    
+    // Initialize the weight vector
+    for(i = 0; i < mEdgeVector.size(); i++)
+    {
+        mCongestionVector.push_back(0);
+        mCountVector.push_back(-1);
     }
 }
