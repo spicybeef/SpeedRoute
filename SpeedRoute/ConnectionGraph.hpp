@@ -11,8 +11,6 @@
 
 #include <vector>
 
-typedef vertexGrid std::vector<std::vector<vertex_t>>;
-
 // Direction enum
 typedef enum
 {
@@ -29,6 +27,8 @@ typedef struct
     int     id;
     int     neighbour[DIR_NUM];
 } vertex_t;
+
+typedef std::vector<std::vector<vertex_t>> vertexGrid;
 
 class ConnectionGraph
 {
