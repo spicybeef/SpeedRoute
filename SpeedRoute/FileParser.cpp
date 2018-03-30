@@ -88,7 +88,7 @@ bool FileParser::parseNetFile(void)
         numNodes = stoi(stringVec[0]);
         // Now get all nodes for this net
         // Push back a new vector for this
-        mParsedInput.nets.push_back(std::vector<unsigned int>());
+        mParsedInput.nets.push_back(std::vector<int>());
         for (j = 0; j < numNodes; j++)
         {
             mParsedInput.nets[i].push_back(stoi(stringVec[j + 1]));
@@ -96,11 +96,13 @@ bool FileParser::parseNetFile(void)
     }
     
     inputFile.close();
+    
+    return true;
 }
 
 bool FileParser::parsePlacementFile(void)
 {
-    unsigned int i, j, numNodes;
+    unsigned int i;
     std::string line;
     std::vector<std::string> stringVec;
     posStruct_t tempPos;
@@ -133,4 +135,6 @@ bool FileParser::parsePlacementFile(void)
     }
     
     inputFile.close();
+    
+    return true;
 }

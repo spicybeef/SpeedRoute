@@ -20,14 +20,16 @@ Graphics::Graphics(void) :
     // Set the Icon
     if (!mIcon.loadFromFile(resourcePath() + "icon.png"))
     {
-        return EXIT_FAILURE;
+        throw "Can't load icon!";
+        return;
     }
     mWindow.setIcon(mIcon.getSize().x, mIcon.getSize().y, mIcon.getPixelsPtr());
     
     // Set the texture
     if (!mTexture.loadFromFile(resourcePath() + "cute_image.jpg"))
     {
-        return EXIT_FAILURE;
+        throw "Can't load texture!";
+        return;
     }
     mSprite.setTexture(mTexture);
 }

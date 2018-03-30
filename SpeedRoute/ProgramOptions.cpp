@@ -36,7 +36,7 @@ ProgramOptions::ProgramOptions(int argc, char *argv[]):
     {
         // catch anything thrown within try block that derives from std::exception
         std::cerr << exc.what() << std::endl;
-        return EXIT_FAILURE;
+        return;
     }
 }
 
@@ -45,12 +45,12 @@ void ProgramOptions::validate(void)
     if (mVarMap.count("help"))
     {
         std::cout << mDesc << std::endl;
-        return EXIT_SUCCESS;
+        return;
     }
     if (mProgramOptions.openClInfoFlag)
     {
         OpenCl_DeviceWalk();
-        return EXIT_SUCCESS;
+        return;
     }
     if (mVarMap.count("netfile"))
     {

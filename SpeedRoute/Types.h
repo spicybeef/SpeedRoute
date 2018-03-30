@@ -30,4 +30,18 @@ typedef struct
     int edgeArraySize;
 } graphData_t;
 
+// Position struct
+typedef struct
+{
+    int col;
+    int row;
+} posStruct_t;
+
+// Net struct
+typedef struct
+{
+    posStruct_t * pos;
+    int numNodes;
+} netStruct_t;
+
 #endif /* Types_h */

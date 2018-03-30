@@ -39,15 +39,15 @@ public:
     int getVertexIdFromPlacement(int col, int row);
     
 private:
-    int                                 mPlacementWidth;
-    int                                 mPlacementHeight;
-    int                                 mSideLength;
-    int                                 mPadding;
-    vertexGrid                          mGrid;
-    std::vector<int>                    mVertexVector;
-    std::vector<int>                    mEdgeVector;
-    std::vector<int>                    mCongestionVector;
-    std::vector<int>                    mCountVector;
+    int mPlacementWidth;
+    int mPlacementHeight;
+    int mSideLength;
+    int mPadding;
+    vertexGrid mGrid;
+    std::vector<int> mVertexVector;
+    std::vector<int> mEdgeVector;
+    std::vector<int> mCongestionVector;
+    std::vector<int> mCountVector;
     
     void generateGraph();
 };

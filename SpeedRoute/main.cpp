@@ -29,13 +29,36 @@ int main(int argc, char *argv[])
     
     // Parse the net and placement files
     FileParser fileParse(options.netFilenameIn, options.placementFilenameIn);
-    fileParse.parseInput();
+    if(!fileParse.parseInput())
+    {
+        return EXIT_FAILURE;
+    }
     parsedInputStruct_t input = fileParse.getParsedInput();
     
     ConnectionGraph connectionGraph(input.numCols, input.numRows, ARCH_PADDING);
     graphData_t graphData = connectionGraph.getGraphData();
     
+    // Test the graph data
     GraphWalk_Test(graphData);
+    
+    // Route a net
+    std::vector< netStruct_t * > netPointers;
+    for(int i = 0; i < input.nets.size(); i++)
+    {
+        netPointers.push_back(GraphWalk_InitNet(static_cast<int *>(input.nets[i].data()), static_cast<posStruct_t *>(input.placement.data()), static_cast<int>(input.nets[i].size())));
+        //    GraphWalk_RouteNet(netPoint);
+        //    GraphWalk_FreeNet(netPoint);
+    }
+    // Route nets
+    for(int i = 0; i < input.nets.size(); i++)
+    {
+        GraphWalk_RouteNet(netPointers[i]);
+    }
+    // Free nets
+    for(int i = 0; i < input.nets.size(); i++)
+    {
+        GraphWalk_FreeNet(netPointers[i]);
+    }
     
     // Run the graphics for the router
     Graphics graphics;

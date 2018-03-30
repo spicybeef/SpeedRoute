@@ -7,7 +7,13 @@
 //
 
 #include <stdio.h>
+#include <stdlib.h>
+
 #include "GraphWalk.h"
+
+static int * traceArray;
+static int * maskArray;
+static int * weightArray;
 
 void GraphWalk_Test(graphData_t data)
 {
@@ -30,6 +36,49 @@ void GraphWalk_Test(graphData_t data)
         printf("%i ", value);
     }
     printf("\n");
+}
+
+void GraphWalk_InitArrays(graphData_t data)
+{
+    traceArray = malloc(data.edgeArraySize * sizeof(int));
+    maskArray = malloc(data.edgeArraySize * sizeof(int));
+    weightArray = malloc(data.edgeArraySize * sizeof(int));
+}
+
+void GraphWalk_FreeArrays(graphData_t data)
+{
+    free(traceArray);
+    free(maskArray);
+    free(weightArray);
+}
+
+netStruct_t * GraphWalk_InitNet(int * nodes, posStruct_t * placement, int numNodes)
+{
+    // Allocate memory for a net struct
+    netStruct_t * newNet = malloc(sizeof(netStruct_t));
+    // Allocate memory for the node positions
+    newNet->pos = malloc(numNodes * sizeof(posStruct_t));
+    // Fill in the number of nodes
+    newNet->numNodes = numNodes;
+    
+    for(int i = 0; i < numNodes; i++)
+    {
+        newNet->pos[i] = placement[i];
+    }
+    
+    return newNet;
+}
+
+void GraphWalk_FreeNet(netStruct_t * net)
+{
+    // Free the net's node positions
+    free(net->pos);
+    // Free the net itself
+    free(net);
+}
+
+void GraphWalk_RouteNet(netStruct_t * net)
+{
 }
 
 // Need the following (mostly obtained from ConnectionGraph)

@@ -95,7 +95,7 @@ void ConnectionGraph::generateGraph(void)
         for(row = 0; row < mSideLength; row++)
         {
             // Push back the current size of the edge vector, this determines the index to use in it
-            mVertexVector.push_back(mEdgeVector.size());
+            mVertexVector.push_back(static_cast<int>(mEdgeVector.size()));
             for(dir = DIR_NORTH; dir < DIR_NUM; dir++)
             {
                 // For every neighbour, push back a corresponding edge
@@ -142,12 +142,12 @@ int * ConnectionGraph::getEdgeArrayPointer(void)
 
 int ConnectionGraph::getVertexArraySize(void)
 {
-    return mVertexVector.size();
+    return static_cast<int>(mVertexVector.size());
 }
 
 int ConnectionGraph::getEdgeArraySize(void)
 {
-    return mEdgeVector.size();
+    return static_cast<int>(mEdgeVector.size());
 }
 
 graphData_t ConnectionGraph::getGraphData(void)

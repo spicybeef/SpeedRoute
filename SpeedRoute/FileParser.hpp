@@ -15,16 +15,10 @@
 #include <fstream>
 
 #include "Util.hpp"
+#include "Types.h"
 
 // Net vector typdef
-typedef std::vector<std::vector<unsigned int>> netVec;
-
-// Col/row position struct
-typedef struct
-{
-    unsigned int                col;                    ///< Column
-    unsigned int                row;                    ///< Row
-} posStruct_t;
+typedef std::vector<std::vector<int>> netVec;
 
 // Position vector typedef
 typedef std::vector<posStruct_t> posVec;
