@@ -32,7 +32,6 @@
 		D0246AE32068B12A00858977 /* SpeedRoute-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "SpeedRoute-Info.plist"; sourceTree = "<group>"; };
 		D0246AE42068B12A00858977 /* ResourcePath.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = ResourcePath.mm; sourceTree = "<group>"; };
 		D0246AE62068B12A00858977 /* ResourcePath.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = ResourcePath.hpp; sourceTree = "<group>"; };
-		D0246B032068B18900858977 /* Types.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = Types.hpp; sourceTree = "<group>"; };
 		D0246B042068B18900858977 /* Util.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = Util.hpp; sourceTree = "<group>"; };
 		D0246B052068B18900858977 /* FileParser.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = FileParser.hpp; sourceTree = "<group>"; };
 		D0246B062068B18900858977 /* FileParser.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = FileParser.cpp; sourceTree = "<group>"; };
@@ -50,6 +49,7 @@
 		D0CD4A882068CAF1009430C0 /* ProgramOptions.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = ProgramOptions.hpp; sourceTree = "<group>"; };
 		D0CD4A8A2068D6CD009430C0 /* icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = icon.png; sourceTree = "<group>"; };
 		D0CD4A8C2068D6EB009430C0 /* cute_image.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = cute_image.jpg; sourceTree = "<group>"; };
+		D0DB68CA206DE67E00E720DE /* Types.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Types.h; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -85,6 +85,7 @@
 		D0246AE12068B12A00858977 /* SpeedRoute */ = {
 			isa = PBXGroup;
 			children = (
+				D0DB68CA206DE67E00E720DE /* Types.h */,
 				D00CAEEC206C7BB500A774A8 /* GraphWalk.c */,
 				D00CAEEB206C7BB500A774A8 /* GraphWalk.h */,
 				D00CAEE920698F2D00A774A8 /* ConnectionGraph.cpp */,
@@ -96,7 +97,6 @@
 				D0246B062068B18900858977 /* FileParser.cpp */,
 				D0246B052068B18900858977 /* FileParser.hpp */,
 				D0246B082068B18A00858977 /* main.cpp */,
-				D0246B032068B18900858977 /* Types.hpp */,
 				D0246B0A2068B18A00858977 /* Util.cpp */,
 				D0246B042068B18900858977 /* Util.hpp */,
 				D0246AE42068B12A00858977 /* ResourcePath.mm */,

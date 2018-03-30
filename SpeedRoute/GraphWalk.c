@@ -5,28 +5,28 @@
 //  Created by Michel Kakulphimp on 2018-03-28.
 //  Copyright © 2018 Michel Kakulphimp. All rights reserved.
 //
-#include <stdio.h>
 
+#include <stdio.h>
 #include "GraphWalk.h"
 
-void GraphWalk_Test(ConnectionGraph * cgPointer)
+void GraphWalk_Test(graphData_t data)
 {
     int i, arraySize, value;
     
-    arraySize = ConnectionGraph_GetVertexArraySize(cgPointer);
+    arraySize = data.vertexArraySize;
     printf("Vertex array: ");
     for(i = 0; i < arraySize; i++)
     {
-        value = ConnectionGraph_GetVertexArrayPointer(cgPointer)[i];
+        value = data.vertexArrayPointer[i];
         printf("%i ", value);
     }
     printf("\n");
     
-    arraySize = ConnectionGraph_GetEdgeArraySize(cgPointer);
+    arraySize = data.edgeArraySize;
     printf("Edge array: ");
     for(i = 0; i < arraySize; i++)
     {
-        value = ConnectionGraph_GetEdgeArrayPointer(cgPointer)[i];
+        value = data.edgeArrayPointer[i];
         printf("%i ", value);
     }
     printf("\n");

@@ -46,7 +46,7 @@ typedef struct
 class FileParser
 {
 public:
-    FileParser(void);
+    FileParser(std::string netFilename, std::string placementFilename);
     ~FileParser(void);
     
     void setFilenames(std::string netFilename, std::string placementFilename);

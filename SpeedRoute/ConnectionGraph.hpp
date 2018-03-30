@@ -9,19 +9,9 @@
 #ifndef ConnectionGraph_hpp
 #define ConnectionGraph_hpp
 
-#ifdef __cplusplus
 #include <vector>
-#endif /* _cplusplus */
 
-// Direction enum
-typedef enum
-{
-    DIR_NORTH = 0,
-    DIR_EAST,
-    DIR_SOUTH,
-    DIR_WEST,
-    DIR_NUM
-} dir_e;
+#include "Types.h"
 
 // Vertex struct
 typedef struct
@@ -30,16 +20,13 @@ typedef struct
     int     neighbour[DIR_NUM];
 } vertex_t;
 
-#ifdef __cplusplus
 typedef std::vector<std::vector<vertex_t>> vertexGrid;
 
 class ConnectionGraph
 {
 public:
-    ConnectionGraph(void);
+    ConnectionGraph(int numCol, int numRows, int padding);
     ~ConnectionGraph(void);
-    
-    void generateGraph(int sideLen);
     
     vertexGrid getGrid(void);
     std::vector<int> getVertexVector(void);
@@ -48,29 +35,21 @@ public:
     int * getEdgeArrayPointer(void);
     int getVertexArraySize(void);
     int getEdgeArraySize(void);
+    graphData_t getGraphData(void);
+    int getVertexIdFromPlacement(int col, int row);
     
 private:
+    int                                 mPlacementWidth;
+    int                                 mPlacementHeight;
     int                                 mSideLength;
+    int                                 mPadding;
     vertexGrid                          mGrid;
     std::vector<int>                    mVertexVector;
     std::vector<int>                    mEdgeVector;
     std::vector<int>                    mCongestionVector;
     std::vector<int>                    mCountVector;
+    
+    void generateGraph();
 };
-#else /* __cplusplus */
-typedef struct ConnectionGraph ConnectionGraph;
-#endif /* __cplusplus */
-
-#ifdef __cplusplus
-extern "C"
-{
-#endif /* __cplusplus */
-int * ConnectionGraph_GetVertexArrayPointer(ConnectionGraph * cgPointer);
-int * ConnectionGraph_GetEdgeArrayPointer(ConnectionGraph * cgPointer);
-int ConnectionGraph_GetVertexArraySize(ConnectionGraph * cgPointer);
-int ConnectionGraph_GetEdgeArraySize(ConnectionGraph * cgPointer);
-#ifdef __cplusplus
-}
-#endif /* __cplusplus */
 
 #endif /* ConnectionGraph_hpp */

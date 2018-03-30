@@ -9,17 +9,8 @@
 #ifndef GraphWalk_h
 #define GraphWalk_h
 
-#include "ConnectionGraph.hpp"
+#include "Types.h"
 
-#ifdef _cplusplus
-extern "C"
-{
-#endif /* _cplusplus */
-
-void GraphWalk_Test(ConnectionGraph * cgPointer);
-    
-#ifdef _cplusplus
-}
-#endif /* _cplusplus */
+void GraphWalk_Test(graphData_t data);
     
 #endif /* GraphWalk_h */

@@ -8,9 +8,10 @@
 
 #include "FileParser.hpp"
 
-FileParser::FileParser(void)
+FileParser::FileParser(std::string netFilename, std::string placementFilename)
 {
-    
+    mNetFilename = netFilename;
+    mPlacementFilename = placementFilename;
 }
 
 FileParser::~FileParser(void)

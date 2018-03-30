@@ -8,9 +8,13 @@
 
 #include "ConnectionGraph.hpp"
 
-ConnectionGraph::ConnectionGraph(void)
+ConnectionGraph::ConnectionGraph(int numCol, int numRows, int padding)
 {
-
+    mPlacementWidth = numCol;
+    mPlacementHeight = numRows;
+    mPadding = padding;
+    
+    generateGraph();
 }
 
 ConnectionGraph::~ConnectionGraph(void)
@@ -18,14 +22,22 @@ ConnectionGraph::~ConnectionGraph(void)
     
 }
 
-void ConnectionGraph::generateGraph(int sideLen)
+void ConnectionGraph::generateGraph(void)
 {
     unsigned int row, col, dir, i;
     std::vector<vertex_t> tempCol;
     vertex_t tempVertex;
     vertex_t *tempVertexPointer;
-    
-    mSideLength = sideLen;
+
+    // Generate the graph based on the passed in placement length
+    if(mPlacementHeight > mPlacementWidth)
+    {
+        mSideLength = (2 * mPlacementHeight) + 1 + (mPadding * 2);
+    }
+    else
+    {
+        mSideLength = (2 * mPlacementWidth) + 1 + (mPadding * 2);
+    }
     
     // Populate the grid
     for(col = 0; col < mSideLength; col++)
@@ -35,7 +47,7 @@ void ConnectionGraph::generateGraph(int sideLen)
         // Fill up a row
         for(row = 0; row < mSideLength; row++)
         {
-            tempVertex.id = row + (col * sideLen);
+            tempVertex.id = row + (col * mSideLength);
             
             tempVertex.neighbour[DIR_NORTH] = -1;
             tempVertex.neighbour[DIR_EAST] = -1;
@@ -138,22 +150,34 @@ int ConnectionGraph::getEdgeArraySize(void)
     return mEdgeVector.size();
 }
 
-int * ConnectionGraph_GetVertexArrayPointer(ConnectionGraph * cgPointer)
+graphData_t ConnectionGraph::getGraphData(void)
 {
-    return cgPointer->getVertexArrayPointer();
+    graphData_t data;
+    
+    data.vertexArrayPointer = getVertexArrayPointer();
+    data.edgeArrayPointer = getEdgeArrayPointer();
+    data.vertexArraySize = getVertexArraySize();
+    data.edgeArraySize = getEdgeArraySize();
+    
+    return data;
 }
 
-int * ConnectionGraph_GetEdgeArrayPointer(ConnectionGraph * cgPointer)
+int ConnectionGraph::getVertexIdFromPlacement(int col, int row)
 {
-    return cgPointer->getEdgeArrayPointer();
-}
-
-int ConnectionGraph_GetVertexArraySize(ConnectionGraph * cgPointer)
-{
-    return cgPointer->getVertexArraySize();
-}
-
-int ConnectionGraph_GetEdgeArraySize(ConnectionGraph * cgPointer)
-{
-    return cgPointer->getEdgeArraySize();
+    int gridCol, gridRow;
+    
+    // The placement gets expanded from the original placement coordinates, so we need to translate
+    // The width that was used as maximization needs to be checked
+    if(mSideLength == mPlacementWidth)
+    {
+        gridCol = mPadding + 1 + (2 * col);
+        gridRow = mPadding + (mPlacementWidth - mPlacementHeight) + 1 + (2 * row);
+    }
+    else
+    {
+        gridCol = mPadding + (mPlacementHeight - mPlacementWidth) + 1 + (2 * col);
+        gridRow = mPadding + 1 + (2 * row);
+    }
+    
+    return mGrid[gridCol][gridRow].id;
 }
