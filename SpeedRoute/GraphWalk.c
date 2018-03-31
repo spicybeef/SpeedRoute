@@ -8,31 +8,53 @@
 
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
+#include <time.h>
 
 #include "GraphWalk.h"
 
 static int * traceArray;
 static int * maskArray;
 static int * weightArray;
+static int vertexArraySize;
+static int edgeArraySize;
 
-void GraphWalk_Test(graphData_t data)
+void GraphWalk_Test(graphData_t graph, netData_t nets)
 {
-    int i, arraySize, value;
+    int arraySize, value;
     
-    arraySize = data.vertexArraySize;
+    arraySize = graph.vertexArraySize;
     printf("Vertex array: ");
-    for(i = 0; i < arraySize; i++)
+    for(int i = 0; i < arraySize; i++)
     {
-        value = data.vertexArrayPointer[i];
+        value = graph.vertexArrayPointer[i];
         printf("%i ", value);
     }
     printf("\n");
     
-    arraySize = data.edgeArraySize;
+    arraySize = graph.edgeArraySize;
     printf("Edge array: ");
-    for(i = 0; i < arraySize; i++)
+    for(int i = 0; i < arraySize; i++)
     {
-        value = data.edgeArrayPointer[i];
+        value = graph.edgeArrayPointer[i];
+        printf("%i ", value);
+    }
+    printf("\n");
+    
+    arraySize = nets.netIdArraySize;
+    printf("Net ID array: ");
+    for(int i = 0; i < arraySize; i++)
+    {
+        int value = nets.netIdArrayPointer[i];
+        printf("%i ", value);
+    }
+    printf("\n");
+    
+    arraySize = nets.netVertexArraySize;
+    printf("Net Vertex array: ");
+    for(int i = 0; i < arraySize; i++)
+    {
+        int value = nets.netVertexArrayPointer[i];
         printf("%i ", value);
     }
     printf("\n");
@@ -40,8 +62,12 @@ void GraphWalk_Test(graphData_t data)
 
 void GraphWalk_InitArrays(graphData_t data)
 {
+    vertexArraySize = data.vertexArraySize;
+    edgeArraySize = data.edgeArraySize;
+    
+    maskArray = malloc(data.vertexArraySize * sizeof(int));
+    
     traceArray = malloc(data.edgeArraySize * sizeof(int));
-    maskArray = malloc(data.edgeArraySize * sizeof(int));
     weightArray = malloc(data.edgeArraySize * sizeof(int));
 }
 
@@ -52,33 +78,47 @@ void GraphWalk_FreeArrays(graphData_t data)
     free(weightArray);
 }
 
-netStruct_t * GraphWalk_InitNet(int * nodes, posStruct_t * placement, int numNodes)
+void GraphWalk_InitRoute(void)
 {
-    // Allocate memory for a net struct
-    netStruct_t * newNet = malloc(sizeof(netStruct_t));
-    // Allocate memory for the node positions
-    newNet->pos = malloc(numNodes * sizeof(posStruct_t));
-    // Fill in the number of nodes
-    newNet->numNodes = numNodes;
+    // Init mask array to 0
+    memset(maskArray, 0, vertexArraySize * sizeof(int));
+    // Init trace array to 0
+    memset(traceArray, 0, edgeArraySize * sizeof(int));
+    // Init weight array to 0
+    memset(weightArray, 0, edgeArraySize * sizeof(int));
+}
+
+void GraphWalk_RouteNet(graphData_t graph, netData_t nets, int netId)
+{
+    time_t t;
+    // Seed random number
+    srand((unsigned) time(&t));
     
-    for(int i = 0; i < numNodes; i++)
+    GraphWalk_InitRoute();
+    
+    // Index of net ID array points to the first node of a net
+    // Index + 1 of net ID array points to the first node of the next net
+    // Determine the start and end of the net vertex array to index for this net ID
+    int start = nets.netIdArrayPointer[netId];
+    int end;
+    // Check if we're at the end of the array
+    if ((netId + 1) < (nets.netIdArraySize))
     {
-        newNet->pos[i] = placement[i];
+        // We're still within bounds, end is next index
+        end = nets.netIdArrayPointer[netId + 1];
+    }
+    else
+    {
+        // We've reached the end, the size is the end
+        end = nets.netVertexArraySize;
     }
     
-    return newNet;
-}
-
-void GraphWalk_FreeNet(netStruct_t * net)
-{
-    // Free the net's node positions
-    free(net->pos);
-    // Free the net itself
-    free(net);
-}
-
-void GraphWalk_RouteNet(netStruct_t * net)
-{
+    printf("Net ID %d start and end index: %d %d\n", netId, start, end);
+    
+    // Pick a node to route at random
+    int nodeToRoute = rand() % (end - start);
+    maskArray[nodeToRoute] = 1;
+    
 }
 
 // Need the following (mostly obtained from ConnectionGraph)
@@ -89,6 +129,13 @@ void GraphWalk_RouteNet(netStruct_t * net)
 // * total number of edges a vertex it has is vertexArray[it+1] -
 //   vertexArray[it]
 //
+// maskArray, maskArray is the same size as vertexArray
+// * determines what to do with a vertex
+// * initialized to 0
+// * when maskArray[it] = 0 don't visit
+// * when maskArray[it] = 1 visit for expansion
+// * when maskArray[it] > 1 already visited, so don't visit
+//
 // edgeArray, edgeArray size
 // * a sequential list of edges for every vertex
 // * indexing this array requires using vertexArray
@@ -98,13 +145,6 @@ void GraphWalk_RouteNet(netStruct_t * net)
 // * graphs are bidirectional, so when a path forward is found, marking the path
 //   back allows one to determine where they came from
 // * initialized to 0
-//
-// maskArray, maskArray is the same size as edgeArray
-// * determines what to do with a vertex
-// * initialized to 0
-// * when maskArray[it] = 0 don't visit
-// * when maskArray[it] = 1 visit for expansion
-// * when maskArray[it] > 1 already visited, so don't visit
 //
 // weightArray, weightArray is the same size as edgeArray
 // * keeps track of edge weights, eventually routing is impossible when edge

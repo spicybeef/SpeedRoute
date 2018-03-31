@@ -21,15 +21,6 @@ typedef enum
     DIR_NUM
 } dir_e;
 
-// Graph struct
-typedef struct
-{
-    int * vertexArrayPointer;
-    int * edgeArrayPointer;
-    int vertexArraySize;
-    int edgeArraySize;
-} graphData_t;
-
 // Position struct
 typedef struct
 {
@@ -37,11 +28,24 @@ typedef struct
     int row;
 } posStruct_t;
 
+// Graph struct
+typedef struct
+{
+    int * vertexArrayPointer;
+    int * edgeArrayPointer;
+    int * blockageArrayPointer;
+    int vertexArraySize;
+    int edgeArraySize;
+    int blockageArraySize;
+} graphData_t;
+
 // Net struct
 typedef struct
 {
-    posStruct_t * pos;
-    int numNodes;
-} netStruct_t;
+    int * netIdArrayPointer;
+    int * netVertexArrayPointer;
+    int netIdArraySize;
+    int netVertexArraySize;
+} netData_t;
 
 #endif /* Types_h */

@@ -11,14 +11,10 @@
 
 #include "Types.h"
 
-void GraphWalk_Test(graphData_t data);
-
+void GraphWalk_Test(graphData_t graph, netData_t nets);
 void GraphWalk_InitArrays(graphData_t data);
 void GraphWalk_FreeArrays(graphData_t data);
-
-netStruct_t * GraphWalk_InitNet(int * nodes, posStruct_t * placement, int numNodes);
-void GraphWalk_FreeNet(netStruct_t * net);
-
-void GraphWalk_RouteNet(netStruct_t * net);
+void GraphWalk_InitRoute(void);
+void GraphWalk_RouteNet(graphData_t graph, netData_t nets, int netId);
     
 #endif /* GraphWalk_h */

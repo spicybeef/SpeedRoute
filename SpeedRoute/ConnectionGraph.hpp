@@ -11,6 +11,7 @@
 
 #include <vector>
 
+#include "FileParser.hpp"
 #include "Types.h"
 
 // Vertex struct
@@ -25,31 +26,29 @@ typedef std::vector<std::vector<vertex_t>> vertexGrid;
 class ConnectionGraph
 {
 public:
-    ConnectionGraph(int numCol, int numRows, int padding);
+    ConnectionGraph(posVec placement, int numCol, int numRows, int padding);
     ~ConnectionGraph(void);
     
-    vertexGrid getGrid(void);
-    std::vector<int> getVertexVector(void);
-    std::vector<int> getEdgeVector(void);
-    int * getVertexArrayPointer(void);
-    int * getEdgeArrayPointer(void);
-    int getVertexArraySize(void);
-    int getEdgeArraySize(void);
+    vertexGrid getGrid(void);  
     graphData_t getGraphData(void);
     int getVertexIdFromPlacement(int col, int row);
+    netData_t getNetVectors(netVec rawNets, posVec rawPos);
     
 private:
+    void generateGraph();
+    void generateBlockage();
+    
     int mPlacementWidth;
     int mPlacementHeight;
     int mSideLength;
     int mPadding;
     vertexGrid mGrid;
+    posVec mPlacement;
     std::vector<int> mVertexVector;
     std::vector<int> mEdgeVector;
-    std::vector<int> mCongestionVector;
-    std::vector<int> mCountVector;
-    
-    void generateGraph();
+    std::vector<int> mNetIdVector;
+    std::vector<int> mNetVertexVector;
+    std::vector<int> mBlockageVector;
 };
 
 #endif /* ConnectionGraph_hpp */

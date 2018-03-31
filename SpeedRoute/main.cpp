@@ -18,7 +18,7 @@ extern "C"
 #include "GraphWalk.h"
 }
 
-static const int ARCH_PADDING = 4;
+static const int ARCH_PADDING = 2;
 
 int main(int argc, char *argv[])
 {
@@ -35,29 +35,22 @@ int main(int argc, char *argv[])
     }
     parsedInputStruct_t input = fileParse.getParsedInput();
     
-    ConnectionGraph connectionGraph(input.numCols, input.numRows, ARCH_PADDING);
+    // Instantiate a new connection graph using the placement's col, row, and some padding
+    ConnectionGraph connectionGraph(input.placement, input.numCols, input.numRows, ARCH_PADDING);
+    // Grab the C-friendly graph data
     graphData_t graphData = connectionGraph.getGraphData();
-    
+    netData_t netData = connectionGraph.getNetVectors(input.nets, input.placement);
+
     // Test the graph data
-    GraphWalk_Test(graphData);
+    GraphWalk_Test(graphData, netData);
+    // Initialize the graph walker arrays
+    GraphWalk_InitArrays(graphData);
     
-    // Route a net
-    std::vector< netStruct_t * > netPointers;
-    for(int i = 0; i < input.nets.size(); i++)
-    {
-        netPointers.push_back(GraphWalk_InitNet(static_cast<int *>(input.nets[i].data()), static_cast<posStruct_t *>(input.placement.data()), static_cast<int>(input.nets[i].size())));
-        //    GraphWalk_RouteNet(netPoint);
-        //    GraphWalk_FreeNet(netPoint);
-    }
     // Route nets
     for(int i = 0; i < input.nets.size(); i++)
     {
-        GraphWalk_RouteNet(netPointers[i]);
-    }
-    // Free nets
-    for(int i = 0; i < input.nets.size(); i++)
-    {
-        GraphWalk_FreeNet(netPointers[i]);
+        // Route the nets
+        GraphWalk_RouteNet(graphData, netData, i);
     }
     
     // Run the graphics for the router
