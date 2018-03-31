@@ -114,11 +114,18 @@ void ConnectionGraph::generateBlockage()
 {
     // Create a blockage vector the same size as our vertex vector and initialize to 0
     std::vector<int> blockage(mVertexVector.size(), 0);
-    
-    for(int i = 0; i < mPlacement.size(); i++)
+
+    // Blockage corresponds to all possible vertex placements
+    for(int row = 0; row < mSideLength; row++)
     {
-        int vertex = getVertexIdFromPlacement(mPlacement[i].col, mPlacement[i].row);
-        blockage[vertex] = 1;
+        for(int col = 0; col < mSideLength; col++)
+        {
+            // Logic exists at odd intersections of row and col
+            if((row % 2 == 1) && (col % 2 == 1))
+            {
+                blockage[mGrid[col][row].id] = 1;
+            }
+        }
     }
     
     mBlockageVector = blockage;
