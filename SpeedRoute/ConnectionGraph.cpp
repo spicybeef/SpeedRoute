@@ -41,6 +41,11 @@ void ConnectionGraph::generateGraph(void)
     vertex_t tempVertex;
     vertex_t *tempVertexPointer;
     
+    // OK so this piece is a little confusing and requires more thought
+    // Vertex IDs ended up transposed in the first part due to how the grid is constructed
+    // Fixing it caused problems below, so filling out the edge vector had to be reversed
+    // TODO: make this nicer and less confusing
+    
     // Populate the grid
     for(int col = 0; col < mSideLength; col++)
     {
@@ -92,9 +97,9 @@ void ConnectionGraph::generateGraph(void)
     }
     
     // Now create the vectors that will form the C arrays
-    for(int col = 0; col < mSideLength; col++)
+    for(int row = 0; row < mSideLength; row++)
     {
-        for(int row = 0; row < mSideLength; row++)
+        for(int col = 0; col < mSideLength; col++)
         {
             // Push back the current size of the edge vector, this determines the index to use in it
             mVertexVector.push_back(static_cast<int>(mEdgeVector.size()));

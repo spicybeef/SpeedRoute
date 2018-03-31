@@ -25,7 +25,8 @@ static int g_edgeArraySize;
 
 #define MASK_NO_VISIT           0
 #define MASK_VISIT              1
-#define MASK_VISITED            2
+#define MASK_VISIT_NEXT         2
+#define MASK_VISITED            3
 
 void GraphWalk_Test(graphData_t graph, netData_t nets)
 {
@@ -175,8 +176,6 @@ void GraphWalk_RouteNet(graphData_t graph, netData_t nets, int netId)
             {
                 // We do! Turn it into a visited box
                 g_maskArray[vertex] = MASK_VISITED;
-                printf("Mask Array:\n");
-                GraphWalk_DebugPrintGrid(graph.blockageArrayPointer, g_maskArray, graph.sideLength);
                 // Index of vertex array points to entry in edge array
                 // Index + 1 of vertex array points to the first node of the next vertex's edges
                 // Determine the start and end of the net vertex array to index for this net ID
@@ -194,11 +193,13 @@ void GraphWalk_RouteNet(graphData_t graph, netData_t nets, int netId)
                     end = graph.vertexArraySize;
                 }
                 
+                
+                
                 // Now go through the vertex's edges
                 for(int edgeIndex = start; edgeIndex < end; edgeIndex++)
                 {
                     int nextVertex = graph.edgeArrayPointer[edgeIndex];
-                    
+                    printf("Visiting %d\n", nextVertex);
                     // Check if it's blocked
                     if(graph.blockageArrayPointer[nextVertex] == VERTEX_BLOCK)
                     {
@@ -212,14 +213,31 @@ void GraphWalk_RouteNet(graphData_t graph, netData_t nets, int netId)
                         continue;
                     }
                     g_traceArray[nextVertex] = currentExpansion + 1;
-                    g_maskArray[nextVertex] = MASK_VISIT;
-                    printf("Trace Array:\n");
-                    GraphWalk_DebugPrintGrid(graph.blockageArrayPointer, g_traceArray, graph.sideLength);
-                    printf("Mask Array:\n");
-                    GraphWalk_DebugPrintGrid(graph.blockageArrayPointer, g_maskArray, graph.sideLength);
+                    g_maskArray[nextVertex] = MASK_VISIT_NEXT;
                 }
             }
         }
+        
+        printf("Trace Array:\n");
+        GraphWalk_DebugPrintGrid(graph.blockageArrayPointer, g_traceArray, graph.sideLength);
+        printf("Mask Array:\n");
+        GraphWalk_DebugPrintGrid(graph.blockageArrayPointer, g_maskArray, graph.sideLength);
+        
+        // Change next visits to visits
+        for(int vertex = 0; vertex < graph.vertexArraySize; vertex++)
+        {
+            // Check if we need to visit
+            if(g_maskArray[vertex] == MASK_VISIT_NEXT)
+            {
+                g_maskArray[vertex] = MASK_VISIT;
+            }
+        }
+        
+        printf("Trace Array:\n");
+        GraphWalk_DebugPrintGrid(graph.blockageArrayPointer, g_traceArray, graph.sideLength);
+        printf("Mask Array:\n");
+        GraphWalk_DebugPrintGrid(graph.blockageArrayPointer, g_maskArray, graph.sideLength);
+        
         // Go to the next expansion!
         currentExpansion++;
     }
