@@ -37,6 +37,7 @@ typedef struct
     int vertexArraySize;
     int edgeArraySize;
     int blockageArraySize;
+    int sideLength;
 } graphData_t;
 
 // Net struct

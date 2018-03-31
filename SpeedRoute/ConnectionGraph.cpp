@@ -146,6 +146,7 @@ graphData_t ConnectionGraph::getGraphData(void)
     data.vertexArraySize = static_cast<int>(mVertexVector.size());
     data.edgeArraySize = static_cast<int>(mEdgeVector.size());
     data.blockageArraySize = static_cast<int>(mBlockageVector.size());
+    data.sideLength = mSideLength;
     
     std::cout << "Graph data:" << std::endl;
     std::cout << "Vertex size:" << data.vertexArraySize << std::endl;
