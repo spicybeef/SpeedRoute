@@ -25,9 +25,8 @@ ConnectionGraph::ConnectionGraph(posVec placement, int numCol, int numRows, int 
         mSideLength = (2 * mPlacementWidth) + 1 + (mPadding * 2);
     }
     
-    // Generate the graph and the blockage
+    // Generate the graph
     generateGraph();
-    generateBlockage();
 }
 
 ConnectionGraph::~ConnectionGraph(void)
@@ -115,27 +114,6 @@ void ConnectionGraph::generateGraph(void)
     }
 }
 
-void ConnectionGraph::generateBlockage()
-{
-    // Create a blockage vector the same size as our vertex vector and initialize to 0
-    std::vector<int> blockage(mVertexVector.size(), 0);
-
-    // Blockage corresponds to all possible vertex placements
-    for(int row = 0; row < mSideLength; row++)
-    {
-        for(int col = 0; col < mSideLength; col++)
-        {
-            // Logic exists at odd intersections of row and col
-            if((row % 2 == 1) && (col % 2 == 1))
-            {
-                blockage[mGrid[col][row].id] = 1;
-            }
-        }
-    }
-    
-    mBlockageVector = blockage;
-}
-
 vertexGrid ConnectionGraph::getGrid(void)
 {
     return mGrid;
@@ -147,10 +125,8 @@ graphData_t ConnectionGraph::getGraphData(void)
     
     data.vertexArrayPointer = mVertexVector.data();
     data.edgeArrayPointer = mEdgeVector.data();
-    data.blockageArrayPointer = mBlockageVector.data();
     data.vertexArraySize = static_cast<int>(mVertexVector.size());
     data.edgeArraySize = static_cast<int>(mEdgeVector.size());
-    data.blockageArraySize = static_cast<int>(mBlockageVector.size());
     data.sideLength = mSideLength;
     
     std::cout << "Graph data:" << std::endl;

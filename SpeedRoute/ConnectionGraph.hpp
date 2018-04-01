@@ -36,7 +36,6 @@ public:
     
 private:
     void generateGraph();
-    void generateBlockage();
     
     int mPlacementWidth;
     int mPlacementHeight;
@@ -48,7 +47,6 @@ private:
     std::vector<int> mEdgeVector;
     std::vector<int> mNetIdVector;
     std::vector<int> mNetVertexVector;
-    std::vector<int> mBlockageVector;
 };
 
 #endif /* ConnectionGraph_hpp */

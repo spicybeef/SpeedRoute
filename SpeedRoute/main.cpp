@@ -41,20 +41,21 @@ int main(int argc, char *argv[])
     graphData_t graphData = connectionGraph.getGraphData();
     netData_t netData = connectionGraph.getNetVectors(input.nets, input.placement);
 
-    // Test the graph data
-    GraphWalk_Test(graphData, netData);
+
     // Initialize the graph walker arrays
-    GraphWalk_InitArrays(graphData);
+    GraphWalk_InitWalkData(graphData, netData);
     
     // Route nets
     // Initialize the net status array
-    GraphWalk_InitNetStatus(netData);
+    GraphWalk_InitNetStatus();
+    // Initiailize the weight array
+    GraphWalk_InitWeight();
     for(int i = 0; i < input.nets.size(); i++)
     {
         // Route the nets
-        GraphWalk_RouteNet(graphData, netData, i);
+        GraphWalk_RouteNet(i);
     }
-    
+
     // Run the graphics for the router
     Graphics graphics;
     graphics.run();

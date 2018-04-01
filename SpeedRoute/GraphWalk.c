@@ -13,18 +13,32 @@
 
 #include "GraphWalk.h"
 
+// Module scope data
+
+// Graph walk arrays
 static int * g_traceArray;
 static int * g_maskArray;
 static int * g_weightArray;
 static int * g_netStatusArray;
+
+// Graph arrays
+static int * g_vertexArray;
+static int * g_edgeArray;
 static int g_vertexArraySize;
 static int g_edgeArraySize;
 
-#define VERTEX_NONETYPE         0
-#define VERTEX_BLOCK            1
-#define VERTEX_NET_SINK_UNCONN  2
-#define VERTEX_NET_SINK_CONN    3
-#define VERTEX_NET_SOURCE       4
+// Net arrays
+static int * g_netIdArrayPointer;
+static int * g_netVertexArrayPointer;
+static int g_netIdArraySize;
+static int g_netVertexArraySize;
+
+static int g_sideLength;
+
+#define VERTEX_NONETYPE         -1
+#define VERTEX_BLOCK            -2
+#define VERTEX_NET_UNCONN       -3
+#define VERTEX_NET_CONN         -4
 
 #define MASK_NO_VISIT           0
 #define MASK_VISIT              1
@@ -76,26 +90,21 @@ void GraphWalk_Test(graphData_t graph, netData_t nets)
     printf("\n");
 }
 
-void GraphWalk_DebugPrintGrid(char * string, int * blockage, int * gridArray, int sideLength)
+void GraphWalk_DebugPrintGrid(char * string, int * gridArray)
 {
     printf("%s:\n", string);
-    for(int row = 0; row < sideLength; row++)
+    for(int row = 0; row < g_sideLength; row++)
     {
-        for(int col = 0; col < sideLength; col++)
+        for(int col = 0; col < g_sideLength; col++)
         {
-//            if(blockage[col + row * sideLength] >= VERTEX_BLOCK)
-//            {
-//                printf(" X ");
-//            }
-//            else
             {
-                if(gridArray[col + row * sideLength] == 0)
+                if(gridArray[col + row * g_sideLength] == 0)
                 {
                     printf(" . ");
                 }
                 else
                 {
-                    printf("%2i ", gridArray[col + row * sideLength]);
+                    printf("%2i ", gridArray[col + row * g_sideLength]);
                 }
             }
         }
@@ -103,19 +112,27 @@ void GraphWalk_DebugPrintGrid(char * string, int * blockage, int * gridArray, in
     }
 }
 
-void GraphWalk_InitArrays(graphData_t data)
+void GraphWalk_InitWalkData(graphData_t graph, netData_t nets)
 {
-    g_vertexArraySize = data.vertexArraySize;
-    g_edgeArraySize = data.edgeArraySize;
+    g_vertexArray = graph.vertexArrayPointer;
+    g_edgeArray = graph.edgeArrayPointer;
+    g_vertexArraySize = graph.vertexArraySize;
+    g_edgeArraySize = graph.edgeArraySize;
     
-    g_maskArray = malloc(data.vertexArraySize * sizeof(int));
-    g_netStatusArray = malloc(data.vertexArraySize * sizeof(int));
+    g_netIdArrayPointer = nets.netIdArrayPointer;
+    g_netVertexArrayPointer = nets.netVertexArrayPointer;
+    g_netIdArraySize = nets.netIdArraySize;
+    g_netVertexArraySize = nets.netVertexArraySize;
     
-    g_traceArray = malloc(data.edgeArraySize * sizeof(int));
-    g_weightArray = malloc(data.edgeArraySize * sizeof(int));
+    g_traceArray = malloc(graph.edgeArraySize * sizeof(int));
+    g_maskArray = malloc(graph.vertexArraySize * sizeof(int));
+    g_weightArray = malloc(graph.edgeArraySize * sizeof(int));
+    g_netStatusArray = malloc(nets.netVertexArraySize * sizeof(int));
+    
+    g_sideLength = graph.sideLength;
 }
 
-void GraphWalk_FreeArrays(graphData_t data)
+void GraphWalk_FreeWalkData(graphData_t data)
 {
     free(g_traceArray);
     free(g_maskArray);
@@ -123,32 +140,63 @@ void GraphWalk_FreeArrays(graphData_t data)
     free(g_netStatusArray);
 }
 
+// Inits are done in a loop to be extra portable
+// Hopefully the compiler is smart enough to turn this into the proper memset
 void GraphWalk_InitMask(void)
 {
     // Init mask array to MASK_NO_VISIT
-    memset(g_maskArray, MASK_NO_VISIT, g_vertexArraySize * sizeof(int));
+    for(int i = 0; i < g_vertexArraySize; i++)
+    {
+        g_maskArray[i] = MASK_NO_VISIT;
+    }
 }
 
 void GraphWalk_InitTrace(void)
 {
-    // Init trace array to -1
-    memset(g_traceArray, -1, g_edgeArraySize * sizeof(int));
+    int col, row;
+    // Init trace array to either a block or nonetype
+    for(int i = 0; i < g_edgeArraySize; i++)
+    {
+        // Ignore unconnected and connected nets
+        if(g_traceArray[i] == VERTEX_NET_UNCONN || g_traceArray[i] == VERTEX_NET_CONN)
+        {
+            continue;
+        }
+        col = i % g_sideLength;
+        row = i / g_sideLength;
+        
+        // Logic exists at odd intersections of row and col
+        if((row % 2 == 1) && (col % 2 == 1))
+        {
+            g_traceArray[i] = VERTEX_BLOCK;
+        }
+        else
+        {
+            g_traceArray[i] = VERTEX_NONETYPE;
+        }
+    }
 }
 
 void GraphWalk_InitWeight(void)
 {
     // Init weight array to 0
-    memset(g_weightArray, 0, g_vertexArraySize * sizeof(int));
+    for(int i = 0; i < g_vertexArraySize; i++)
+    {
+        g_weightArray[i] = 0;
+    }
 }
 
-void GraphWalk_InitNetStatus(netData_t nets)
+void GraphWalk_InitNetStatus(void)
 {
-    // Init net status array to NET_NONETYPE
+    // Init net status array to NET_UNCONNECTED
     // We'll have to visit and connect the same about of connects as in netVertexArraySize, so use that for init
-    memset(g_netStatusArray, NET_UNCONNECTED, nets.netVertexArraySize * sizeof(int));
+    for(int i = 0; i < g_netVertexArraySize; i++)
+    {
+        g_netStatusArray[i] = NET_UNCONNECTED;
+    }
 }
 
-void GraphWalk_RouteNet(graphData_t graph, netData_t nets, int netId)
+void GraphWalk_RouteNet(int netId)
 {
     time_t t;
     // Seed random number
@@ -160,56 +208,53 @@ void GraphWalk_RouteNet(graphData_t graph, netData_t nets, int netId)
     // Index of net ID array points to the first node of a net
     // Index + 1 of net ID array points to the first node of the next net
     // Determine the start and end of the net vertex array to index for this net ID
-    netVertexIndexStart = nets.netIdArrayPointer[netId];
+    netVertexIndexStart = g_netIdArrayPointer[netId];
     // Check if we're at the end of the array
-    if ((netId + 1) < (nets.netIdArraySize))
+    if ((netId + 1) < (g_netIdArraySize))
     {
         // We're still within bounds, end is next index
-        netVertexIndexEnd = nets.netIdArrayPointer[netId + 1];
+        netVertexIndexEnd = g_netIdArrayPointer[netId + 1];
     }
     else
     {
         // We've reached the end, the size is the end
-        netVertexIndexEnd = nets.netVertexArraySize;
+        netVertexIndexEnd = g_netVertexArraySize;
     }
     printf("Net ID %d start and end index: %d %d\n", netId, netVertexIndexStart, netVertexIndexEnd);
     
-    // Update blockage array with current net vertexes
+    // Update trace array with current net vertexes
     for(int vertexIndex = netVertexIndexStart; vertexIndex < netVertexIndexEnd; vertexIndex++)
     {
-        graph.blockageArrayPointer[nets.netVertexArrayPointer[vertexIndex]] = VERTEX_NET_SINK_UNCONN;
+        g_traceArray[g_netVertexArrayPointer[vertexIndex]] = VERTEX_NET_UNCONN;
     }
     
     // Init the mask
     GraphWalk_InitMask();
-    // Init the trace
-    GraphWalk_InitTrace();
     
     // Route until we run out of vertexes to route for this net
     do
     {
+        // Init the trace
+        GraphWalk_InitTrace();
         // Pick a random vertex index to start routing from
         randNetVertexIndex = (rand() % (netVertexIndexEnd - netVertexIndexStart)) + netVertexIndexStart;
-        currentSourceVertex = nets.netVertexArrayPointer[randNetVertexIndex];
+        currentSourceVertex = g_netVertexArrayPointer[randNetVertexIndex];
         // Check if this one has been connected already
         if(g_netStatusArray[randNetVertexIndex] == NET_CONNECTED)
         {
             continue;
         }
+        printf("Sourcing from %d\n", currentSourceVertex);
         g_maskArray[currentSourceVertex] = MASK_VISIT;
         // This net's vertex becomes a connected source, mark it as such
         g_netStatusArray[randNetVertexIndex] = NET_CONNECTED;
-        // This net's vertex is the seed of the trace, so mark it as 0
-        g_traceArray[currentSourceVertex] = 0;
-        
-        GraphWalk_DebugPrintGrid("Mask Array", graph.blockageArrayPointer, g_maskArray, graph.sideLength);
         
         /* Wavefront Expansion */
         int currentExpansion = 0;
-        while(!GraphWalk_IsMaskArrayEmpty(g_maskArray, graph.vertexArraySize))
+        while(!GraphWalk_IsMaskArrayEmpty(g_maskArray, g_vertexArraySize))
         {
             // Visit masked areas
-            for(int vertex = 0; vertex < graph.vertexArraySize; vertex++)
+            for(int vertex = 0; vertex < g_vertexArraySize; vertex++)
             {
                 // Check if we need to visit
                 if(g_maskArray[vertex] == MASK_VISIT)
@@ -219,27 +264,27 @@ void GraphWalk_RouteNet(graphData_t graph, netData_t nets, int netId)
                     // Index of vertex array points to entry in edge array
                     // Index + 1 of vertex array points to the first node of the next vertex's edges
                     // Determine the start and end of the net vertex array to index for this net ID
-                    int start = graph.vertexArrayPointer[vertex];
+                    int start = g_vertexArray[vertex];
                     int end;
                     // Check if we're at the end of the array
-                    if ((vertex + 1) < (graph.vertexArraySize))
+                    if ((vertex + 1) < (g_vertexArraySize))
                     {
                         // We're still within bounds, end is next index
-                        end = graph.vertexArrayPointer[vertex + 1];
+                        end = g_vertexArray[vertex + 1];
                     }
                     else
                     {
                         // We've reached the end, the size is the end
-                        end = graph.vertexArraySize;
+                        end = g_vertexArraySize;
                     }
                     
                     // Now go through the vertex's edges
                     for(int edgeIndex = start; edgeIndex < end; edgeIndex++)
                     {
-                        int nextVertex = graph.edgeArrayPointer[edgeIndex];
+                        int nextVertex = g_edgeArray[edgeIndex];
                         printf("Visiting %d\n", nextVertex);
                         // Check if it's blocked
-                        if(graph.blockageArrayPointer[nextVertex] == VERTEX_BLOCK)
+                        if(g_traceArray[nextVertex] == VERTEX_BLOCK)
                         {
                             // Can't go here, go to next edge
                             continue;
@@ -251,7 +296,7 @@ void GraphWalk_RouteNet(graphData_t graph, netData_t nets, int netId)
                             continue;
                         }
                         // Check if it's a valid connection
-                        if(graph.blockageArrayPointer[nextVertex] == VERTEX_NET_SINK_UNCONN || graph.blockageArrayPointer[nextVertex] == VERTEX_NET_SINK_CONN)
+                        if(g_traceArray[nextVertex] == VERTEX_NET_UNCONN || g_traceArray[nextVertex] == VERTEX_NET_CONN)
                         {
                             // OK, so if it's the first net vertex, we can sink to anything.
                             // Subsequent sinks MUST be already connected to avoid unconnected graphs.
@@ -264,7 +309,7 @@ void GraphWalk_RouteNet(graphData_t graph, netData_t nets, int netId)
                             else
                             {
                                 // We've started connecting nets already, ignore unconnected ones
-                                if(graph.blockageArrayPointer[nextVertex] == VERTEX_NET_SINK_UNCONN)
+                                if(g_traceArray[nextVertex] == VERTEX_NET_UNCONN)
                                 {
                                     continue;
                                 }
@@ -274,8 +319,16 @@ void GraphWalk_RouteNet(graphData_t graph, netData_t nets, int netId)
                             // We're going to trace back from here
                             currentSinkVertex = nextVertex;
                             // Update blockage array
-                            graph.blockageArrayPointer[currentSinkVertex] = VERTEX_NET_SINK_CONN;
-                            graph.blockageArrayPointer[currentSourceVertex] = VERTEX_NET_SINK_CONN;
+                            g_traceArray[currentSinkVertex] = VERTEX_NET_CONN;
+                            g_traceArray[currentSourceVertex] = VERTEX_NET_CONN;
+                            // Our sink is now connected, mark it as such
+                            for(int vertexIndex = netVertexIndexStart; vertexIndex < netVertexIndexEnd; vertexIndex++)
+                            {
+                                if(g_netVertexArrayPointer[vertexIndex] == currentSinkVertex)
+                                {
+                                    g_netStatusArray[vertexIndex] = NET_CONNECTED;
+                                }
+                            }
                             // Trigger exit from this loop by blanking out the mask array
                             GraphWalk_InitMask();
                             break;
@@ -288,7 +341,7 @@ void GraphWalk_RouteNet(graphData_t graph, netData_t nets, int netId)
             
             // Change next visits to visits
             // This is required to synchronize the work done previously, preventing visiting things we just marked for visitation
-            for(int vertex = 0; vertex < graph.vertexArraySize; vertex++)
+            for(int vertex = 0; vertex < g_vertexArraySize; vertex++)
             {
                 // Check if we need to visit
                 if(g_maskArray[vertex] == MASK_VISIT_NEXT)
@@ -298,8 +351,8 @@ void GraphWalk_RouteNet(graphData_t graph, netData_t nets, int netId)
             }
             
             // Print out some info
-            GraphWalk_DebugPrintGrid("Trace Array", graph.blockageArrayPointer, g_traceArray, graph.sideLength);
-            GraphWalk_DebugPrintGrid("Mask Array", graph.blockageArrayPointer, g_maskArray, graph.sideLength);
+            GraphWalk_DebugPrintGrid("Trace Array", g_traceArray);
+            GraphWalk_DebugPrintGrid("Mask Array", g_maskArray);
             
             // Go to the next expansion!
             currentExpansion++;
@@ -307,49 +360,61 @@ void GraphWalk_RouteNet(graphData_t graph, netData_t nets, int netId)
         
         /* Traceback */
         printf("Tracing back from %d\n", currentSinkVertex);
+        bool foundSource = false;
         do
         {
             // Determine the start and end of the net vertex array to index for this net ID
-            int start = graph.vertexArrayPointer[currentSinkVertex];
+            int start = g_vertexArray[currentSinkVertex];
             int end;
             // Check if we're at the end of the array
-            if ((currentSinkVertex + 1) < (graph.vertexArraySize))
+            if ((currentSinkVertex + 1) < (g_vertexArraySize))
             {
                 // We're still within bounds, end is next index
-                end = graph.vertexArrayPointer[currentSinkVertex + 1];
+                end = g_vertexArray[currentSinkVertex + 1];
             }
             else
             {
                 // We've reached the end, the size is the end
-                end = graph.vertexArraySize;
+                end = g_vertexArraySize;
             }
             // Now go through the vertex's edges
             for(int edgeIndex = start; edgeIndex < end; edgeIndex++)
             {
-                int nextVertex = graph.edgeArrayPointer[edgeIndex];
+                int nextVertex = g_edgeArray[edgeIndex];
+                // Check if it's our source
+                if(nextVertex == currentSourceVertex)
+                {
+                    printf("Found the original source @ %d\n", nextVertex);
+                    foundSource = true;
+                    break;
+                }
+                // Check if it's a route back
                 if(g_traceArray[nextVertex] == currentExpansion - 1)
                 {
                     printf("Found a way back through %d\n", nextVertex);
+                    g_weightArray[nextVertex]++;
                     currentExpansion--;
                     currentSinkVertex = nextVertex;
                     break;
                 }
             }
         }
-        while(currentSinkVertex != currentSourceVertex); /* Traceback */
+        while(!foundSource); /* Traceback */
     }
     while(GraphWalk_IsNetUnconnected(netVertexIndexStart, netVertexIndexEnd, g_netStatusArray));
+    
+    GraphWalk_DebugPrintGrid("Final weights:", g_weightArray);
 }
 
 bool GraphWalk_IsNetUnconnected(int startIndex, int endIndex, int * netStatusArray)
 {
-    bool rv = true;
+    bool rv = false;
     
     for(int i = startIndex; i < endIndex; i++)
     {
         if(netStatusArray[i] == NET_UNCONNECTED)
         {
-            rv = false;
+            rv = true;
             break;
         }
     }
@@ -371,33 +436,3 @@ bool GraphWalk_IsMaskArrayEmpty(int * maskArray, int maskArraySize)
     }
     return rv;
 }
-
-// Need the following (mostly obtained from ConnectionGraph)
-// TODO: Create a C API to return pointers to these things from the ConnectionGraph class
-
-// vertexArray, vertexArray size
-// * each index points to its first edge in edgeArray
-// * total number of edges a vertex it has is vertexArray[it+1] -
-//   vertexArray[it]
-//
-// maskArray, maskArray is the same size as vertexArray
-// * determines what to do with a vertex
-// * initialized to 0
-// * when maskArray[it] = 0 don't visit
-// * when maskArray[it] = 1 visit for expansion
-// * when maskArray[it] > 1 already visited, so don't visit
-//
-// edgeArray, edgeArray size
-// * a sequential list of edges for every vertex
-// * indexing this array requires using vertexArray
-//
-// traceArray, traceArray is the same size as edgeArray
-// * keeps track of the paths taken through the graph's edges
-// * graphs are bidirectional, so when a path forward is found, marking the path
-//   back allows one to determine where they came from
-// * initialized to 0
-//
-// weightArray, weightArray is the same size as edgeArray
-// * keeps track of edge weights, eventually routing is impossible when edge
-//   weight = channel width
-// * initialized to 0 at beginning of routing

@@ -14,14 +14,14 @@
 #include "Types.h"
 
 void GraphWalk_Test(graphData_t graph, netData_t nets);
-void GraphWalk_DebugPrintGrid(char * string, int * blockage, int * gridArray, int sideLength);
-void GraphWalk_InitArrays(graphData_t data);
-void GraphWalk_FreeArrays(graphData_t data);
+void GraphWalk_DebugPrintGrid(char * string, int * gridArray);
+void GraphWalk_InitWalkData(graphData_t graph, netData_t nets);
+void GraphWalk_FreeWalkData(graphData_t data);
 void GraphWalk_InitMask(void);
 void GraphWalk_InitTrace(void);
 void GraphWalk_InitWeight(void);
-void GraphWalk_InitNetStatus(netData_t nets);
-void GraphWalk_RouteNet(graphData_t graph, netData_t nets, int netId);
+void GraphWalk_InitNetStatus(void);
+void GraphWalk_RouteNet(int netId);
 bool GraphWalk_IsNetUnconnected(int startIndex, int endIndex, int * netStatusArray);
 bool GraphWalk_IsMaskArrayEmpty(int * maskArray, int maskArraySize);
     
