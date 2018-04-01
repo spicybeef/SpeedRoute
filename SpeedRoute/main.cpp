@@ -46,16 +46,25 @@ int main(int argc, char *argv[])
     GraphWalk_InitWalkData(graphData, netData);
     // Initialize the net status array
     GraphWalk_InitNetStatus();
+    
+    
+    GraphWalk_Test(PRIO_NORM, graphData, netData);
+    
     // Route nets
     // Initiailize the weight array
     GraphWalk_InitWeight();
-//    for(int i = 0; i < input.nets.size(); i++)
-//    {
-//        // Route the nets
-//        GraphWalk_RouteNet(i);
-//    }
-//    // Route a single net
-    GraphWalk_RouteNet(0);
+    // Initialize the routing arrays
+    GraphWalk_InitNetRoutes();
+    for(int i = 0; i < input.nets.size(); i++)
+    {
+        // Init a new net route
+        GraphWalk_NewNetRoute();
+        // Route the nets
+        GraphWalk_RouteNet(i);
+    }
+    GraphWalk_DebugPrintRoutes(PRIO_HIGH);
+    // Route a single net
+//    GraphWalk_RouteNet(0);
 
     // Run the graphics for the router
     Graphics graphics;

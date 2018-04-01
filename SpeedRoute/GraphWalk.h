@@ -13,17 +13,32 @@
 
 #include "Types.h"
 
-void GraphWalk_Test(graphData_t graph, netData_t nets);
-void GraphWalk_DebugPrint(int priority, const char *format, ...);
+// Debug priorities
+#define PRIO_LOW                0
+#define PRIO_NORM               1
+#define PRIO_HIGH               2
+
+void GraphWalk_Test(int priority, graphData_t graph, netData_t nets);
+void GraphWalk_DebugPrint(int priority, const char * format, ... );
 void GraphWalk_DebugPrintGrid(int priority, char * string, int * gridArray);
+void GraphWalk_DebugPrintRoutes(int priority);
 
 void GraphWalk_InitWalkData(graphData_t graph, netData_t nets);
 void GraphWalk_FreeWalkData(graphData_t data);
+
 void GraphWalk_InitMask(void);
 void GraphWalk_InitTrace(void);
 void GraphWalk_InitWeight(void);
 void GraphWalk_InitNetStatus(void);
+
 void GraphWalk_RouteNet(int netId);
+
+void GraphWalk_InitNetRoutes(void);
+void GraphWalk_FreeNetRoutes(void);
+void GraphWalk_NewNetRoute(void);
+void GraphWalk_NewSegment(void);
+void GraphWalk_SegmentAppend(int vertex);
+
 bool GraphWalk_IsNetUnconnected(int startIndex, int endIndex, int * netStatusArray);
 bool GraphWalk_IsMaskArrayEmpty(int * maskArray, int maskArraySize);
     

@@ -16,11 +16,7 @@
 
 // Module scope data
 
-#define PRIO_LOW                0
-#define PRIO_NORM               1
-#define PRIO_HIGH               2
-
-static int g_debugPriority = PRIO_HIGH;
+static int g_debugPriority = PRIO_NORM;
 
 // Graph walk arrays
 static int * g_traceArray;
@@ -35,10 +31,22 @@ static int g_vertexArraySize;
 static int g_edgeArraySize;
 
 // Net arrays
-static int * g_netIdArrayPointer;
-static int * g_netVertexArrayPointer;
-static int g_netIdArraySize;
-static int g_netVertexArraySize;
+// The following arrays are used to store a net's vertexes
+// Hierarchy:
+// Net ID -> Vertex ID
+static int * g_netVertexesArrayPointer;
+static int g_netVertexesArraySize;
+static int * g_vertexIdArrayPointer;
+static int g_vertexIdArraySize;
+// The following arrays are used to store a net's route
+// Hierarchy:
+// Net ID -> Segment ID -> Vertex ID
+static int * g_netRouteArrayPointer;
+static int g_netRouteArraySize;
+static int * g_segmentIdArrayPointer;
+static int g_segmentIdArraySize;
+static int * g_segmentVertexArrayPointer;
+static int g_segmentVertexArraySize;
 
 // Architecture side length
 static int g_sideLength;
@@ -57,7 +65,7 @@ static int g_sideLength;
 #define NET_CONNECTED           1
 #define NET_UNCONNECTED         2
 
-void GraphWalk_Test(graphData_t graph, netData_t nets)
+void GraphWalk_Test(int priority, graphData_t graph, netData_t nets)
 {
     int arraySize, value;
     
@@ -98,14 +106,14 @@ void GraphWalk_Test(graphData_t graph, netData_t nets)
     printf("\n");
 }
 
-void GraphWalk_DebugPrint(int priority, const char *format, ...)
+void GraphWalk_DebugPrint(int priority, const char * format, ... )
 {
     va_list args;
     va_start(args, format);
     
     if(priority >= g_debugPriority)
     {
-        printf(format, args);
+        vprintf(format, args);
     }
     
     va_end(args);
@@ -115,7 +123,7 @@ void GraphWalk_DebugPrintGrid(int priority, char * string, int * gridArray)
 {
     if(priority >= g_debugPriority)
     {
-        printf("%s:\n", string);
+        printf("%s\n", string);
         for(int row = 0; row < g_sideLength; row++)
         {
             for(int col = 0; col < g_sideLength; col++)
@@ -136,6 +144,38 @@ void GraphWalk_DebugPrintGrid(int priority, char * string, int * gridArray)
     }
 }
 
+void GraphWalk_DebugPrintRoutes(int priority)
+{
+    if(priority >= g_debugPriority)
+    {
+        printf("Route summary:\n");
+        
+        printf("Net route array: ");
+        for(int i = 0; i < g_netRouteArraySize; i++)
+        {
+            int value = g_netRouteArrayPointer[i];
+            printf("%i ", value);
+        }
+        printf("\n");
+        
+        printf("Net segment ID array: ");
+        for(int i = 0; i < g_segmentIdArraySize; i++)
+        {
+            int value = g_segmentIdArrayPointer[i];
+            printf("%i ", value);
+        }
+        printf("\n");
+        
+        printf("Net segment vertex array: ");
+        for(int i = 0; i < g_segmentVertexArraySize; i++)
+        {
+            int value = g_segmentVertexArrayPointer[i];
+            printf("%i ", value);
+        }
+        printf("\n");
+    }
+}
+
 void GraphWalk_InitWalkData(graphData_t graph, netData_t nets)
 {
     g_vertexArray = graph.vertexArrayPointer;
@@ -143,10 +183,10 @@ void GraphWalk_InitWalkData(graphData_t graph, netData_t nets)
     g_vertexArraySize = graph.vertexArraySize;
     g_edgeArraySize = graph.edgeArraySize;
     
-    g_netIdArrayPointer = nets.netIdArrayPointer;
-    g_netVertexArrayPointer = nets.netVertexArrayPointer;
-    g_netIdArraySize = nets.netIdArraySize;
-    g_netVertexArraySize = nets.netVertexArraySize;
+    g_netVertexesArrayPointer = nets.netIdArrayPointer;
+    g_vertexIdArrayPointer = nets.netVertexArrayPointer;
+    g_netVertexesArraySize = nets.netIdArraySize;
+    g_vertexIdArraySize = nets.netVertexArraySize;
     
     g_traceArray = malloc(graph.edgeArraySize * sizeof(int));
     g_maskArray = malloc(graph.vertexArraySize * sizeof(int));
@@ -214,7 +254,7 @@ void GraphWalk_InitNetStatus(void)
 {
     // Init net status array to NET_UNCONNECTED
     // We'll have to visit and connect the same about of connects as in netVertexArraySize, so use that for init
-    for(int i = 0; i < g_netVertexArraySize; i++)
+    for(int i = 0; i < g_vertexIdArraySize; i++)
     {
         g_netStatusArray[i] = NET_UNCONNECTED;
     }
@@ -232,24 +272,24 @@ void GraphWalk_RouteNet(int netId)
     // Index of net ID array points to the first node of a net
     // Index + 1 of net ID array points to the first node of the next net
     // Determine the start and end of the net vertex array to index for this net ID
-    netVertexIndexStart = g_netIdArrayPointer[netId];
+    netVertexIndexStart = g_netVertexesArrayPointer[netId];
     // Check if we're at the end of the array
-    if ((netId + 1) < (g_netIdArraySize))
+    if ((netId + 1) < (g_netVertexesArraySize))
     {
         // We're still within bounds, end is next index
-        netVertexIndexEnd = g_netIdArrayPointer[netId + 1];
+        netVertexIndexEnd = g_netVertexesArrayPointer[netId + 1];
     }
     else
     {
         // We've reached the end, the size is the end
-        netVertexIndexEnd = g_netVertexArraySize;
+        netVertexIndexEnd = g_vertexIdArraySize;
     }
     GraphWalk_DebugPrint(PRIO_NORM, "Net ID %d start and end index: %d %d\n", netId, netVertexIndexStart, netVertexIndexEnd);
     
     // Update trace array with current net vertexes
     for(int vertexIndex = netVertexIndexStart; vertexIndex < netVertexIndexEnd; vertexIndex++)
     {
-        g_traceArray[g_netVertexArrayPointer[vertexIndex]] = VERTEX_NET_UNCONN;
+        g_traceArray[g_vertexIdArrayPointer[vertexIndex]] = VERTEX_NET_UNCONN;
     }
     
     // Init the mask
@@ -262,7 +302,7 @@ void GraphWalk_RouteNet(int netId)
         GraphWalk_InitTrace();
         // Pick a random vertex index to start routing from
         randNetVertexIndex = (rand() % (netVertexIndexEnd - netVertexIndexStart)) + netVertexIndexStart;
-        currentSourceVertex = g_netVertexArrayPointer[randNetVertexIndex];
+        currentSourceVertex = g_vertexIdArrayPointer[randNetVertexIndex];
         // Check if this one has been connected already
         if(g_netStatusArray[randNetVertexIndex] == NET_CONNECTED)
         {
@@ -342,13 +382,13 @@ void GraphWalk_RouteNet(int netId)
                             GraphWalk_DebugPrint(PRIO_NORM, "Found sink @ %d!\n", nextVertex);
                             // We're going to trace back from here
                             currentSinkVertex = nextVertex;
-                            // Update blockage array
+                            // Update the trace array with connected vertexes
                             g_traceArray[currentSinkVertex] = VERTEX_NET_CONN;
                             g_traceArray[currentSourceVertex] = VERTEX_NET_CONN;
                             // Our sink is now connected, mark it as such
                             for(int vertexIndex = netVertexIndexStart; vertexIndex < netVertexIndexEnd; vertexIndex++)
                             {
-                                if(g_netVertexArrayPointer[vertexIndex] == currentSinkVertex)
+                                if(g_vertexIdArrayPointer[vertexIndex] == currentSinkVertex)
                                 {
                                     g_netStatusArray[vertexIndex] = NET_CONNECTED;
                                 }
@@ -382,8 +422,12 @@ void GraphWalk_RouteNet(int netId)
             currentExpansion++;
         } /* Wavefront expansion */
         
+        // We've got a new segment
+        GraphWalk_NewSegment();
+        
         /* Traceback */
         GraphWalk_DebugPrint(PRIO_NORM, "Tracing back from %d\n", currentSinkVertex);
+        GraphWalk_SegmentAppend(currentSinkVertex);
         bool foundSource = false;
         do
         {
@@ -409,6 +453,7 @@ void GraphWalk_RouteNet(int netId)
                 if(nextVertex == currentSourceVertex)
                 {
                     GraphWalk_DebugPrint(PRIO_NORM, "Found the original source @ %d\n", nextVertex);
+                    GraphWalk_SegmentAppend(nextVertex);
                     foundSource = true;
                     break;
                 }
@@ -416,6 +461,7 @@ void GraphWalk_RouteNet(int netId)
                 if(g_traceArray[nextVertex] == currentExpansion - 1)
                 {
                     GraphWalk_DebugPrint(PRIO_NORM, "Found a way back through %d\n", nextVertex);
+                    GraphWalk_SegmentAppend(nextVertex);
                     g_weightArray[nextVertex]++;
                     currentExpansion--;
                     currentSinkVertex = nextVertex;
@@ -428,6 +474,56 @@ void GraphWalk_RouteNet(int netId)
     while(GraphWalk_IsNetUnconnected(netVertexIndexStart, netVertexIndexEnd, g_netStatusArray));
     
     GraphWalk_DebugPrintGrid(PRIO_HIGH, "Final weights:", g_weightArray);
+}
+
+void GraphWalk_InitNetRoutes(void)
+{
+    // Init all net routes
+    // Our route is initially completely empty
+    g_netRouteArrayPointer = NULL;
+    g_netRouteArraySize = 0;
+    g_segmentIdArrayPointer = NULL;
+    g_segmentIdArraySize = 0;
+    g_segmentVertexArrayPointer = NULL;
+    g_segmentVertexArraySize = 0;
+}
+
+void GraphWalk_FreeNetRoutes(void)
+{
+    free(g_netRouteArrayPointer);
+    free(g_netRouteArrayPointer);
+    free(g_segmentIdArrayPointer);
+    free(g_segmentVertexArrayPointer);
+}
+
+void GraphWalk_NewNetRoute(void)
+{
+    // Increment the size of the net route array
+    g_netRouteArraySize++;
+    // Reallocate memory
+    g_netRouteArrayPointer = realloc(g_netRouteArrayPointer, g_netRouteArraySize * sizeof(int));
+    // Add the index
+    g_netRouteArrayPointer[g_netRouteArraySize - 1] = g_segmentIdArraySize;
+}
+
+void GraphWalk_NewSegment(void)
+{
+    // Increment the size of the segment ID array
+    g_segmentIdArraySize++;
+    // Reallocate the memory
+    g_segmentIdArrayPointer = realloc(g_segmentIdArrayPointer, g_segmentIdArraySize * sizeof(int));
+    // Add the index
+    g_segmentIdArrayPointer[g_segmentIdArraySize - 1] = g_segmentVertexArraySize;
+}
+
+void GraphWalk_SegmentAppend(int vertex)
+{
+    // Increment the size of the segment vertex array
+    g_segmentVertexArraySize++;
+    // Reallocate the memory
+    g_segmentVertexArrayPointer = realloc(g_segmentVertexArrayPointer, g_segmentVertexArraySize * sizeof(int));
+    // Add the vertex
+    g_segmentVertexArrayPointer[g_segmentVertexArraySize - 1] = vertex;
 }
 
 bool GraphWalk_IsNetUnconnected(int startIndex, int endIndex, int * netStatusArray)
