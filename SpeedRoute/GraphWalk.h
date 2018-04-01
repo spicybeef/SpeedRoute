@@ -14,7 +14,9 @@
 #include "Types.h"
 
 void GraphWalk_Test(graphData_t graph, netData_t nets);
-void GraphWalk_DebugPrintGrid(char * string, int * gridArray);
+void GraphWalk_DebugPrint(int priority, const char *format, ...);
+void GraphWalk_DebugPrintGrid(int priority, char * string, int * gridArray);
+
 void GraphWalk_InitWalkData(graphData_t graph, netData_t nets);
 void GraphWalk_FreeWalkData(graphData_t data);
 void GraphWalk_InitMask(void);

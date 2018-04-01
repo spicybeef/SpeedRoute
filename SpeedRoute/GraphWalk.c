@@ -7,6 +7,7 @@
 //
 
 #include <stdio.h>
+#include <stdarg.h>
 #include <stdlib.h>
 #include <string.h>
 #include <time.h>
@@ -14,6 +15,12 @@
 #include "GraphWalk.h"
 
 // Module scope data
+
+#define PRIO_LOW                0
+#define PRIO_NORM               1
+#define PRIO_HIGH               2
+
+static int g_debugPriority = PRIO_HIGH;
 
 // Graph walk arrays
 static int * g_traceArray;
@@ -33,6 +40,7 @@ static int * g_netVertexArrayPointer;
 static int g_netIdArraySize;
 static int g_netVertexArraySize;
 
+// Architecture side length
 static int g_sideLength;
 
 #define VERTEX_NONETYPE         -1
@@ -90,25 +98,41 @@ void GraphWalk_Test(graphData_t graph, netData_t nets)
     printf("\n");
 }
 
-void GraphWalk_DebugPrintGrid(char * string, int * gridArray)
+void GraphWalk_DebugPrint(int priority, const char *format, ...)
 {
-    printf("%s:\n", string);
-    for(int row = 0; row < g_sideLength; row++)
+    va_list args;
+    va_start(args, format);
+    
+    if(priority >= g_debugPriority)
     {
-        for(int col = 0; col < g_sideLength; col++)
+        printf(format, args);
+    }
+    
+    va_end(args);
+}
+
+void GraphWalk_DebugPrintGrid(int priority, char * string, int * gridArray)
+{
+    if(priority >= g_debugPriority)
+    {
+        printf("%s:\n", string);
+        for(int row = 0; row < g_sideLength; row++)
         {
+            for(int col = 0; col < g_sideLength; col++)
             {
-                if(gridArray[col + row * g_sideLength] == 0)
                 {
-                    printf(" . ");
-                }
-                else
-                {
-                    printf("%2i ", gridArray[col + row * g_sideLength]);
+                    if(gridArray[col + row * g_sideLength] == 0)
+                    {
+                        printf(" . ");
+                    }
+                    else
+                    {
+                        printf("%2i ", gridArray[col + row * g_sideLength]);
+                    }
                 }
             }
+            printf("\n");
         }
-        printf("\n");
     }
 }
 
@@ -220,7 +244,7 @@ void GraphWalk_RouteNet(int netId)
         // We've reached the end, the size is the end
         netVertexIndexEnd = g_netVertexArraySize;
     }
-    printf("Net ID %d start and end index: %d %d\n", netId, netVertexIndexStart, netVertexIndexEnd);
+    GraphWalk_DebugPrint(PRIO_NORM, "Net ID %d start and end index: %d %d\n", netId, netVertexIndexStart, netVertexIndexEnd);
     
     // Update trace array with current net vertexes
     for(int vertexIndex = netVertexIndexStart; vertexIndex < netVertexIndexEnd; vertexIndex++)
@@ -244,7 +268,7 @@ void GraphWalk_RouteNet(int netId)
         {
             continue;
         }
-        printf("Sourcing from %d\n", currentSourceVertex);
+        GraphWalk_DebugPrint(PRIO_NORM, "Sourcing from %d\n", currentSourceVertex);
         g_maskArray[currentSourceVertex] = MASK_VISIT;
         // This net's vertex becomes a connected source, mark it as such
         g_netStatusArray[randNetVertexIndex] = NET_CONNECTED;
@@ -282,7 +306,7 @@ void GraphWalk_RouteNet(int netId)
                     for(int edgeIndex = start; edgeIndex < end; edgeIndex++)
                     {
                         int nextVertex = g_edgeArray[edgeIndex];
-                        printf("Visiting %d\n", nextVertex);
+                        GraphWalk_DebugPrint(PRIO_NORM, "Visiting %d\n", nextVertex);
                         // Check if it's blocked
                         if(g_traceArray[nextVertex] == VERTEX_BLOCK)
                         {
@@ -315,7 +339,7 @@ void GraphWalk_RouteNet(int netId)
                                 }
                             }
                             // Stop the presses, we've found a sink
-                            printf("Found sink @ %d!\n", nextVertex);
+                            GraphWalk_DebugPrint(PRIO_NORM, "Found sink @ %d!\n", nextVertex);
                             // We're going to trace back from here
                             currentSinkVertex = nextVertex;
                             // Update blockage array
@@ -351,15 +375,15 @@ void GraphWalk_RouteNet(int netId)
             }
             
             // Print out some info
-            GraphWalk_DebugPrintGrid("Trace Array", g_traceArray);
-            GraphWalk_DebugPrintGrid("Mask Array", g_maskArray);
+            GraphWalk_DebugPrintGrid(PRIO_NORM, "Trace Array", g_traceArray);
+            GraphWalk_DebugPrintGrid(PRIO_NORM, "Mask Array", g_maskArray);
             
             // Go to the next expansion!
             currentExpansion++;
         } /* Wavefront expansion */
         
         /* Traceback */
-        printf("Tracing back from %d\n", currentSinkVertex);
+        GraphWalk_DebugPrint(PRIO_NORM, "Tracing back from %d\n", currentSinkVertex);
         bool foundSource = false;
         do
         {
@@ -384,14 +408,14 @@ void GraphWalk_RouteNet(int netId)
                 // Check if it's our source
                 if(nextVertex == currentSourceVertex)
                 {
-                    printf("Found the original source @ %d\n", nextVertex);
+                    GraphWalk_DebugPrint(PRIO_NORM, "Found the original source @ %d\n", nextVertex);
                     foundSource = true;
                     break;
                 }
                 // Check if it's a route back
                 if(g_traceArray[nextVertex] == currentExpansion - 1)
                 {
-                    printf("Found a way back through %d\n", nextVertex);
+                    GraphWalk_DebugPrint(PRIO_NORM, "Found a way back through %d\n", nextVertex);
                     g_weightArray[nextVertex]++;
                     currentExpansion--;
                     currentSinkVertex = nextVertex;
@@ -403,7 +427,7 @@ void GraphWalk_RouteNet(int netId)
     }
     while(GraphWalk_IsNetUnconnected(netVertexIndexStart, netVertexIndexEnd, g_netStatusArray));
     
-    GraphWalk_DebugPrintGrid("Final weights:", g_weightArray);
+    GraphWalk_DebugPrintGrid(PRIO_HIGH, "Final weights:", g_weightArray);
 }
 
 bool GraphWalk_IsNetUnconnected(int startIndex, int endIndex, int * netStatusArray)

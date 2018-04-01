@@ -44,17 +44,18 @@ int main(int argc, char *argv[])
 
     // Initialize the graph walker arrays
     GraphWalk_InitWalkData(graphData, netData);
-    
-    // Route nets
     // Initialize the net status array
     GraphWalk_InitNetStatus();
+    // Route nets
     // Initiailize the weight array
     GraphWalk_InitWeight();
-    for(int i = 0; i < input.nets.size(); i++)
-    {
-        // Route the nets
-        GraphWalk_RouteNet(i);
-    }
+//    for(int i = 0; i < input.nets.size(); i++)
+//    {
+//        // Route the nets
+//        GraphWalk_RouteNet(i);
+//    }
+//    // Route a single net
+    GraphWalk_RouteNet(0);
 
     // Run the graphics for the router
     Graphics graphics;
