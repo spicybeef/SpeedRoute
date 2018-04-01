@@ -47,6 +47,8 @@ int main(int argc, char *argv[])
     GraphWalk_InitArrays(graphData);
     
     // Route nets
+    // Initialize the net status array
+    GraphWalk_InitNetStatus(netData);
     for(int i = 0; i < input.nets.size(); i++)
     {
         // Route the nets
