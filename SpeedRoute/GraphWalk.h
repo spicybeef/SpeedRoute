@@ -29,6 +29,7 @@ void GraphWalk_InitNetStatus(void);
 bool GraphWalk_RouteNet(int netId);
 void GraphWalk_WavefrontVisit(void);
 void GraphWalk_UpdateTraceAndMask(void);
+void GraphWalk_TraceBack(void);
 
 void GraphWalk_UpdateBlocksFromWeight(void);
 

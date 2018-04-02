@@ -337,6 +337,7 @@ bool GraphWalk_RouteNet(int netId)
         for(;;)
         {
             // Do a wavefront visit
+            g_sinkFound = false;
             GraphWalk_WavefrontVisit();
             
             // Print out some info
@@ -382,53 +383,8 @@ bool GraphWalk_RouteNet(int netId)
         // We've got a new segment
         GraphWalk_NewSegment();
         
-        /* Traceback */
-        GraphWalk_DebugPrint(PRIO_LOW, "Tracing back from %d\n", g_currentSinkVertex);
-        GraphWalk_SegmentAppend(g_currentSinkVertex);
-        bool foundSource = false;
-        do
-        {
-            // Determine the start and end of the net vertex array to index for this net ID
-            int start = g_vertexArray[g_currentSinkVertex];
-            int end;
-            // Check if we're at the end of the array
-            if ((g_currentSinkVertex + 1) < (g_vertexArraySize))
-            {
-                // We're still within bounds, end is next index
-                end = g_vertexArray[g_currentSinkVertex + 1];
-            }
-            else
-            {
-                // We've reached the end, the size is the end
-                end = g_vertexArraySize;
-            }
-            // Now go through the vertex's edges
-            for(int edgeIndex = start; edgeIndex < end; edgeIndex++)
-            {
-                int nextVertex = g_edgeArray[edgeIndex];
-                // Check if it's our source
-                if(nextVertex == g_currentSourceVertex)
-                {
-                    GraphWalk_DebugPrint(PRIO_LOW, "Found the original source @ %d\n", nextVertex);
-                    GraphWalk_SegmentAppend(nextVertex);
-                    foundSource = true;
-                    break;
-                }
-                // Check if it's a route back
-                if(g_traceArray[nextVertex] == g_currentExpansion - 1)
-                {
-                    GraphWalk_DebugPrint(PRIO_LOW, "Found a way back through %d\n", nextVertex);
-                    GraphWalk_SegmentAppend(nextVertex);
-                    // Increment weight
-                    g_weightArray[nextVertex]++;
-                    // The following will increment the weight array and create blocks if necessary
-                    g_currentExpansion--;
-                    g_currentSinkVertex = nextVertex;
-                    break;
-                }
-            }
-        }
-        while(!foundSource); /* Traceback */
+        // Traceback
+        GraphWalk_TraceBack();
         
         // Change vertexes at capacity into blocks
         GraphWalk_UpdateBlocksFromWeight();
@@ -443,7 +399,6 @@ bool GraphWalk_RouteNet(int netId)
 
 void GraphWalk_WavefrontVisit(void)
 {
-    g_sinkFound = false;
     // Visit masked areas
     for(int vertex = 0; vertex < g_vertexArraySize; vertex++)
     {
@@ -532,6 +487,57 @@ void GraphWalk_UpdateTraceAndMask(void)
             g_maskArray[vertex] = MASK_VISIT;
         }
     }
+}
+
+void GraphWalk_TraceBack(void)
+{
+    /* Traceback */
+    GraphWalk_DebugPrint(PRIO_LOW, "Tracing back from %d\n", g_currentSinkVertex);
+    GraphWalk_SegmentAppend(g_currentSinkVertex);
+    bool foundSource = false;
+    do
+    {
+        // Determine the start and end of the net vertex array to index for this net ID
+        int start = g_vertexArray[g_currentSinkVertex];
+        int end;
+        // Check if we're at the end of the array
+        if ((g_currentSinkVertex + 1) < (g_vertexArraySize))
+        {
+            // We're still within bounds, end is next index
+            end = g_vertexArray[g_currentSinkVertex + 1];
+        }
+        else
+        {
+            // We've reached the end, the size is the end
+            end = g_vertexArraySize;
+        }
+        // Now go through the vertex's edges
+        for(int edgeIndex = start; edgeIndex < end; edgeIndex++)
+        {
+            int nextVertex = g_edgeArray[edgeIndex];
+            // Check if it's our source
+            if(nextVertex == g_currentSourceVertex)
+            {
+                GraphWalk_DebugPrint(PRIO_LOW, "Found the original source @ %d\n", nextVertex);
+                GraphWalk_SegmentAppend(nextVertex);
+                foundSource = true;
+                break;
+            }
+            // Check if it's a route back
+            if(g_traceArray[nextVertex] == g_currentExpansion - 1)
+            {
+                GraphWalk_DebugPrint(PRIO_LOW, "Found a way back through %d\n", nextVertex);
+                GraphWalk_SegmentAppend(nextVertex);
+                // Increment weight
+                g_weightArray[nextVertex]++;
+                // The following will increment the weight array and create blocks if necessary
+                g_currentExpansion--;
+                g_currentSinkVertex = nextVertex;
+                break;
+            }
+        }
+    }
+    while(!foundSource); /* Traceback */
 }
 
 void GraphWalk_UpdateBlocksFromWeight(void)
