@@ -49,7 +49,7 @@ static int * g_segmentVertexArrayPointer;
 static int g_segmentVertexArraySize;
 
 // Architecture side length
-static int g_sideLength;
+int g_sideLength;
 // Architecture channel width
 static int g_channelWidth;
 

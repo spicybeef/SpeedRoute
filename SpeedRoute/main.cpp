@@ -22,6 +22,29 @@ typedef std::chrono::high_resolution_clock Clock;
 
 static const int ARCH_PADDING = 2;
 
+void outputGrid(int * weightArray)
+{
+    std::ofstream myOutputFile("grid.csv", std::ios::out);
+    
+    for(int row = 0; row < g_sideLength; row++)
+    {
+        for(int col = 0; col < g_sideLength; col++)
+        {
+            if(weightArray[col + row * g_sideLength] == 0)
+            {
+                myOutputFile << ",";
+            }
+            else
+            {
+                myOutputFile << std::to_string(weightArray[col + row * g_sideLength]) << ",";
+            }
+        }
+        myOutputFile << std::endl;
+    }
+    
+    myOutputFile.close();
+}
+
 int main(int argc, char *argv[])
 {
     // Validate and grab program options
@@ -43,9 +66,8 @@ int main(int argc, char *argv[])
     graphData_t graphData = connectionGraph.getGraphData();
     netData_t netData = connectionGraph.getNetVectors(input.nets, input.placement);
 
-
     // Initialize the graph walker arrays
-    GraphWalk_InitWalkData(graphData, netData, 8);
+    GraphWalk_InitWalkData(graphData, netData, 5);
     // Initialize the net status array
     GraphWalk_InitNetStatus();
     
@@ -72,6 +94,7 @@ int main(int argc, char *argv[])
     if(!routeFailed)
     {
         GraphWalk_DebugPrintGrid(PRIO_NORM, const_cast<char *>("Final weights"), GraphWalk_GetWeightArray());
+        outputGrid(GraphWalk_GetWeightArray());
     }
     
     double timeInSeconds = (endTime - startTIme) / (double) CLOCKS_PER_SEC;

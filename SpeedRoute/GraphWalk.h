@@ -13,6 +13,8 @@
 
 #include "Types.h"
 
+extern int g_sideLength;
+
 void GraphWalk_Test(int priority, graphData_t graph, netData_t nets);
 void GraphWalk_DebugPrint(int priority, const char * format, ... );
 void GraphWalk_DebugPrintGrid(int priority, char * string, int * gridArray);
