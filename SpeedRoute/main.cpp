@@ -18,6 +18,8 @@ extern "C"
 #include "GraphWalk.h"
 }
 
+typedef std::chrono::high_resolution_clock Clock;
+
 static const int ARCH_PADDING = 2;
 
 int main(int argc, char *argv[])
@@ -52,6 +54,8 @@ int main(int argc, char *argv[])
     GraphWalk_InitWeight();
     // Initialize the routing arrays
     GraphWalk_InitNetRoutes();
+    clock_t startTIme = clock();
+    bool routeFailed = false;
     for(int i = 0; i < input.nets.size(); i++)
     {
         // Init a new net route
@@ -59,18 +63,24 @@ int main(int argc, char *argv[])
         // Route the nets
         if(!GraphWalk_RouteNet(i))
         {
+            routeFailed = true;
             break;
         }
     }
+    clock_t endTime = clock();
     
-    GraphWalk_DebugPrintGrid(PRIO_HIGH, const_cast<char *>("FInal weights"), GraphWalk_GetWeightArray());
+    if(!routeFailed)
+    {
+        GraphWalk_DebugPrintGrid(PRIO_NORM, const_cast<char *>("Final weights"), GraphWalk_GetWeightArray());
+    }
     
-    // Infinite loop for now
-    for(;;);
+    double timeInSeconds = (endTime - startTIme) / (double) CLOCKS_PER_SEC;
+    
+    std::cout << "Time to route: " << timeInSeconds << " s" << std::endl;
 
     // Run the graphics for the router
-    Graphics graphics;
-    graphics.run();
+//    Graphics graphics;
+//    graphics.run();
     
     return EXIT_SUCCESS;
 }

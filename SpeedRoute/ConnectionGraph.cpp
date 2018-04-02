@@ -132,7 +132,6 @@ graphData_t ConnectionGraph::getGraphData(void)
     std::cout << "Graph data:" << std::endl;
     std::cout << "Vertex size:" << data.vertexArraySize << std::endl;
     std::cout << "Edge size:" << data.edgeArraySize << std::endl;
-    std::cout << "Blockage size:" << data.blockageArraySize << std::endl;
     
     return data;
 }

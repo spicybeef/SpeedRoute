@@ -8,6 +8,9 @@
 
 #include "FileParser.hpp"
 
+// This increases the solution space to make the routing harder
+#define SPACE_ENLARGEMENT_FACTOR 1
+
 FileParser::FileParser(std::string netFilename, std::string placementFilename)
 {
     mNetFilename = netFilename;
@@ -72,8 +75,8 @@ bool FileParser::parseNetFile(void)
     stringVec = splitString(line, ' ');
     mParsedInput.numNodes = stoi(stringVec[0]);
     mParsedInput.numConnections = stoi(stringVec[1]);
-    mParsedInput.numRows = stoi(stringVec[2]);
-    mParsedInput.numCols = stoi(stringVec[3]);
+    mParsedInput.numRows = stoi(stringVec[2]) * SPACE_ENLARGEMENT_FACTOR;
+    mParsedInput.numCols = stoi(stringVec[3]) * SPACE_ENLARGEMENT_FACTOR;
     
     std::cout << "Grid size is " << mParsedInput.numRows << " rows x " << mParsedInput.numCols << " cols" << std::endl;
     std::cout << "Number of nodes is " << mParsedInput.numNodes << std::endl;
@@ -127,8 +130,8 @@ bool FileParser::parsePlacementFile(void)
         stringVec = splitString(line, ' ');
         
         // Row comes first followed by column
-        tempPos.row = stoi(stringVec[1]);
-        tempPos.col = stoi(stringVec[2]);
+        tempPos.row = stoi(stringVec[1]) * SPACE_ENLARGEMENT_FACTOR;
+        tempPos.col = stoi(stringVec[2]) * SPACE_ENLARGEMENT_FACTOR;
         
         // Push back a placement
         mParsedInput.placement.push_back(tempPos);
