@@ -56,6 +56,8 @@ static int g_channelWidth;
 // Routing variables
 static int g_currentSourceVertex;
 static int g_currentSinkVertex;
+static bool g_firstNetVertex;
+static bool g_sinkFound;
 
 #define VERTEX_NONETYPE         -1
 #define VERTEX_BLOCK            -2
@@ -279,7 +281,8 @@ bool GraphWalk_RouteNet(int netId)
     time_t t;
     // Seed random number
     srand((unsigned) time(&t));
-    bool firstNetVertex = true;
+    
+    g_firstNetVertex = true;
     
     int netVertexIndexStart, netVertexIndexEnd, randNetVertexIndex;
     
@@ -329,83 +332,11 @@ bool GraphWalk_RouteNet(int netId)
         
         /* Wavefront Expansion */
         int currentExpansion = 0;
-        bool sinkFound = false;
+        
         for(;;)
         {
-            // Visit masked areas
-            for(int vertex = 0; vertex < g_vertexArraySize; vertex++)
-            {
-                // Check if we need to visit
-                if(g_maskArray[vertex] == MASK_VISIT)
-                {
-                    // We do! Turn it into a visited box
-                    g_maskArray[vertex] = MASK_VISITED;
-                    // Index of vertex array points to entry in edge array
-                    // Index + 1 of vertex array points to the first node of the next vertex's edges
-                    // Determine the start and end of the net vertex array to index for this net ID
-                    int start = g_vertexArray[vertex];
-                    int end;
-                    // Check if we're at the end of the array
-                    if ((vertex + 1) < (g_vertexArraySize))
-                    {
-                        // We're still within bounds, end is next index
-                        end = g_vertexArray[vertex + 1];
-                    }
-                    else
-                    {
-                        // We've reached the end, the size is the end
-                        end = g_vertexArraySize;
-                    }
-                    
-                    // Now go through the vertex's edges
-                    for(int edgeIndex = start; edgeIndex < end; edgeIndex++)
-                    {
-                        int nextVertex = g_edgeArray[edgeIndex];
-                        GraphWalk_DebugPrint(PRIO_LOW, "Visiting %d\n", nextVertex);
-
-                        if(g_traceArray[nextVertex] == VERTEX_BLOCK)
-                        {
-                            // Can't go here, go to next edge
-                            continue;
-                        }
-                        // Check if it's been visited
-                        if(g_maskArray[nextVertex] == MASK_VISITED)
-                        {
-                            // Can't go back, go to next edge
-                            continue;
-                        }
-                        // Check if it's a valid connection
-                        if(g_traceArray[nextVertex] == VERTEX_NET_UNCONN || g_traceArray[nextVertex] == VERTEX_NET_CONN)
-                        {
-                            // OK, so if it's the first net vertex, we can sink to anything.
-                            // Subsequent sinks MUST be already connected to avoid unconnected graphs.
-                            // We run the risk of some ugly connections, but at least they'll lead to fully connected graphs.
-                            if(firstNetVertex)
-                            {
-                                // No longer the first vertex
-                                firstNetVertex = false;
-                            }
-                            else
-                            {
-                                // We've started connecting nets already, ignore unconnected ones
-                                if(g_traceArray[nextVertex] == VERTEX_NET_UNCONN)
-                                {
-                                    continue;
-                                }
-                            }
-                            // Stop the presses, we've found a sink
-                            sinkFound = true;
-                            GraphWalk_DebugPrint(PRIO_LOW, "Found sink @ %d!\n", nextVertex);
-                            // We're going to trace back from here
-                            g_currentSinkVertex = nextVertex;
-                            // Trigger exit from this loop by blanking out the mask array
-                            GraphWalk_InitMask();
-                            break;
-                        }
-                        g_maskArray[nextVertex] = MASK_VISIT_NEXT;
-                    }
-                }
-            }
+            // Do a wavefront visit
+            GraphWalk_WavefrontVisit();
             
             // Print out some info
             GraphWalk_DebugPrintGrid(PRIO_LOW, "Trace Array", g_traceArray);
@@ -429,7 +360,7 @@ bool GraphWalk_RouteNet(int netId)
                 continue;
             }
             // If it's empty, check if we've found a sink
-            else if(sinkFound)
+            else if(g_sinkFound)
             {
                 // Update the trace array with connected vertexes
                 g_traceArray[g_currentSinkVertex] = VERTEX_NET_CONN;
@@ -516,6 +447,85 @@ bool GraphWalk_RouteNet(int netId)
     
     // If we're here we've successfully routed
     return true;
+}
+
+void GraphWalk_WavefrontVisit(void)
+{
+    g_sinkFound = false;
+    // Visit masked areas
+    for(int vertex = 0; vertex < g_vertexArraySize; vertex++)
+    {
+        // Check if we need to visit
+        if(g_maskArray[vertex] == MASK_VISIT)
+        {
+            // We do! Turn it into a visited box
+            g_maskArray[vertex] = MASK_VISITED;
+            // Index of vertex array points to entry in edge array
+            // Index + 1 of vertex array points to the first node of the next vertex's edges
+            // Determine the start and end of the net vertex array to index for this net ID
+            int start = g_vertexArray[vertex];
+            int end;
+            // Check if we're at the end of the array
+            if ((vertex + 1) < (g_vertexArraySize))
+            {
+                // We're still within bounds, end is next index
+                end = g_vertexArray[vertex + 1];
+            }
+            else
+            {
+                // We've reached the end, the size is the end
+                end = g_vertexArraySize;
+            }
+            
+            // Now go through the vertex's edges
+            for(int edgeIndex = start; edgeIndex < end; edgeIndex++)
+            {
+                int nextVertex = g_edgeArray[edgeIndex];
+                GraphWalk_DebugPrint(PRIO_LOW, "Visiting %d\n", nextVertex);
+                
+                if(g_traceArray[nextVertex] == VERTEX_BLOCK)
+                {
+                    // Can't go here, go to next edge
+                    continue;
+                }
+                // Check if it's been visited
+                if(g_maskArray[nextVertex] == MASK_VISITED)
+                {
+                    // Can't go back, go to next edge
+                    continue;
+                }
+                // Check if it's a valid connection
+                if(g_traceArray[nextVertex] == VERTEX_NET_UNCONN || g_traceArray[nextVertex] == VERTEX_NET_CONN)
+                {
+                    // OK, so if it's the first net vertex, we can sink to anything.
+                    // Subsequent sinks MUST be already connected to avoid unconnected graphs.
+                    // We run the risk of some ugly connections, but at least they'll lead to fully connected graphs.
+                    if(g_firstNetVertex)
+                    {
+                        // No longer the first vertex
+                        g_firstNetVertex = false;
+                    }
+                    else
+                    {
+                        // We've started connecting nets already, ignore unconnected ones
+                        if(g_traceArray[nextVertex] == VERTEX_NET_UNCONN)
+                        {
+                            continue;
+                        }
+                    }
+                    // Stop the presses, we've found a sink
+                    g_sinkFound = true;
+                    GraphWalk_DebugPrint(PRIO_LOW, "Found sink @ %d!\n", nextVertex);
+                    // We're going to trace back from here
+                    g_currentSinkVertex = nextVertex;
+                    // Trigger exit from this loop by blanking out the mask array
+                    GraphWalk_InitMask();
+                    break;
+                }
+                g_maskArray[nextVertex] = MASK_VISIT_NEXT;
+            }
+        }
+    }
 }
 
 void GraphWalk_UpdateBlocksFromWeight(void)
