@@ -56,6 +56,7 @@ static int g_channelWidth;
 // Routing variables
 static int g_currentSourceVertex;
 static int g_currentSinkVertex;
+static int g_currentExpansion;
 static bool g_firstNetVertex;
 static bool g_sinkFound;
 
@@ -331,7 +332,7 @@ bool GraphWalk_RouteNet(int netId)
         g_netStatusArray[randNetVertexIndex] = NET_CONNECTED;
         
         /* Wavefront Expansion */
-        int currentExpansion = 0;
+        g_currentExpansion = 0;
         
         for(;;)
         {
@@ -345,18 +346,9 @@ bool GraphWalk_RouteNet(int netId)
             if(!GraphWalk_IsMaskArrayEmpty(g_maskArray, g_vertexArraySize))
             {
                 // Not empty yet. Change next visits to visits
-                // This is required to synchronize the work done previously, preventing visiting things we just marked for visitation
-                for(int vertex = 0; vertex < g_vertexArraySize; vertex++)
-                {
-                    // Check if we need to visit
-                    if(g_maskArray[vertex] == MASK_VISIT_NEXT)
-                    {
-                        g_traceArray[vertex] = currentExpansion + 1;
-                        g_maskArray[vertex] = MASK_VISIT;
-                    }
-                }
+                GraphWalk_UpdateTraceAndMask();
                 // Go to the next expansion!
-                currentExpansion++;
+                g_currentExpansion++;
                 continue;
             }
             // If it's empty, check if we've found a sink
@@ -375,7 +367,7 @@ bool GraphWalk_RouteNet(int netId)
                 }
                 // Sink has been found, route success
                 // Sink is equivalent to the next expansion
-                currentExpansion++;
+                g_currentExpansion++;
                 break;
             }
             // No sink found, route failed
@@ -423,14 +415,14 @@ bool GraphWalk_RouteNet(int netId)
                     break;
                 }
                 // Check if it's a route back
-                if(g_traceArray[nextVertex] == currentExpansion - 1)
+                if(g_traceArray[nextVertex] == g_currentExpansion - 1)
                 {
                     GraphWalk_DebugPrint(PRIO_LOW, "Found a way back through %d\n", nextVertex);
                     GraphWalk_SegmentAppend(nextVertex);
                     // Increment weight
                     g_weightArray[nextVertex]++;
                     // The following will increment the weight array and create blocks if necessary
-                    currentExpansion--;
+                    g_currentExpansion--;
                     g_currentSinkVertex = nextVertex;
                     break;
                 }
@@ -524,6 +516,20 @@ void GraphWalk_WavefrontVisit(void)
                 }
                 g_maskArray[nextVertex] = MASK_VISIT_NEXT;
             }
+        }
+    }
+}
+
+void GraphWalk_UpdateTraceAndMask(void)
+{
+    // This is required to synchronize the work done previously, preventing visiting things we just marked for visitation
+    for(int vertex = 0; vertex < g_vertexArraySize; vertex++)
+    {
+        // Check if we need to visit
+        if(g_maskArray[vertex] == MASK_VISIT_NEXT)
+        {
+            g_traceArray[vertex] = g_currentExpansion + 1;
+            g_maskArray[vertex] = MASK_VISIT;
         }
     }
 }
