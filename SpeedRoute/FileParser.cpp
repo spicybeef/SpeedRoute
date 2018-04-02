@@ -82,9 +82,9 @@ bool FileParser::parseNetFile(void)
     mParsedInput.numRows = stoi(stringVec[2]) * SPACE_ENLARGEMENT_FACTOR;
     mParsedInput.numCols = stoi(stringVec[3]) * SPACE_ENLARGEMENT_FACTOR;
     
-    std::cout << "Grid size is " << mParsedInput.numRows << " rows x " << mParsedInput.numCols << " cols" << std::endl;
-    std::cout << "Number of nodes is " << mParsedInput.numNodes << std::endl;
-    std::cout << "Number of connections is " << mParsedInput.numConnections << std::endl << std::endl;
+    std::cout << "Grid size is: " << mParsedInput.numRows << " rows x " << mParsedInput.numCols << " cols" << std::endl;
+    std::cout << "Number of nodes is: " << mParsedInput.numNodes << std::endl;
+    std::cout << "Number of connections is: " << mParsedInput.numConnections << std::endl << std::endl;
     
     // Get all connections
     for (i = 0; i < mParsedInput.numConnections; i++)

@@ -129,9 +129,10 @@ graphData_t ConnectionGraph::getGraphData(void)
     data.edgeArraySize = static_cast<int>(mEdgeVector.size());
     data.sideLength = mSideLength;
     
-    std::cout << "Graph data:" << std::endl;
-    std::cout << "Vertex size:" << data.vertexArraySize << std::endl;
-    std::cout << "Edge size:" << data.edgeArraySize << std::endl;
+    std::cout << "Graph data: " << std::endl;
+    std::cout << "Vertex size: " << data.vertexArraySize << std::endl;
+    std::cout << "Edge size: " << data.edgeArraySize << std::endl;
+    std::cout << std::endl;
     
     return data;
 }

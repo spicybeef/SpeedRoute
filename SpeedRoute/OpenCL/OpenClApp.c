@@ -10,6 +10,9 @@
 //
 
 #include "OpenClApp.h"
+#include "GraphWalk_WavefrontVisit.cl.h"
+
+static dispatch_queue_t g_queue;
 
 void OpenCl_PrintDeviceInfo(cl_device_id device)
 {
@@ -143,7 +146,7 @@ void OpenCl_PrintDeviceInfo(cl_device_id device)
     clGetDeviceInfo(device, CL_DEVICE_PREFERRED_VECTOR_WIDTH_LONG, sizeof(cl_uint), &vec_width[3], NULL);
     clGetDeviceInfo(device, CL_DEVICE_PREFERRED_VECTOR_WIDTH_FLOAT, sizeof(cl_uint), &vec_width[4], NULL);
     clGetDeviceInfo(device, CL_DEVICE_PREFERRED_VECTOR_WIDTH_DOUBLE, sizeof(cl_uint), &vec_width[5], NULL);
-    printf("CHAR %u, SHORT %u, INT %u, FLOAT %u, DOUBLE %u\n\n\n",
+    printf("CHAR %u, SHORT %u, INT %u, FLOAT %u, DOUBLE %u\n\n",
            vec_width[0], vec_width[1], vec_width[2], vec_width[3], vec_width[4]);
 }
 
@@ -161,6 +164,30 @@ void OpenCl_DeviceWalk(void)
     numDevices = (int)(length /sizeof(cl_device_id));
     for(i = 0; i < numDevices; i++)
     {
+        printf("Device ID %d:\n", i);
         OpenCl_PrintDeviceInfo(devices[i]);
     }
+}
+
+bool OpenCl_Init(unsigned int deviceId)
+{
+    size_t length;
+    cl_device_id devices[8];
+    cl_context context = gcl_get_context();
+    clGetContextInfo(context, CL_CONTEXT_DEVICES, sizeof(devices), devices, &length);
+    int numDevices = (int)(length /sizeof(cl_device_id));
+    
+    if(deviceId >= numDevices)
+    {
+        printf("FATAL: Invalid OpenCL device ID!\n!");
+        return false;
+    }
+    else
+    {
+        printf("Will use device ID: %d for OpenCL\n", deviceId);
+    }
+    
+    g_queue = gcl_create_dispatch_queue(CL_DEVICE_TYPE_USE_ID, devices[deviceId]);
+    
+    return true;
 }

@@ -22,6 +22,7 @@ typedef struct
     
     bool openClInfoFlag;
     bool openClEnableFlag;
+    unsigned int openClDeviceId;
     
 } programOptions_t;
 

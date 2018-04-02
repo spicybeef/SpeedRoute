@@ -13,6 +13,7 @@
 #include <time.h>
 
 #include "GraphWalk.h"
+#include "OpenClApp.h"
 
 // Module scope data
 

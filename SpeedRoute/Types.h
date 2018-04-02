@@ -12,7 +12,7 @@
 // Global types and definitions to be shared
 
 // This increases the solution space to make the routing harder
-#define SPACE_ENLARGEMENT_FACTOR    5
+#define SPACE_ENLARGEMENT_FACTOR    6
 
 // Debug priorities
 #define PRIO_LOW                    0

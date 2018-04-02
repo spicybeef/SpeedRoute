@@ -24,6 +24,7 @@ extern "C"
     
 void OpenCl_PrintDeviceInfo(cl_device_id device);
 void OpenCl_DeviceWalk(void);
+bool OpenCl_Init(unsigned int deviceId);
 
 #ifdef __cplusplus
 }

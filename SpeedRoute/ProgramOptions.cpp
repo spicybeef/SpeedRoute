@@ -10,10 +10,10 @@
 #include "OpenClApp.h"
 
 #define DEBUG_TO_BENCHMARKS_FOLDER_PATH "../../../../../benchmarks/"
-#define DEFAULT_NET_FILE "apex4.txt"
-#define DEFAULT_PLACEMENT_FILE "apex4_placement.txt"
-//#define DEFAULT_NET_FILE "test.txt"
-//#define DEFAULT_PLACEMENT_FILE "test_placement.txt"
+//#define DEFAULT_NET_FILE "apex4.txt"
+//#define DEFAULT_PLACEMENT_FILE "apex4_placement.txt"
+#define DEFAULT_NET_FILE "test.txt"
+#define DEFAULT_PLACEMENT_FILE "test_placement.txt"
 //#define DEFAULT_NET_FILE "cm138a.txt"
 //#define DEFAULT_PLACEMENT_FILE "cm138a_placement.txt"
 
@@ -30,7 +30,8 @@ ProgramOptions::ProgramOptions(int argc, char *argv[]):
         ("help", "produce help message")
         ("netfile", po::value<std::string>(&(mProgramOptions.netFilenameIn))->default_value(defaultPath + defaultNetFile), "the input net file")
         ("placementfile", po::value<std::string>(&(mProgramOptions.placementFilenameIn))->default_value(defaultPath + defaultPlacementFile), "the input placement file")
-        ("cl", po::bool_switch(&(mProgramOptions.openClEnableFlag)), "enabled the program to be accelerated by OpenCL")
+        ("clenable", po::bool_switch(&(mProgramOptions.openClEnableFlag)), "enabled the program to be accelerated by OpenCL")
+        ("cldevice", po::value<unsigned int>(&(mProgramOptions.openClDeviceId))->default_value(0), "the OpenCL device ID to use")
         ("clinfo", po::bool_switch(&(mProgramOptions.openClInfoFlag)), "displays the OpenCL device support summary");
         
         po::store(po::command_line_parser(argc, argv).
@@ -47,7 +48,6 @@ ProgramOptions::ProgramOptions(int argc, char *argv[]):
 
 void ProgramOptions::validate(void)
 {
-    std::cout << "Program options:" << std::endl;
     if (mVarMap.count("help"))
     {
         std::cout << mDesc << std::endl;
@@ -62,7 +62,7 @@ void ProgramOptions::validate(void)
     {
         std::cout << "OpenCL enabled!" << std::endl;
         OpenCl_DeviceWalk();
-        return;
+        std::cout << "Current device is: " << mProgramOptions.openClDeviceId << std::endl << std::endl;
     }
     if (mVarMap.count("netfile"))
     {

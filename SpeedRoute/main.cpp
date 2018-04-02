@@ -19,9 +19,8 @@ extern "C"
 #include "OpenClApp.h"
 }
 
-typedef std::chrono::high_resolution_clock Clock;
-
 static const int ARCH_PADDING = 2;
+static int g_sideLength;
 
 void outputGrid(int * weightArray)
 {
@@ -67,8 +66,11 @@ int main(int argc, char *argv[])
     graphData_t graphData = connectionGraph.getGraphData();
     netData_t netData = connectionGraph.getNetVectors(input.nets, input.placement);
 
+    // Update arch side length
+    g_sideLength = graphData.sideLength;
+    
     // Initialize the graph walker arrays
-    GraphWalk_InitWalkData(graphData, netData, 5);
+    GraphWalk_InitWalkData(graphData, netData, 8);
     // Initialize the net status array
     GraphWalk_InitNetStatus();
     
@@ -77,6 +79,7 @@ int main(int argc, char *argv[])
     GraphWalk_InitWeight();
     // Initialize the routing arrays
     GraphWalk_InitNetRoutes();
+    // Record the start time
     clock_t startTIme = clock();
     bool routeFailed = false;
     for(int i = 0; i < input.nets.size(); i++)
@@ -90,6 +93,7 @@ int main(int argc, char *argv[])
             break;
         }
     }
+    // Record the end time
     clock_t endTime = clock();
     
     if(!routeFailed)
