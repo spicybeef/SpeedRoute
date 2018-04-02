@@ -8,8 +8,7 @@
 
 #include "FileParser.hpp"
 
-// This increases the solution space to make the routing harder
-#define SPACE_ENLARGEMENT_FACTOR 1
+#include "Types.h"
 
 FileParser::FileParser(std::string netFilename, std::string placementFilename)
 {

@@ -9,7 +9,15 @@
 #ifndef Types_h
 #define Types_h
 
-// Global types to be shared
+// Global types and definitions to be shared
+
+// This increases the solution space to make the routing harder
+#define SPACE_ENLARGEMENT_FACTOR    1
+
+// Debug priorities
+#define PRIO_LOW                    0
+#define PRIO_NORM                   1
+#define PRIO_HIGH                   2
 
 // Direction enum
 typedef enum

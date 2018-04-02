@@ -223,9 +223,9 @@ void GraphWalk_FreeWalkData(graphData_t data)
 void GraphWalk_InitMask(void)
 {
     // Init mask array to MASK_NO_VISIT
-    for(int i = 0; i < g_vertexArraySize; i++)
+    for(int vertex = 0; vertex < g_vertexArraySize; vertex++)
     {
-        g_maskArray[i] = MASK_NO_VISIT;
+        g_maskArray[vertex] = MASK_NO_VISIT;
     }
 }
 
@@ -398,22 +398,10 @@ bool GraphWalk_RouteNet(int netId)
                             GraphWalk_DebugPrint(PRIO_LOW, "Found sink @ %d!\n", nextVertex);
                             // We're going to trace back from here
                             g_currentSinkVertex = nextVertex;
-                            // Update the trace array with connected vertexes
-                            g_traceArray[g_currentSinkVertex] = VERTEX_NET_CONN;
-                            g_traceArray[g_currentSourceVertex] = VERTEX_NET_CONN;
-                            // Our sink is now connected, mark it as such
-                            for(int vertexIndex = netVertexIndexStart; vertexIndex < netVertexIndexEnd; vertexIndex++)
-                            {
-                                if(g_vertexIdArrayPointer[vertexIndex] == g_currentSinkVertex)
-                                {
-                                    g_netStatusArray[vertexIndex] = NET_CONNECTED;
-                                }
-                            }
                             // Trigger exit from this loop by blanking out the mask array
                             GraphWalk_InitMask();
                             break;
                         }
-                        g_traceArray[nextVertex] = currentExpansion + 1;
                         g_maskArray[nextVertex] = MASK_VISIT_NEXT;
                     }
                 }
@@ -432,6 +420,7 @@ bool GraphWalk_RouteNet(int netId)
                     // Check if we need to visit
                     if(g_maskArray[vertex] == MASK_VISIT_NEXT)
                     {
+                        g_traceArray[vertex] = currentExpansion + 1;
                         g_maskArray[vertex] = MASK_VISIT;
                     }
                 }
@@ -442,6 +431,17 @@ bool GraphWalk_RouteNet(int netId)
             // If it's empty, check if we've found a sink
             else if(sinkFound)
             {
+                // Update the trace array with connected vertexes
+                g_traceArray[g_currentSinkVertex] = VERTEX_NET_CONN;
+                g_traceArray[g_currentSourceVertex] = VERTEX_NET_CONN;
+                // Our sink is now connected, mark it as such
+                for(int vertexIndex = netVertexIndexStart; vertexIndex < netVertexIndexEnd; vertexIndex++)
+                {
+                    if(g_vertexIdArrayPointer[vertexIndex] == g_currentSinkVertex)
+                    {
+                        g_netStatusArray[vertexIndex] = NET_CONNECTED;
+                    }
+                }
                 // Sink has been found, route success
                 // Sink is equivalent to the next expansion
                 currentExpansion++;
@@ -509,13 +509,6 @@ bool GraphWalk_RouteNet(int netId)
         
         // Change vertexes at capacity into blocks
         GraphWalk_UpdateBlocksFromWeight();
-        
-        GraphWalk_DebugPrint(PRIO_LOW, "Net status: ");
-        for(int i = 0; i < (netVertexIndexEnd - netVertexIndexStart); i++)
-        {
-            GraphWalk_DebugPrint(PRIO_LOW, "%d ", g_netStatusArray[i]);
-        }
-        GraphWalk_DebugPrint(PRIO_LOW, "\n");
     }
     while(GraphWalk_IsNetUnconnected(netVertexIndexStart, netVertexIndexEnd, g_netStatusArray));
     

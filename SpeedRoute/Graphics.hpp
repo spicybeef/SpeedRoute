@@ -22,7 +22,6 @@ string ResourcePath(void)
 }
 #endif /*__APPLE__ */
 
-
 class Graphics
 {
 // Public members
