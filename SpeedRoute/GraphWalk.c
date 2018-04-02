@@ -53,6 +53,10 @@ static int g_sideLength;
 // Architecture channel width
 static int g_channelWidth;
 
+// Routing variables
+static int g_currentSourceVertex;
+static int g_currentSinkVertex;
+
 #define VERTEX_NONETYPE         -1
 #define VERTEX_BLOCK            -2
 #define VERTEX_NET_UNCONN       -3
@@ -277,7 +281,7 @@ bool GraphWalk_RouteNet(int netId)
     srand((unsigned) time(&t));
     bool firstNetVertex = true;
     
-    int netVertexIndexStart, netVertexIndexEnd, randNetVertexIndex, currentSourceVertex, currentSinkVertex;
+    int netVertexIndexStart, netVertexIndexEnd, randNetVertexIndex;
     
     // Index of net ID array points to the first node of a net
     // Index + 1 of net ID array points to the first node of the next net
@@ -312,14 +316,14 @@ bool GraphWalk_RouteNet(int netId)
         GraphWalk_InitTrace();
         // Pick a random vertex index to start routing from
         randNetVertexIndex = (rand() % (netVertexIndexEnd - netVertexIndexStart)) + netVertexIndexStart;
-        currentSourceVertex = g_vertexIdArrayPointer[randNetVertexIndex];
+        g_currentSourceVertex = g_vertexIdArrayPointer[randNetVertexIndex];
         // Check if this one has been connected already
         if(g_netStatusArray[randNetVertexIndex] == NET_CONNECTED)
         {
             continue;
         }
-        GraphWalk_DebugPrint(PRIO_LOW, "Sourcing from %d\n", currentSourceVertex);
-        g_maskArray[currentSourceVertex] = MASK_VISIT;
+        GraphWalk_DebugPrint(PRIO_LOW, "Sourcing from %d\n", g_currentSourceVertex);
+        g_maskArray[g_currentSourceVertex] = MASK_VISIT;
         // This net's vertex becomes a connected source, mark it as such
         g_netStatusArray[randNetVertexIndex] = NET_CONNECTED;
         
@@ -393,14 +397,14 @@ bool GraphWalk_RouteNet(int netId)
                             sinkFound = true;
                             GraphWalk_DebugPrint(PRIO_LOW, "Found sink @ %d!\n", nextVertex);
                             // We're going to trace back from here
-                            currentSinkVertex = nextVertex;
+                            g_currentSinkVertex = nextVertex;
                             // Update the trace array with connected vertexes
-                            g_traceArray[currentSinkVertex] = VERTEX_NET_CONN;
-                            g_traceArray[currentSourceVertex] = VERTEX_NET_CONN;
+                            g_traceArray[g_currentSinkVertex] = VERTEX_NET_CONN;
+                            g_traceArray[g_currentSourceVertex] = VERTEX_NET_CONN;
                             // Our sink is now connected, mark it as such
                             for(int vertexIndex = netVertexIndexStart; vertexIndex < netVertexIndexEnd; vertexIndex++)
                             {
-                                if(g_vertexIdArrayPointer[vertexIndex] == currentSinkVertex)
+                                if(g_vertexIdArrayPointer[vertexIndex] == g_currentSinkVertex)
                                 {
                                     g_netStatusArray[vertexIndex] = NET_CONNECTED;
                                 }
@@ -456,19 +460,19 @@ bool GraphWalk_RouteNet(int netId)
         GraphWalk_NewSegment();
         
         /* Traceback */
-        GraphWalk_DebugPrint(PRIO_LOW, "Tracing back from %d\n", currentSinkVertex);
-        GraphWalk_SegmentAppend(currentSinkVertex);
+        GraphWalk_DebugPrint(PRIO_LOW, "Tracing back from %d\n", g_currentSinkVertex);
+        GraphWalk_SegmentAppend(g_currentSinkVertex);
         bool foundSource = false;
         do
         {
             // Determine the start and end of the net vertex array to index for this net ID
-            int start = g_vertexArray[currentSinkVertex];
+            int start = g_vertexArray[g_currentSinkVertex];
             int end;
             // Check if we're at the end of the array
-            if ((currentSinkVertex + 1) < (g_vertexArraySize))
+            if ((g_currentSinkVertex + 1) < (g_vertexArraySize))
             {
                 // We're still within bounds, end is next index
-                end = g_vertexArray[currentSinkVertex + 1];
+                end = g_vertexArray[g_currentSinkVertex + 1];
             }
             else
             {
@@ -480,7 +484,7 @@ bool GraphWalk_RouteNet(int netId)
             {
                 int nextVertex = g_edgeArray[edgeIndex];
                 // Check if it's our source
-                if(nextVertex == currentSourceVertex)
+                if(nextVertex == g_currentSourceVertex)
                 {
                     GraphWalk_DebugPrint(PRIO_LOW, "Found the original source @ %d\n", nextVertex);
                     GraphWalk_SegmentAppend(nextVertex);
@@ -496,7 +500,7 @@ bool GraphWalk_RouteNet(int netId)
                     g_weightArray[nextVertex]++;
                     // The following will increment the weight array and create blocks if necessary
                     currentExpansion--;
-                    currentSinkVertex = nextVertex;
+                    g_currentSinkVertex = nextVertex;
                     break;
                 }
             }
