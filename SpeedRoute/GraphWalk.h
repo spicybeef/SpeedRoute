@@ -23,7 +23,7 @@ void GraphWalk_DebugPrint(int priority, const char * format, ... );
 void GraphWalk_DebugPrintGrid(int priority, char * string, int * gridArray);
 void GraphWalk_DebugPrintRoutes(int priority);
 
-void GraphWalk_InitWalkData(graphData_t graph, netData_t nets);
+void GraphWalk_InitWalkData(graphData_t graph, netData_t nets, int channelWidth);
 void GraphWalk_FreeWalkData(graphData_t data);
 
 void GraphWalk_InitMask(void);
@@ -31,7 +31,9 @@ void GraphWalk_InitTrace(void);
 void GraphWalk_InitWeight(void);
 void GraphWalk_InitNetStatus(void);
 
-void GraphWalk_RouteNet(int netId);
+bool GraphWalk_RouteNet(int netId);
+
+void GraphWalk_UpdateBlocksFromWeight(void);
 
 void GraphWalk_InitNetRoutes(void);
 void GraphWalk_FreeNetRoutes(void);
@@ -41,5 +43,7 @@ void GraphWalk_SegmentAppend(int vertex);
 
 bool GraphWalk_IsNetUnconnected(int startIndex, int endIndex, int * netStatusArray);
 bool GraphWalk_IsMaskArrayEmpty(int * maskArray, int maskArraySize);
+
+int * GraphWalk_GetWeightArray(void);
     
 #endif /* GraphWalk_h */
