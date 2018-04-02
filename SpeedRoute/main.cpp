@@ -16,6 +16,7 @@
 extern "C"
 {
 #include "GraphWalk.h"
+#include "OpenClApp.h"
 }
 
 typedef std::chrono::high_resolution_clock Clock;

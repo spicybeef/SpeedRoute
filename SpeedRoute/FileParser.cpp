@@ -14,6 +14,10 @@ FileParser::FileParser(std::string netFilename, std::string placementFilename)
 {
     mNetFilename = netFilename;
     mPlacementFilename = placementFilename;
+    if(SPACE_ENLARGEMENT_FACTOR > 1)
+    {
+        std::cout << "Warning, space enlargement factor is greater than 1! (" << SPACE_ENLARGEMENT_FACTOR << ")" << std::endl << std::endl;
+    }
 }
 
 FileParser::~FileParser(void)
@@ -59,6 +63,7 @@ bool FileParser::parseNetFile(void)
     std::ifstream inputFile(mNetFilename, std::ios::in);
     
     // Check if file was opened properly
+    std::cout << "Parsing net file..." << std::endl;
     if (inputFile.is_open())
     {
         std::cout << "File " << mNetFilename << " opened! Here's what's in it:" << std::endl;
@@ -79,7 +84,7 @@ bool FileParser::parseNetFile(void)
     
     std::cout << "Grid size is " << mParsedInput.numRows << " rows x " << mParsedInput.numCols << " cols" << std::endl;
     std::cout << "Number of nodes is " << mParsedInput.numNodes << std::endl;
-    std::cout << "Number of connections is " << mParsedInput.numConnections << std::endl;
+    std::cout << "Number of connections is " << mParsedInput.numConnections << std::endl << std::endl;
     
     // Get all connections
     for (i = 0; i < mParsedInput.numConnections; i++)
@@ -112,6 +117,7 @@ bool FileParser::parsePlacementFile(void)
     std::ifstream inputFile(mPlacementFilename, std::ios::in);
     
     // Check if file was opened properly
+    std::cout << "Parsing placement file..." << std::endl;
     if (inputFile.is_open())
     {
         std::cout << "File " << mPlacementFilename << " opened!" << std::endl;
@@ -135,7 +141,7 @@ bool FileParser::parsePlacementFile(void)
         // Push back a placement
         mParsedInput.placement.push_back(tempPos);
     }
-    
+    std::cout << std::endl;
     inputFile.close();
     
     return true;

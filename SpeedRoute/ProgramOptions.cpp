@@ -30,7 +30,8 @@ ProgramOptions::ProgramOptions(int argc, char *argv[]):
         ("help", "produce help message")
         ("netfile", po::value<std::string>(&(mProgramOptions.netFilenameIn))->default_value(defaultPath + defaultNetFile), "the input net file")
         ("placementfile", po::value<std::string>(&(mProgramOptions.placementFilenameIn))->default_value(defaultPath + defaultPlacementFile), "the input placement file")
-        ("openclinfo", po::bool_switch(&(mProgramOptions.openClInfoFlag)), "displays the OpenCL device support summary");
+        ("cl", po::bool_switch(&(mProgramOptions.openClEnableFlag)), "enabled the program to be accelerated by OpenCL")
+        ("clinfo", po::bool_switch(&(mProgramOptions.openClInfoFlag)), "displays the OpenCL device support summary");
         
         po::store(po::command_line_parser(argc, argv).
                   options(mDesc).positional(mPosOptDesc).run(), mVarMap);
@@ -46,6 +47,7 @@ ProgramOptions::ProgramOptions(int argc, char *argv[]):
 
 void ProgramOptions::validate(void)
 {
+    std::cout << "Program options:" << std::endl;
     if (mVarMap.count("help"))
     {
         std::cout << mDesc << std::endl;
@@ -53,6 +55,12 @@ void ProgramOptions::validate(void)
     }
     if (mProgramOptions.openClInfoFlag)
     {
+        OpenCl_DeviceWalk();
+        return;
+    }
+    if (mProgramOptions.openClEnableFlag)
+    {
+        std::cout << "OpenCL enabled!" << std::endl;
         OpenCl_DeviceWalk();
         return;
     }
@@ -66,6 +74,7 @@ void ProgramOptions::validate(void)
         std::cout << "Placement file: "
         << mVarMap["placementfile"].as<std::string>() << std::endl;
     }
+    std::cout << std::endl;
 }
 
 programOptions_t ProgramOptions::getOptions(void)

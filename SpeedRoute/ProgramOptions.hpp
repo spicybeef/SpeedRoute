@@ -21,6 +21,7 @@ typedef struct
     std::string placementFilenameIn;
     
     bool openClInfoFlag;
+    bool openClEnableFlag;
     
 } programOptions_t;
 
