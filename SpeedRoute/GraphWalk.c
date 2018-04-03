@@ -226,6 +226,7 @@ void GraphWalk_FreeWalkData(graphData_t data)
 // Hopefully the compiler is smart enough to turn this into the proper memset
 void GraphWalk_InitMask(void)
 {
+    GraphWalk_DebugPrint(PRIO_LOW, "Initing mask...\n");
     // Init mask array to MASK_NO_VISIT
     for(int vertex = 0; vertex < g_vertexArraySize; vertex++)
     {
@@ -340,6 +341,10 @@ bool GraphWalk_RouteNet(bool openCl, int netId)
             // Do a wavefront visit
             g_sinkFound = false;
             
+            GraphWalk_DebugPrint(PRIO_LOW, "Arrays before wavefront visit:\n");
+            GraphWalk_DebugPrintGrid(PRIO_LOW, "Trace Array", g_traceArray);
+            GraphWalk_DebugPrintGrid(PRIO_LOW, "Mask Array", g_maskArray);
+            
             if(openCl)
             {
                 GraphWalk_WavefrontVisit_Cl();
@@ -353,17 +358,12 @@ bool GraphWalk_RouteNet(bool openCl, int netId)
             GraphWalk_DebugPrintGrid(PRIO_LOW, "Trace Array", g_traceArray);
             GraphWalk_DebugPrintGrid(PRIO_LOW, "Mask Array", g_maskArray);
             
-            if(!GraphWalk_IsMaskArrayEmpty(g_maskArray, g_vertexArraySize))
-            {
-                // Not empty yet. Change next visits to visits
-                GraphWalk_UpdateTraceAndMask();
-                // Go to the next expansion!
-                g_currentExpansion++;
-                continue;
-            }
             // If it's empty, check if we've found a sink
-            else if(g_sinkFound)
+            if(g_sinkFound)
             {
+                // Init the mask, we're done routing
+                GraphWalk_InitMask();
+                // If we're the first vertex
                 if(g_firstNetVertex)
                 {
                     // No longer the first vertex
@@ -385,6 +385,14 @@ bool GraphWalk_RouteNet(bool openCl, int netId)
                 g_currentExpansion++;
                 break;
             }
+            else if(!GraphWalk_IsMaskArrayEmpty(g_maskArray, g_vertexArraySize))
+            {
+                // Not empty yet. Change next visits to visits
+                GraphWalk_UpdateTraceAndMask();
+                // Go to the next expansion!
+                g_currentExpansion++;
+                continue;
+            }
             // No sink found, route failed
             else
             {
@@ -405,7 +413,7 @@ bool GraphWalk_RouteNet(bool openCl, int netId)
     }
     while(GraphWalk_IsNetUnconnected(netVertexIndexStart, netVertexIndexEnd, g_netStatusArray));
     
-    GraphWalk_DebugPrintGrid(PRIO_NORM, "Weights after routing net ID %d", g_weightArray);
+    GraphWalk_DebugPrintGrid(PRIO_NORM, "Weights after routing net ID %d\n", g_weightArray);
     
     // If we're here we've successfully routed
     return true;
@@ -474,8 +482,6 @@ void GraphWalk_WavefrontVisit(void)
                     GraphWalk_DebugPrint(PRIO_LOW, "Found sink @ %d!\n", nextVertex);
                     // We're going to trace back from here
                     g_currentSinkVertex = nextVertex;
-                    // Trigger exit from this loop by blanking out the mask array
-                    GraphWalk_InitMask();
                     break;
                 }
                 g_maskArray[nextVertex] = MASK_VISIT_NEXT;
@@ -487,22 +493,29 @@ void GraphWalk_WavefrontVisit(void)
 void GraphWalk_WavefrontVisit_Cl(void)
 {
     int sinkVertex;
-    bool sinkFound;
+    bool sinkFound = false;
+    // Allocate some memory on the device
+    OpenCl_GraphWalk_InitWavefrontData(g_vertexArraySize);
     // Transfer relevant data to the device
     GraphWalk_DebugPrint(PRIO_LOW, "OpenCL: Copying wavefront data\n");
     OpenCl_GraphWalk_SetWavefrontData(g_maskArray, g_traceArray, g_vertexArraySize);
+    GraphWalk_DebugPrintGrid(PRIO_LOW, "Mask Array", g_maskArray);
     // Run the kernel (this function is blocking)
     GraphWalk_DebugPrint(PRIO_LOW, "OpenCL: Running wavefront kernel\n");
     OpenCl_GraphWalk_WavefrontVisit(g_firstNetVertex, g_vertexArraySize);
+    GraphWalk_DebugPrintGrid(PRIO_LOW, "Mask Array", g_maskArray);
     // Get the data back
     GraphWalk_DebugPrint(PRIO_LOW, "OpenCL: Getting wavefront data\n");
     OpenCl_GraphWalk_GetWavefrontData(g_maskArray, g_vertexArraySize, &sinkFound, &sinkVertex);
+    GraphWalk_DebugPrintGrid(PRIO_LOW, "Mask Array", g_maskArray);
+    // Free memory on the device
+    OpenCl_GraphWalk_FreeWavefrontData();
     
     if(sinkFound)
     {
         g_sinkFound = true;
         g_currentSinkVertex = sinkVertex;
-        GraphWalk_DebugPrint(PRIO_LOW, "OpenCL: Found sink @ %d", sinkVertex);
+        GraphWalk_DebugPrint(PRIO_LOW, "OpenCL: Found sink @ %d\n", sinkVertex);
     }
 }
 

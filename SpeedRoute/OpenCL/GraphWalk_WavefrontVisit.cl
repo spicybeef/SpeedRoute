@@ -74,7 +74,7 @@ kernel void GraphWalk_WavefrontVisit(
                 // OK, so if it's the first net vertex, we can sink to anything.
                 // Subsequent sinks MUST be already connected to avoid unconnected graphs.
                 // We run the risk of some ugly connections, but at least they'll lead to fully connected graphs.
-                if(firstNetVertex)
+                if(!firstNetVertex)
                 {
                     // We've started connecting nets already, ignore unconnected ones
                     if(traceArrayIn[nextVertex] == VERTEX_NET_UNCONN)
@@ -83,9 +83,9 @@ kernel void GraphWalk_WavefrontVisit(
                     }
                 }
                 // Stop the presses, we've found a sink
-                *sinkFoundOut = 1;
+                (*sinkFoundOut) = 1;
                 // We're going to trace back from here
-                *sinkVertexOut = nextVertex;
+                (*sinkVertexOut) = nextVertex;
                 break;
             }
             maskArrayOut[nextVertex] = MASK_VISIT_NEXT;

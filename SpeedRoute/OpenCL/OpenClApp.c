@@ -225,6 +225,18 @@ void OpenCl_GraphWalk_InitWavefrontData(int vertexArraySize)
     d_sinkVertexOut = gcl_malloc(sizeof(cl_int), NULL, CL_MEM_WRITE_ONLY);
 }
 
+void OpenCl_GraphWalk_FreeWavefrontData(void)
+{
+    // Input and output wavefront arrays
+    gcl_free(d_maskArrayIn);
+    gcl_free(d_maskArrayOut);
+    gcl_free(d_traceArrayIn);
+    gcl_free(d_traceArrayOut);
+    // Output wavefront data
+    gcl_free(d_sinkFoundOut);
+    gcl_free(d_sinkVertexOut);
+}
+
 void OpenCl_GraphWalk_SetWavefrontData(int * maskArray, int * traceArray, int vertexArraySize)
 {
     dispatch_sync(g_queue, ^{
@@ -238,17 +250,24 @@ void OpenCl_GraphWalk_SetWavefrontData(int * maskArray, int * traceArray, int ve
 void OpenCl_GraphWalk_GetWavefrontData(int * maskArray, int vertexArraySize, bool * sinkFound, int * sinkVertexId)
 {
     int sinkFoundInt;
+    int * sinkFoundIntPointer = &sinkFoundInt;
+    
     dispatch_sync(g_queue, ^{
         // Copy mask array
         gcl_memcpy(maskArray, d_maskArrayOut, sizeof(cl_int) * vertexArraySize);
         // Copy the sinkFound flag
-        gcl_memcpy(&sinkFoundInt, d_sinkFoundOut, sizeof(cl_int));
-    });
-    // If we found a sink, also copy the vertex ID of the sink
-    if(sinkFoundInt)
-    {
+        gcl_memcpy(sinkFoundIntPointer, d_sinkFoundOut, sizeof(cl_int));
+        // Copy the sink vertex ID regardless
         gcl_memcpy(sinkVertexId, d_sinkVertexOut, sizeof(cl_int));
+    });
+    
+    if(sinkFoundInt == 1)
+    {
+        *sinkFound = true;
     }
+    
+//    printf("OpenCL: sinkFoundInt: %d\n", sinkFoundInt);
+//    printf("OpenCL: sinkVertexId: %d\n", *sinkVertexId);
 }
 
 void OpenCl_GraphWalk_WavefrontVisit(bool firstNetVertex, int vertexArraySize)
@@ -292,7 +311,7 @@ void OpenCl_GraphWalk_WavefrontVisit(bool firstNetVertex, int vertexArraySize)
                                         (cl_int*)d_sinkVertexOut,
                                         firstNetVertexInt,
                                         vertexArraySize);
-        
+
         // Okay -- signal the dispatch semaphore so the host knows
         // it can continue.
         dispatch_semaphore_signal(dsema);
