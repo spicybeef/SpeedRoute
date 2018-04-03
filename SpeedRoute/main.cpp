@@ -98,7 +98,7 @@ int main(int argc, char *argv[])
     // Record start time
     auto start = std::chrono::high_resolution_clock::now();
     bool routeFailed = false;
-    for(int i = 0; i < 1; i++)//input.nets.size(); i++)
+    for(int i = 0; i < input.nets.size(); i++)
     {
         GraphWalk_DebugPrint(PRIO_HIGH, "Routing net: %d of %d\n", i, input.nets.size());
         // Init a new net route

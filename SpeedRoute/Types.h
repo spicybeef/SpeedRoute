@@ -12,12 +12,13 @@
 // Global types and definitions to be shared
 
 // This increases the solution space to make the routing harder
-#define SPACE_ENLARGEMENT_FACTOR    6
+#define SPACE_ENLARGEMENT_FACTOR    16
 
 // Debug priorities
 #define PRIO_LOW                    0
 #define PRIO_NORM                   1
 #define PRIO_HIGH                   2
+#define PRIO_DEFAULT                PRIO_NORM
 
 // Direction enum
 typedef enum

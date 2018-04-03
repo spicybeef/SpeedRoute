@@ -18,8 +18,7 @@ static dispatch_queue_t g_queue;
 static void * d_vertexArray;
 static void * d_edgeArray;
 // Input and output wavefront arrays
-static void * d_maskArrayIn;
-static void * d_maskArrayOut;
+static void * d_maskArray;
 static void * d_traceArrayIn;
 static void * d_traceArrayOut;
 // Output wavefront data
@@ -216,8 +215,7 @@ void OpenCl_GraphWalk_InitGraphArrays(int * vertexArray, int * edgeArray, int ve
 void OpenCl_GraphWalk_InitWavefrontData(int vertexArraySize)
 {
     // Input and output wavefront arrays
-    d_maskArrayIn = gcl_malloc(sizeof(cl_int) * vertexArraySize, NULL, CL_MEM_READ_ONLY);
-    d_maskArrayOut = gcl_malloc(sizeof(cl_int) * vertexArraySize, NULL, CL_MEM_WRITE_ONLY);
+    d_maskArray = gcl_malloc(sizeof(cl_int) * vertexArraySize, NULL, CL_MEM_READ_WRITE);
     d_traceArrayIn = gcl_malloc(sizeof(cl_int) * vertexArraySize, NULL, CL_MEM_READ_ONLY);
     d_traceArrayOut = gcl_malloc(sizeof(cl_int) * vertexArraySize, NULL, CL_MEM_WRITE_ONLY);
     // Output wavefront data
@@ -228,8 +226,7 @@ void OpenCl_GraphWalk_InitWavefrontData(int vertexArraySize)
 void OpenCl_GraphWalk_FreeWavefrontData(void)
 {
     // Input and output wavefront arrays
-    gcl_free(d_maskArrayIn);
-    gcl_free(d_maskArrayOut);
+    gcl_free(d_maskArray);
     gcl_free(d_traceArrayIn);
     gcl_free(d_traceArrayOut);
     // Output wavefront data
@@ -241,7 +238,7 @@ void OpenCl_GraphWalk_SetWavefrontData(int * maskArray, int * traceArray, int ve
 {
     dispatch_sync(g_queue, ^{
         // Copy mask array
-        gcl_memcpy(d_maskArrayIn, maskArray, sizeof(cl_int) * vertexArraySize);
+        gcl_memcpy(d_maskArray, maskArray, sizeof(cl_int) * vertexArraySize);
         // Copy trace array
         gcl_memcpy(d_traceArrayIn, traceArray, sizeof(cl_int) * vertexArraySize);
     });
@@ -254,7 +251,7 @@ void OpenCl_GraphWalk_GetWavefrontData(int * maskArray, int vertexArraySize, boo
     
     dispatch_sync(g_queue, ^{
         // Copy mask array
-        gcl_memcpy(maskArray, d_maskArrayOut, sizeof(cl_int) * vertexArraySize);
+        gcl_memcpy(maskArray, d_maskArray, sizeof(cl_int) * vertexArraySize);
         // Copy the sinkFound flag
         gcl_memcpy(sinkFoundIntPointer, d_sinkFoundOut, sizeof(cl_int));
         // Copy the sink vertex ID regardless
@@ -272,7 +269,7 @@ void OpenCl_GraphWalk_GetWavefrontData(int * maskArray, int vertexArraySize, boo
 
 void OpenCl_GraphWalk_WavefrontVisit(bool firstNetVertex, int vertexArraySize)
 {
-    int firstNetVertexInt;
+    cl_int firstNetVertexInt;
     
     // Change the bool to an OpenCL friendly int
     if(firstNetVertex)
@@ -291,19 +288,12 @@ void OpenCl_GraphWalk_WavefrontVisit(bool firstNetVertex, int vertexArraySize)
     // Note that this will execute asynchronously with respect
     // to the host application.
     dispatch_async(g_queue, ^{
-        // Although we could pass NULL as the workgroup size, which would tell
-        // OpenCL to pick the one it thinks is best, we can also ask
-        // OpenCL for the suggested size, and pass it ourselves.
-        size_t wgs;
-        gcl_get_kernel_block_workgroup_info(GraphWalk_WavefrontVisit_kernel,
-                                            CL_KERNEL_WORK_GROUP_SIZE,
-                                            sizeof(wgs), &wgs, NULL);
-        
+
         cl_ndrange range = {
             1,                      // We're using a 1-dimensional execution.
             {0},                    // Start at the beginning of the range.
-            {vertexArraySize + (wgs - vertexArraySize % wgs) % wgs},      // Execute 'vertexArraySize' work items.
-            {wgs}                   // Let OpenCL decide how to divide work items
+            {vertexArraySize},      // Execute 'vertexArraySize' work items.
+            {0}                     // Let OpenCL decide how to divide work items
                                     // into workgroups.
         };
         
@@ -311,8 +301,7 @@ void OpenCl_GraphWalk_WavefrontVisit(bool firstNetVertex, int vertexArraySize)
                                         &range,
                                         (cl_int*)d_vertexArray,
                                         (cl_int*)d_edgeArray,
-                                        (cl_int*)d_maskArrayIn,
-                                        (cl_int*)d_maskArrayOut,
+                                        (cl_int*)d_maskArray,
                                         (cl_int*)d_traceArrayIn,
                                         (cl_int*)d_sinkFoundOut,
                                         (cl_int*)d_sinkVertexOut,

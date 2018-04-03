@@ -19,8 +19,7 @@
 kernel void GraphWalk_WavefrontVisit(
                                      global const int * vertexArrayIn,
                                      global const int * edgeArrayIn,
-                                     global int * maskArrayIn,
-                                     global int * maskArrayOut,
+                                     global int * maskArray,
                                      global int * traceArrayIn,
                                      global int * sinkFoundOut,
                                      global int * sinkVertexOut,
@@ -28,17 +27,14 @@ kernel void GraphWalk_WavefrontVisit(
                                      int vertexArraySize)
 {
     int vertex = get_global_id(0);
-    int nextVertex;
+
     int start, end;
     
-    // Temporary variables to help vectorizer
-    int maskArrayInAtVertex = maskArrayIn[vertex];
-    
     // Check if we need to visit
-    if(maskArrayInAtVertex == MASK_VISIT)
+    if(maskArray[vertex] == MASK_VISIT)
     {
         // We do! Turn it into a visited box
-        maskArrayOut[vertex] = MASK_VISITED;
+        maskArray[vertex] = MASK_VISITED;
         // Index of vertex array points to entry in edge array
         // Index + 1 of vertex array points to the first node of the next vertex's edges
         // Determine the start and end of the net vertex array to index for this net ID
@@ -58,19 +54,7 @@ kernel void GraphWalk_WavefrontVisit(
         // Now go through the vertex's edges
         for(int edgeIndex = start; edgeIndex < end; edgeIndex++)
         {
-            nextVertex = edgeArrayIn[edgeIndex];
-            
-            if(traceArrayIn[nextVertex] == VERTEX_BLOCK)
-            {
-                // Can't go here, go to next edge
-                continue;
-            }
-            // Check if it's been visited
-            if(maskArrayIn[nextVertex] == MASK_VISITED)
-            {
-                // Can't go back, go to next edge
-                continue;
-            }
+            int nextVertex = edgeArrayIn[edgeIndex];
             // Check if it's a valid connection
             if(traceArrayIn[nextVertex] == VERTEX_NET_UNCONN || traceArrayIn[nextVertex] == VERTEX_NET_CONN)
             {
@@ -79,19 +63,41 @@ kernel void GraphWalk_WavefrontVisit(
                 // We run the risk of some ugly connections, but at least they'll lead to fully connected graphs.
                 if(!firstNetVertex)
                 {
+                    printf("Not first vertex\n");
                     // We've started connecting nets already, ignore unconnected ones
                     if(traceArrayIn[nextVertex] == VERTEX_NET_UNCONN)
                     {
                         continue;
                     }
                 }
+                else
+                {
+                    printf("First vertex\n");
+                }
+                printf("Found sink!\n");
                 // Stop the presses, we've found a sink
                 (*sinkFoundOut) = 1;
                 // We're going to trace back from here
                 (*sinkVertexOut) = nextVertex;
                 break;
             }
-            maskArrayOut[nextVertex] = MASK_VISIT_NEXT;
+            if(traceArrayIn[nextVertex] == VERTEX_BLOCK)
+            {
+                // Can't go here, go to next edge
+                continue;
+            }
+            // Check if it's been visited
+            if(maskArray[nextVertex] == MASK_VISITED)
+            {
+                // Can't go back, go to next edge
+                continue;
+            }
+            maskArray[nextVertex] = MASK_VISIT_NEXT;
         }
+    }
+    else
+    {
+        (*sinkFoundOut) = 42;
+        (*sinkVertexOut) = 42;
     }
 }

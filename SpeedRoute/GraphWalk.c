@@ -14,10 +14,11 @@
 
 #include "GraphWalk.h"
 #include "OpenClApp.h"
+#include "Types.h"
 
 // Module scope data
 
-static int g_debugPriority = PRIO_HIGH;
+static int g_debugPriority = PRIO_DEFAULT;
 
 // Graph walk arrays
 static int * g_traceArray;
@@ -142,7 +143,7 @@ void GraphWalk_DebugPrintGrid(int priority, char * string, int * gridArray)
             for(int col = 0; col < g_sideLength; col++)
             {
                 {
-                    if(gridArray[col + row * g_sideLength] == 0)
+                    if(gridArray[col + row * g_sideLength] == 0 || gridArray[col + row * g_sideLength] == -1)
                     {
                         printf(" . ");
                     }
@@ -355,6 +356,7 @@ bool GraphWalk_RouteNet(bool openCl, int netId)
             }
             
             // Print out some info
+            GraphWalk_DebugPrint(PRIO_LOW, "Arrays after wavefront visit:\n");
             GraphWalk_DebugPrintGrid(PRIO_LOW, "Trace Array", g_traceArray);
             GraphWalk_DebugPrintGrid(PRIO_LOW, "Mask Array", g_maskArray);
             
@@ -396,6 +398,8 @@ bool GraphWalk_RouteNet(bool openCl, int netId)
             // No sink found, route failed
             else
             {
+                GraphWalk_DebugPrintGrid(PRIO_LOW, "Trace Array", g_traceArray);
+                GraphWalk_DebugPrintGrid(PRIO_LOW, "Mask Array", g_maskArray);
                 GraphWalk_DebugPrint(PRIO_HIGH, "Route failed for net ID: %d!\n", netId);
                 return false;
             }
@@ -413,7 +417,7 @@ bool GraphWalk_RouteNet(bool openCl, int netId)
     }
     while(GraphWalk_IsNetUnconnected(netVertexIndexStart, netVertexIndexEnd, g_netStatusArray));
     
-    GraphWalk_DebugPrintGrid(PRIO_NORM, "Weights after routing net ID %d\n", g_weightArray);
+    GraphWalk_DebugPrintGrid(PRIO_NORM, "Weights:\n", g_weightArray);
     
     // If we're here we've successfully routed
     return true;
@@ -499,15 +503,12 @@ void GraphWalk_WavefrontVisit_Cl(void)
     // Transfer relevant data to the device
     GraphWalk_DebugPrint(PRIO_LOW, "OpenCL: Copying wavefront data\n");
     OpenCl_GraphWalk_SetWavefrontData(g_maskArray, g_traceArray, g_vertexArraySize);
-    GraphWalk_DebugPrintGrid(PRIO_LOW, "Mask Array", g_maskArray);
     // Run the kernel (this function is blocking)
     GraphWalk_DebugPrint(PRIO_LOW, "OpenCL: Running wavefront kernel\n");
     OpenCl_GraphWalk_WavefrontVisit(g_firstNetVertex, g_vertexArraySize);
-    GraphWalk_DebugPrintGrid(PRIO_LOW, "Mask Array", g_maskArray);
     // Get the data back
     GraphWalk_DebugPrint(PRIO_LOW, "OpenCL: Getting wavefront data\n");
     OpenCl_GraphWalk_GetWavefrontData(g_maskArray, g_vertexArraySize, &sinkFound, &sinkVertex);
-    GraphWalk_DebugPrintGrid(PRIO_LOW, "Mask Array", g_maskArray);
     // Free memory on the device
     OpenCl_GraphWalk_FreeWavefrontData();
     
