@@ -22,11 +22,14 @@ extern "C"
 {
 #endif /* __cplusplus */
     
-void OpenCl_PrintDeviceInfo(cl_device_id device);
-void OpenCl_DeviceWalk(void);
-bool OpenCl_Init(unsigned int deviceId);
-void OpenCl_GraphWalk_InitGraphArrays(int * vertexArray, int * edgeArray, int vertexArraySize, int edgeArraySize);
-void OpenCl_GraphWalk_InitWavefrontData(int vertexArraySize);
+    void OpenCl_PrintDeviceInfo(cl_device_id device);
+    void OpenCl_DeviceWalk(void);
+    bool OpenCl_Init(unsigned int deviceId);
+    void OpenCl_GraphWalk_InitGraphArrays(int * vertexArray, int * edgeArray, int vertexArraySize, int edgeArraySize);
+    void OpenCl_GraphWalk_InitWavefrontData(int vertexArraySize);
+    void OpenCl_GraphWalk_SetWavefrontData(int * maskArray, int * traceArray, int vertexArraySize);
+    void OpenCl_GraphWalk_GetWavefrontData(int * maskArray, int vertexArraySize, bool * sinkFound, int * sinkVertexId);
+    void OpenCl_GraphWalk_WavefrontVisit(bool firstNetVertex, int vertexArraySize);
     
 #ifdef __cplusplus
 }

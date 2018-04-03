@@ -25,8 +25,6 @@ static void * d_traceArrayOut;
 // Output wavefront data
 static void * d_sinkFoundOut;
 static void * d_sinkVertexOut;
-// Input wavefront data
-static void * d_firstNetVertexIn;
 
 void OpenCl_PrintDeviceInfo(cl_device_id device)
 {
@@ -225,8 +223,83 @@ void OpenCl_GraphWalk_InitWavefrontData(int vertexArraySize)
     // Output wavefront data
     d_sinkFoundOut = gcl_malloc(sizeof(cl_int), NULL, CL_MEM_WRITE_ONLY);
     d_sinkVertexOut = gcl_malloc(sizeof(cl_int), NULL, CL_MEM_WRITE_ONLY);
-    // Input and output first vertex
-    d_firstNetVertexIn = gcl_malloc(sizeof(cl_int), NULL, CL_MEM_READ_ONLY);
 }
 
-void OpenCl_GraphWalk_WavefrontVisit(void);
+void OpenCl_GraphWalk_SetWavefrontData(int * maskArray, int * traceArray, int vertexArraySize)
+{
+    dispatch_sync(g_queue, ^{
+        // Copy mask array
+        gcl_memcpy(d_maskArrayIn, maskArray, sizeof(cl_int) * vertexArraySize);
+        // Copy trace array
+        gcl_memcpy(d_traceArrayIn, traceArray, sizeof(cl_int) * vertexArraySize);
+    });
+}
+
+void OpenCl_GraphWalk_GetWavefrontData(int * maskArray, int vertexArraySize, bool * sinkFound, int * sinkVertexId)
+{
+    int sinkFoundInt;
+    dispatch_sync(g_queue, ^{
+        // Copy mask array
+        gcl_memcpy(maskArray, d_maskArrayOut, sizeof(cl_int) * vertexArraySize);
+        // Copy the sinkFound flag
+        gcl_memcpy(&sinkFoundInt, d_sinkFoundOut, sizeof(cl_int));
+    });
+    // If we found a sink, also copy the vertex ID of the sink
+    if(sinkFoundInt)
+    {
+        gcl_memcpy(sinkVertexId, d_sinkVertexOut, sizeof(cl_int));
+    }
+}
+
+void OpenCl_GraphWalk_WavefrontVisit(bool firstNetVertex, int vertexArraySize)
+{
+    int firstNetVertexInt;
+    
+    // Change the bool to an OpenCL friendly int
+    if(firstNetVertex)
+    {
+        firstNetVertexInt = 1;
+    }
+    else
+    {
+        firstNetVertexInt = 0;
+    }
+    
+    // We'll use a semaphore to synchronize the host and OpenCL device.
+    dispatch_semaphore_t dsema = dispatch_semaphore_create(0);
+    
+    // OpenCl_GraphWalk_GetWavefrontData should have been called by this point, ready for dispatch
+    // Note that this will execute asynchronously with respect
+    // to the host application.
+    dispatch_async(g_queue, ^{
+        
+        cl_ndrange range = {
+            1,                      // We're using a 1-dimensional execution.
+            {0},                    // Start at the beginning of the range.
+            {vertexArraySize},      // Execute 'vertexArraySize' work items.
+            {0}                     // Let OpenCL decide how to divide work items
+                                    // into workgroups.
+        };
+        
+        GraphWalk_WavefrontVisit_kernel(
+                                        &range,
+                                        (cl_int*)d_vertexArray,
+                                        (cl_int*)d_edgeArray,
+                                        (cl_int*)d_maskArrayIn,
+                                        (cl_int*)d_maskArrayOut,
+                                        (cl_int*)d_traceArrayIn,
+                                        (cl_int*)d_sinkFoundOut,
+                                        (cl_int*)d_sinkVertexOut,
+                                        firstNetVertexInt,
+                                        vertexArraySize);
+        
+        // Okay -- signal the dispatch semaphore so the host knows
+        // it can continue.
+        dispatch_semaphore_signal(dsema);
+    });
+    
+    // Here the host could do other, unrelated work while the OpenCL
+    // device works on the kernel-based computation...
+    // But now we wait for OpenCL to finish up.
+    dispatch_semaphore_wait(dsema, DISPATCH_TIME_FOREVER);
+}

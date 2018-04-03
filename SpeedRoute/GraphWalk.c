@@ -278,7 +278,7 @@ void GraphWalk_InitNetStatus(void)
     }
 }
 
-bool GraphWalk_RouteNet(int netId)
+bool GraphWalk_RouteNet(bool openCl, int netId)
 {
     time_t t;
     // Seed random number
@@ -339,7 +339,15 @@ bool GraphWalk_RouteNet(int netId)
         {
             // Do a wavefront visit
             g_sinkFound = false;
-            GraphWalk_WavefrontVisit();
+            
+            if(openCl)
+            {
+                GraphWalk_WavefrontVisit_Cl();
+            }
+            else
+            {
+                GraphWalk_WavefrontVisit();
+            }
             
             // Print out some info
             GraphWalk_DebugPrintGrid(PRIO_LOW, "Trace Array", g_traceArray);
@@ -473,6 +481,28 @@ void GraphWalk_WavefrontVisit(void)
                 g_maskArray[nextVertex] = MASK_VISIT_NEXT;
             }
         }
+    }
+}
+
+void GraphWalk_WavefrontVisit_Cl(void)
+{
+    int sinkVertex;
+    bool sinkFound;
+    // Transfer relevant data to the device
+    GraphWalk_DebugPrint(PRIO_LOW, "OpenCL: Copying wavefront data\n");
+    OpenCl_GraphWalk_SetWavefrontData(g_maskArray, g_traceArray, g_vertexArraySize);
+    // Run the kernel (this function is blocking)
+    GraphWalk_DebugPrint(PRIO_LOW, "OpenCL: Running wavefront kernel\n");
+    OpenCl_GraphWalk_WavefrontVisit(g_firstNetVertex, g_vertexArraySize);
+    // Get the data back
+    GraphWalk_DebugPrint(PRIO_LOW, "OpenCL: Getting wavefront data\n");
+    OpenCl_GraphWalk_GetWavefrontData(g_maskArray, g_vertexArraySize, &sinkFound, &sinkVertex);
+    
+    if(sinkFound)
+    {
+        g_sinkFound = true;
+        g_currentSinkVertex = sinkVertex;
+        GraphWalk_DebugPrint(PRIO_LOW, "OpenCL: Found sink @ %d", sinkVertex);
     }
 }
 

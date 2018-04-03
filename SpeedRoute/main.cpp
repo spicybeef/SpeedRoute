@@ -101,7 +101,7 @@ int main(int argc, char *argv[])
         // Init a new net route
         GraphWalk_NewNetRoute();
         // Route the nets
-        if(!GraphWalk_RouteNet(i))
+        if(!GraphWalk_RouteNet(options.openClEnableFlag, i))
         {
             routeFailed = true;
             break;

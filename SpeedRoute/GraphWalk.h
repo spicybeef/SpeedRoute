@@ -25,8 +25,9 @@ void GraphWalk_InitTrace(void);
 void GraphWalk_InitWeight(void);
 void GraphWalk_InitNetStatus(void);
 
-bool GraphWalk_RouteNet(int netId);
+bool GraphWalk_RouteNet(bool openCl, int netId);
 void GraphWalk_WavefrontVisit(void);
+void GraphWalk_WavefrontVisit_Cl(void);
 void GraphWalk_UpdateTraceAndMask(void);
 void GraphWalk_TraceBack(void);
 
