@@ -291,12 +291,19 @@ void OpenCl_GraphWalk_WavefrontVisit(bool firstNetVertex, int vertexArraySize)
     // Note that this will execute asynchronously with respect
     // to the host application.
     dispatch_async(g_queue, ^{
+        // Although we could pass NULL as the workgroup size, which would tell
+        // OpenCL to pick the one it thinks is best, we can also ask
+        // OpenCL for the suggested size, and pass it ourselves.
+        size_t wgs;
+        gcl_get_kernel_block_workgroup_info(GraphWalk_WavefrontVisit_kernel,
+                                            CL_KERNEL_WORK_GROUP_SIZE,
+                                            sizeof(wgs), &wgs, NULL);
         
         cl_ndrange range = {
             1,                      // We're using a 1-dimensional execution.
             {0},                    // Start at the beginning of the range.
-            {vertexArraySize},      // Execute 'vertexArraySize' work items.
-            {0}                     // Let OpenCL decide how to divide work items
+            {vertexArraySize + (wgs - vertexArraySize % wgs) % wgs},      // Execute 'vertexArraySize' work items.
+            {wgs}                   // Let OpenCL decide how to divide work items
                                     // into workgroups.
         };
         

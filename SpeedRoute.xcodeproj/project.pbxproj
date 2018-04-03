@@ -298,6 +298,8 @@
 				);
 				MACOSX_DEPLOYMENT_TARGET = 10.7;
 				ONLY_ACTIVE_ARCH = YES;
+				OPENCL_COMPILER_VERSION = CL1.2;
+				OPENCL_OPTIMIZATION_LEVEL = 3;
 				OTHER_LDFLAGS = (
 					"$(inherited)",
 					"$(SFML_SYSTEM)",
@@ -367,6 +369,8 @@
 					"$(inherited)",
 				);
 				MACOSX_DEPLOYMENT_TARGET = 10.7;
+				OPENCL_COMPILER_VERSION = CL1.2;
+				OPENCL_OPTIMIZATION_LEVEL = 3;
 				OTHER_LDFLAGS = (
 					"$(inherited)",
 					"$(SFML_SYSTEM)",

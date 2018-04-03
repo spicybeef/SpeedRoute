@@ -31,8 +31,11 @@ kernel void GraphWalk_WavefrontVisit(
     int nextVertex;
     int start, end;
     
+    // Temporary variables to help vectorizer
+    int maskArrayInAtVertex = maskArrayIn[vertex];
+    
     // Check if we need to visit
-    if(maskArrayIn[vertex] == MASK_VISIT)
+    if(maskArrayInAtVertex == MASK_VISIT)
     {
         // We do! Turn it into a visited box
         maskArrayOut[vertex] = MASK_VISITED;

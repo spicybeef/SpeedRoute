@@ -19,6 +19,8 @@ extern "C"
 #include "OpenClApp.h"
 }
 
+#include <chrono>
+
 static const int ARCH_PADDING = 2;
 static int g_sideLength;
 
@@ -76,6 +78,7 @@ int main(int argc, char *argv[])
                                          graphData.vertexArraySize,
                                          graphData.edgeArraySize
                                          );
+        OpenCl_GraphWalk_InitWavefrontData(graphData.vertexArraySize);
     }
     
     // Update arch side length
@@ -92,11 +95,12 @@ int main(int argc, char *argv[])
     // Initialize the routing arrays
     GraphWalk_InitNetRoutes();
     std::cout << "Routing starting..." << std::endl << std::endl;
-    // Record the start time
-    clock_t startTIme = clock();
+    // Record start time
+    auto start = std::chrono::high_resolution_clock::now();
     bool routeFailed = false;
-    for(int i = 0; i < input.nets.size(); i++)
+    for(int i = 0; i < 1; i++)//input.nets.size(); i++)
     {
+        GraphWalk_DebugPrint(PRIO_HIGH, "Routing net: %d of %d\n", i, input.nets.size());
         // Init a new net route
         GraphWalk_NewNetRoute();
         // Route the nets
@@ -106,15 +110,15 @@ int main(int argc, char *argv[])
             break;
         }
     }
-    // Record the end time
-    clock_t endTime = clock();
+    // Record end time
+    auto finish = std::chrono::high_resolution_clock::now();
+    std::chrono::duration<double> elapsed = finish - start;
     
     if(!routeFailed)
     {
         GraphWalk_DebugPrintGrid(PRIO_NORM, const_cast<char *>("Final weights"), GraphWalk_GetWeightArray());
         outputGrid(GraphWalk_GetWeightArray());
-        double timeInSeconds = (endTime - startTIme) / (double) CLOCKS_PER_SEC;
-        std::cout << "Routing finished in: " << timeInSeconds << " s" << std::endl;
+        std::cout << "Routing finished in: " << elapsed.count() << " s" << std::endl;
     }
     
     // Run the graphics for the router
