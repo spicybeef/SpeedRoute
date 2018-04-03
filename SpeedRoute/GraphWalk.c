@@ -356,6 +356,11 @@ bool GraphWalk_RouteNet(int netId)
             // If it's empty, check if we've found a sink
             else if(g_sinkFound)
             {
+                if(g_firstNetVertex)
+                {
+                    // No longer the first vertex
+                    g_firstNetVertex = false;
+                }
                 // Update the trace array with connected vertexes
                 g_traceArray[g_currentSinkVertex] = VERTEX_NET_CONN;
                 g_traceArray[g_currentSourceVertex] = VERTEX_NET_CONN;
@@ -448,12 +453,7 @@ void GraphWalk_WavefrontVisit(void)
                     // OK, so if it's the first net vertex, we can sink to anything.
                     // Subsequent sinks MUST be already connected to avoid unconnected graphs.
                     // We run the risk of some ugly connections, but at least they'll lead to fully connected graphs.
-                    if(g_firstNetVertex)
-                    {
-                        // No longer the first vertex
-                        g_firstNetVertex = false;
-                    }
-                    else
+                    if(!g_firstNetVertex)
                     {
                         // We've started connecting nets already, ignore unconnected ones
                         if(g_traceArray[nextVertex] == VERTEX_NET_UNCONN)

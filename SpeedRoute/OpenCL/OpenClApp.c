@@ -14,6 +14,20 @@
 
 static dispatch_queue_t g_queue;
 
+// Read only graph arrays
+static void * d_vertexArray;
+static void * d_edgeArray;
+// Input and output wavefront arrays
+static void * d_maskArrayIn;
+static void * d_maskArrayOut;
+static void * d_traceArrayIn;
+static void * d_traceArrayOut;
+// Output wavefront data
+static void * d_sinkFoundOut;
+static void * d_sinkVertexOut;
+// Input wavefront data
+static void * d_firstNetVertexIn;
+
 void OpenCl_PrintDeviceInfo(cl_device_id device)
 {
     char device_string[1024];
@@ -184,10 +198,35 @@ bool OpenCl_Init(unsigned int deviceId)
     }
     else
     {
-        printf("Will use device ID: %d for OpenCL\n", deviceId);
+        printf("Will use device ID %d for OpenCL\n", deviceId);
+        printf("Device information:\n");
+        OpenCl_PrintDeviceInfo(devices[deviceId]);
     }
     
     g_queue = gcl_create_dispatch_queue(CL_DEVICE_TYPE_USE_ID, devices[deviceId]);
     
     return true;
 }
+
+void OpenCl_GraphWalk_InitGraphArrays(int * vertexArray, int * edgeArray, int vertexArraySize, int edgeArraySize)
+{
+    // Graph arrays are read only
+    d_vertexArray = gcl_malloc(sizeof(cl_int) * vertexArraySize, vertexArray, CL_MEM_READ_ONLY | CL_MEM_COPY_HOST_PTR);
+    d_edgeArray = gcl_malloc(sizeof(cl_int) * edgeArraySize, edgeArray, CL_MEM_READ_ONLY | CL_MEM_COPY_HOST_PTR);
+}
+
+void OpenCl_GraphWalk_InitWavefrontData(int vertexArraySize)
+{
+    // Input and output wavefront arrays
+    d_maskArrayIn = gcl_malloc(sizeof(cl_int) * vertexArraySize, NULL, CL_MEM_READ_ONLY);
+    d_maskArrayOut = gcl_malloc(sizeof(cl_int) * vertexArraySize, NULL, CL_MEM_WRITE_ONLY);
+    d_traceArrayIn = gcl_malloc(sizeof(cl_int) * vertexArraySize, NULL, CL_MEM_READ_ONLY);
+    d_traceArrayOut = gcl_malloc(sizeof(cl_int) * vertexArraySize, NULL, CL_MEM_WRITE_ONLY);
+    // Output wavefront data
+    d_sinkFoundOut = gcl_malloc(sizeof(cl_int), NULL, CL_MEM_WRITE_ONLY);
+    d_sinkVertexOut = gcl_malloc(sizeof(cl_int), NULL, CL_MEM_WRITE_ONLY);
+    // Input and output first vertex
+    d_firstNetVertexIn = gcl_malloc(sizeof(cl_int), NULL, CL_MEM_READ_ONLY);
+}
+
+void OpenCl_GraphWalk_WavefrontVisit(void);

@@ -25,7 +25,9 @@ extern "C"
 void OpenCl_PrintDeviceInfo(cl_device_id device);
 void OpenCl_DeviceWalk(void);
 bool OpenCl_Init(unsigned int deviceId);
-
+void OpenCl_GraphWalk_InitGraphArrays(int * vertexArray, int * edgeArray, int vertexArraySize, int edgeArraySize);
+void OpenCl_GraphWalk_InitWavefrontData(int vertexArraySize);
+    
 #ifdef __cplusplus
 }
 #endif /* __cplusplus */

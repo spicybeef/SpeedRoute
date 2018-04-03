@@ -66,6 +66,19 @@ int main(int argc, char *argv[])
     graphData_t graphData = connectionGraph.getGraphData();
     netData_t netData = connectionGraph.getNetVectors(input.nets, input.placement);
 
+    // If OpenCL is being used, get a queue pointer and setup the memory structures
+    if(options.openClEnableFlag)
+    {
+        OpenCl_Init(options.openClDeviceId);
+        OpenCl_GraphWalk_InitGraphArrays(
+                                         graphData.vertexArrayPointer,
+                                         graphData.edgeArrayPointer,
+                                         graphData.vertexArraySize,
+                                         graphData.edgeArraySize
+                                         );
+        OpenCl_GraphWalk_InitWavefrontData(graphData.vertexArraySize);
+    }
+    
     // Update arch side length
     g_sideLength = graphData.sideLength;
     
@@ -79,6 +92,7 @@ int main(int argc, char *argv[])
     GraphWalk_InitWeight();
     // Initialize the routing arrays
     GraphWalk_InitNetRoutes();
+    std::cout << "Routing starting..." << std::endl << std::endl;
     // Record the start time
     clock_t startTIme = clock();
     bool routeFailed = false;
@@ -100,12 +114,10 @@ int main(int argc, char *argv[])
     {
         GraphWalk_DebugPrintGrid(PRIO_NORM, const_cast<char *>("Final weights"), GraphWalk_GetWeightArray());
         outputGrid(GraphWalk_GetWeightArray());
+        double timeInSeconds = (endTime - startTIme) / (double) CLOCKS_PER_SEC;
+        std::cout << "Routing finished in: " << timeInSeconds << " s" << std::endl;
     }
     
-    double timeInSeconds = (endTime - startTIme) / (double) CLOCKS_PER_SEC;
-    
-    std::cout << "Time to route: " << timeInSeconds << " s" << std::endl;
-
     // Run the graphics for the router
 //    Graphics graphics;
 //    graphics.run();

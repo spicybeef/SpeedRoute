@@ -17,13 +17,13 @@
 #define MASK_VISITED            3
 
 kernel void GraphWalk_WavefrontVisit(
-                                     global int * vertexArray,
-                                     global int * edgeArray,
+                                     global const int * vertexArray,
+                                     global const int * edgeArray,
                                      global int * maskArray,
                                      global int * traceArray,
                                      global int * sinkFound,
                                      global int * sinkVertex,
-                                     global int * firstNetVertex,
+                                     int firstNetVertex,
                                      int vertexArraySize
                                      )
 {
@@ -74,12 +74,7 @@ kernel void GraphWalk_WavefrontVisit(
                 // OK, so if it's the first net vertex, we can sink to anything.
                 // Subsequent sinks MUST be already connected to avoid unconnected graphs.
                 // We run the risk of some ugly connections, but at least they'll lead to fully connected graphs.
-                if(*firstNetVertex)
-                {
-                    // No longer the first vertex
-                    *firstNetVertex = 0;
-                }
-                else
+                if(firstNetVertex)
                 {
                     // We've started connecting nets already, ignore unconnected ones
                     if(traceArray[nextVertex] == VERTEX_NET_UNCONN)
