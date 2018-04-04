@@ -329,7 +329,7 @@ bool GraphWalk_RouteNet(bool openCl, int netId)
         {
             continue;
         }
-        GraphWalk_DebugPrint(PRIO_LOW, "Sourcing from %d\n", g_currentSourceVertex);
+        GraphWalk_DebugPrint(PRIO_NORM, "Sourcing from %d\n", g_currentSourceVertex);
         g_maskArray[g_currentSourceVertex] = MASK_VISIT;
         // This net's vertex becomes a connected source, mark it as such
         g_netStatusArray[randNetVertexIndex] = NET_CONNECTED;
@@ -417,7 +417,7 @@ bool GraphWalk_RouteNet(bool openCl, int netId)
     }
     while(GraphWalk_IsNetUnconnected(netVertexIndexStart, netVertexIndexEnd, g_netStatusArray));
     
-    GraphWalk_DebugPrintGrid(PRIO_NORM, "Weights:\n", g_weightArray);
+    GraphWalk_DebugPrintGrid(PRIO_LOW, "Weights:\n", g_weightArray);
     
     // If we're here we've successfully routed
     return true;
@@ -563,7 +563,7 @@ void GraphWalk_TraceBack(void)
             // Check if it's our source
             if(nextVertex == g_currentSourceVertex)
             {
-                GraphWalk_DebugPrint(PRIO_LOW, "Found the original source @ %d\n", nextVertex);
+                GraphWalk_DebugPrint(PRIO_NORM, "Found the original source @ %d\n", nextVertex);
                 GraphWalk_SegmentAppend(nextVertex);
                 foundSource = true;
                 break;
@@ -571,7 +571,7 @@ void GraphWalk_TraceBack(void)
             // Check if it's a route back
             if(g_traceArray[nextVertex] == g_currentExpansion - 1)
             {
-                GraphWalk_DebugPrint(PRIO_LOW, "Found a way back through %d\n", nextVertex);
+                GraphWalk_DebugPrint(PRIO_NORM, "Found a way back through %d\n", nextVertex);
                 GraphWalk_SegmentAppend(nextVertex);
                 // Increment weight
                 g_weightArray[nextVertex]++;

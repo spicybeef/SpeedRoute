@@ -12,13 +12,16 @@
 // Global types and definitions to be shared
 
 // This increases the solution space to make the routing harder
-#define SPACE_ENLARGEMENT_FACTOR    16
+#define SPACE_ENLARGEMENT_FACTOR    1
 
 // Debug priorities
 #define PRIO_LOW                    0
 #define PRIO_NORM                   1
 #define PRIO_HIGH                   2
-#define PRIO_DEFAULT                PRIO_NORM
+#define PRIO_DEFAULT                PRIO_HIGH
+
+// OpenCL work size
+#define GLOBAL_WORK_SIZE 1024 * 30
 
 // Direction enum
 typedef enum

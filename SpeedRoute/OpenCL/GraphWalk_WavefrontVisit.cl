@@ -63,18 +63,12 @@ kernel void GraphWalk_WavefrontVisit(
                 // We run the risk of some ugly connections, but at least they'll lead to fully connected graphs.
                 if(!firstNetVertex)
                 {
-                    printf("Not first vertex\n");
                     // We've started connecting nets already, ignore unconnected ones
                     if(traceArrayIn[nextVertex] == VERTEX_NET_UNCONN)
                     {
                         continue;
                     }
                 }
-                else
-                {
-                    printf("First vertex\n");
-                }
-                printf("Found sink!\n");
                 // Stop the presses, we've found a sink
                 (*sinkFoundOut) = 1;
                 // We're going to trace back from here
@@ -94,10 +88,5 @@ kernel void GraphWalk_WavefrontVisit(
             }
             maskArray[nextVertex] = MASK_VISIT_NEXT;
         }
-    }
-    else
-    {
-        (*sinkFoundOut) = 42;
-        (*sinkVertexOut) = 42;
     }
 }
