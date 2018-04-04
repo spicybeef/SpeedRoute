@@ -206,22 +206,6 @@ bool OpenCl_Init(unsigned int deviceId)
                       size_t wgs, preferred_wgs_multiple;
                       cl_ulong local_memsize, private_memsize;
                       
-                      // The next two calls give you information about how much
-                      // memory, local and private, is used by the kernel on this
-                      // particular device.
-                      gcl_get_kernel_block_workgroup_info(GraphWalk_WavefrontVisit_kernel,
-                                                          CL_KERNEL_LOCAL_MEM_SIZE,
-                                                          sizeof(local_memsize),
-                                                          &local_memsize, NULL);
-                      fprintf(stdout, "Local memory size: %lld\n", local_memsize);
-                      
-                      gcl_get_kernel_block_workgroup_info(GraphWalk_WavefrontVisit_kernel,
-                                                          CL_KERNEL_PRIVATE_MEM_SIZE,
-                                                          sizeof(private_memsize),
-                                                          &private_memsize, NULL);
-                      fprintf(stdout,
-                              "Private memory size: %lld\n", private_memsize);
-                      
                       // Ask OpenCL to suggest the optimal workgroup
                       // size for this kernel on this device.
                       gcl_get_kernel_block_workgroup_info(GraphWalk_WavefrontVisit_kernel,
@@ -263,10 +247,6 @@ void OpenCl_GraphWalk_InitWavefrontData(int vertexArraySize, int * maskArray, in
 
 void OpenCl_GraphWalk_FreeWavefrontData(void)
 {
-    // Input and output wavefront arrays
-//    gcl_free(d_maskArrayIn);
-//    gcl_free(d_maskArrayOut);
-//    gcl_free(d_traceArray);
     // Output wavefront data
     gcl_free(d_sinkFound);
     gcl_free(d_sinkVertex);
@@ -279,10 +259,6 @@ void OpenCl_GraphWalk_SetWavefrontData(int * maskArray, int * traceArray, int ve
     d_sinkFound = gcl_malloc(sizeof(cl_int), NULL, CL_MEM_WRITE_ONLY);
     d_sinkVertex = gcl_malloc(sizeof(cl_int), NULL, CL_MEM_WRITE_ONLY);
     dispatch_sync(g_queue, ^{
-//        // Copy mask array
-//        gcl_memcpy(d_maskArray, maskArray, sizeof(cl_int) * vertexArraySize);
-//        // Copy trace array
-//        gcl_memcpy(d_traceArray, traceArray, sizeof(cl_int) * vertexArraySize);
         // Clear flags
         gcl_memcpy(d_sinkFound, &tempZero, sizeof(cl_int));
         gcl_memcpy(d_sinkVertex, &tempZero, sizeof(cl_int));
@@ -295,8 +271,6 @@ void OpenCl_GraphWalk_GetWavefrontData(int * maskArray, int vertexArraySize, boo
     int * sinkFoundIntPointer = &sinkFoundInt;
     
     dispatch_sync(g_queue, ^{
-//        // Copy mask array
-//        gcl_memcpy(maskArray, d_maskArray, sizeof(cl_int) * vertexArraySize);
         // Copy the sinkFound flag
         gcl_memcpy(sinkFoundIntPointer, d_sinkFound, sizeof(cl_int));
         // Copy the sink vertex ID regardless

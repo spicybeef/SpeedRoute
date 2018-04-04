@@ -23,6 +23,8 @@ typedef struct
     bool openClInfoFlag;
     bool openClEnableFlag;
     unsigned int openClDeviceId;
+    unsigned int debugLevel;
+    unsigned int enlargementFactor;
     
 } programOptions_t;
 

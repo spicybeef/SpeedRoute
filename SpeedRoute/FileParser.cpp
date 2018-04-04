@@ -7,16 +7,17 @@
 //
 
 #include "FileParser.hpp"
-
 #include "Types.h"
+
+int g_enlargementFactor = SPACE_ENLARGEMENT_FACTOR;
 
 FileParser::FileParser(std::string netFilename, std::string placementFilename)
 {
     mNetFilename = netFilename;
     mPlacementFilename = placementFilename;
-    if(SPACE_ENLARGEMENT_FACTOR > 1)
+    if(g_enlargementFactor > 1)
     {
-        std::cout << "Warning, space enlargement factor is greater than 1! (" << SPACE_ENLARGEMENT_FACTOR << ")" << std::endl << std::endl;
+        std::cout << "Warning, space enlargement factor is greater than 1! (" << g_enlargementFactor << ")" << std::endl << std::endl;
     }
 }
 
@@ -79,8 +80,8 @@ bool FileParser::parseNetFile(void)
     stringVec = splitString(line, ' ');
     mParsedInput.numNodes = stoi(stringVec[0]);
     mParsedInput.numConnections = stoi(stringVec[1]);
-    mParsedInput.numRows = stoi(stringVec[2]) * SPACE_ENLARGEMENT_FACTOR;
-    mParsedInput.numCols = stoi(stringVec[3]) * SPACE_ENLARGEMENT_FACTOR;
+    mParsedInput.numRows = stoi(stringVec[2]) * g_enlargementFactor;
+    mParsedInput.numCols = stoi(stringVec[3]) * g_enlargementFactor;
     
     std::cout << "Grid size is: " << mParsedInput.numRows << " rows x " << mParsedInput.numCols << " cols" << std::endl;
     std::cout << "Number of nodes is: " << mParsedInput.numNodes << std::endl;

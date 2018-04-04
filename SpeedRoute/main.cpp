@@ -54,6 +54,11 @@ int main(int argc, char *argv[])
     programOptions.validate();
     programOptions_t options = programOptions.getOptions();
     
+    // Set debug level
+    g_debugLevel = options.debugLevel;
+    // Set enlargement factor
+    g_enlargementFactor = options.enlargementFactor;
+    
     // Parse the net and placement files
     FileParser fileParse(options.netFilenameIn, options.placementFilenameIn);
     if(!fileParse.parseInput())
@@ -79,7 +84,7 @@ int main(int argc, char *argv[])
                                          graphData.edgeArraySize
                                          );
     }
-    
+
     // Update arch side length
     g_sideLength = graphData.sideLength;
     

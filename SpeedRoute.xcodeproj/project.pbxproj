@@ -17,7 +17,6 @@
 		D0246B132068B1FC00858977 /* libboost_program_options-mt.a in Frameworks */ = {isa = PBXBuildFile; fileRef = D0246B122068B1FC00858977 /* libboost_program_options-mt.a */; };
 		D06891FD2069651B00912AD3 /* OpenClApp.c in Sources */ = {isa = PBXBuildFile; fileRef = D06891FC2069651B00912AD3 /* OpenClApp.c */; };
 		D08214C32072AC36003C12A5 /* GraphWalk_WavefrontVisit.cl in Sources */ = {isa = PBXBuildFile; fileRef = D08214C22072AC36003C12A5 /* GraphWalk_WavefrontVisit.cl */; };
-		D0CD4A802068C261009430C0 /* Router.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D0CD4A7E2068C261009430C0 /* Router.cpp */; };
 		D0CD4A832068C327009430C0 /* Graphics.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D0CD4A812068C327009430C0 /* Graphics.cpp */; };
 		D0CD4A892068CAF1009430C0 /* ProgramOptions.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D0CD4A872068CAF1009430C0 /* ProgramOptions.cpp */; };
 		D0CD4A8B2068D6CD009430C0 /* icon.png in Resources */ = {isa = PBXBuildFile; fileRef = D0CD4A8A2068D6CD009430C0 /* icon.png */; };
@@ -43,8 +42,6 @@
 		D06891FB2069651B00912AD3 /* OpenClApp.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OpenClApp.h; sourceTree = "<group>"; };
 		D06891FC2069651B00912AD3 /* OpenClApp.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = OpenClApp.c; sourceTree = "<group>"; };
 		D08214C22072AC36003C12A5 /* GraphWalk_WavefrontVisit.cl */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.opencl; path = GraphWalk_WavefrontVisit.cl; sourceTree = "<group>"; };
-		D0CD4A7E2068C261009430C0 /* Router.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = Router.cpp; sourceTree = "<group>"; };
-		D0CD4A7F2068C261009430C0 /* Router.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = Router.hpp; sourceTree = "<group>"; };
 		D0CD4A812068C327009430C0 /* Graphics.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Graphics.cpp; sourceTree = "<group>"; };
 		D0CD4A822068C327009430C0 /* Graphics.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = Graphics.hpp; sourceTree = "<group>"; };
 		D0CD4A872068CAF1009430C0 /* ProgramOptions.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = ProgramOptions.cpp; sourceTree = "<group>"; };
@@ -104,8 +101,6 @@
 				D0246AE62068B12A00858977 /* ResourcePath.hpp */,
 				D0246AE92068B12A00858977 /* Resources */,
 				D0246AE22068B12A00858977 /* Supporting Files */,
-				D0CD4A7E2068C261009430C0 /* Router.cpp */,
-				D0CD4A7F2068C261009430C0 /* Router.hpp */,
 				D0CD4A872068CAF1009430C0 /* ProgramOptions.cpp */,
 				D0CD4A882068CAF1009430C0 /* ProgramOptions.hpp */,
 			);
@@ -239,7 +234,6 @@
 				D0246AE52068B12A00858977 /* ResourcePath.mm in Sources */,
 				D00CAEEA20698F2D00A774A8 /* ConnectionGraph.cpp in Sources */,
 				D08214C32072AC36003C12A5 /* GraphWalk_WavefrontVisit.cl in Sources */,
-				D0CD4A802068C261009430C0 /* Router.cpp in Sources */,
 				D0CD4A832068C327009430C0 /* Graphics.cpp in Sources */,
 				D0CD4A892068CAF1009430C0 /* ProgramOptions.cpp in Sources */,
 				D06891FD2069651B00912AD3 /* OpenClApp.c in Sources */,

@@ -18,7 +18,7 @@
 
 // Module scope data
 
-static int g_debugPriority = PRIO_DEFAULT;
+int g_debugLevel = PRIO_DEFAULT;
 
 // Graph walk arrays
 static int * g_traceArray;
@@ -80,7 +80,7 @@ void GraphWalk_Test(int priority, graphData_t graph, netData_t nets)
 {
     int arraySize, value;
     
-    if(priority >= g_debugPriority)
+    if(priority >= g_debugLevel)
     {
         arraySize = graph.vertexArraySize;
         printf("Vertex array: ");
@@ -125,7 +125,7 @@ void GraphWalk_DebugPrint(int priority, const char * format, ... )
     va_list args;
     va_start(args, format);
     
-    if(priority >= g_debugPriority)
+    if(priority >= g_debugLevel)
     {
         vprintf(format, args);
     }
@@ -135,7 +135,7 @@ void GraphWalk_DebugPrint(int priority, const char * format, ... )
 
 void GraphWalk_DebugPrintGrid(int priority, char * string, int * gridArray)
 {
-    if(priority >= g_debugPriority)
+    if(priority >= g_debugLevel)
     {
         printf("%s\n", string);
         for(int row = 0; row < g_sideLength; row++)
@@ -164,7 +164,7 @@ void GraphWalk_DebugPrintGrid(int priority, char * string, int * gridArray)
 
 void GraphWalk_DebugPrintRoutes(int priority)
 {
-    if(priority >= g_debugPriority)
+    if(priority >= g_debugLevel)
     {
         printf("Route summary:\n");
         
