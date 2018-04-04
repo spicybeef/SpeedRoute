@@ -204,7 +204,6 @@ bool OpenCl_Init(unsigned int deviceId)
     dispatch_sync(g_queue,
                   ^{
                       size_t wgs, preferred_wgs_multiple;
-                      cl_ulong local_memsize, private_memsize;
                       
                       // Ask OpenCL to suggest the optimal workgroup
                       // size for this kernel on this device.
