@@ -18,7 +18,7 @@
 #define PRIO_LOW                    0
 #define PRIO_NORM                   1
 #define PRIO_HIGH                   2
-#define PRIO_DEFAULT                PRIO_HIGH
+#define PRIO_DEFAULT                PRIO_LOW
 
 // OpenCL work size
 #define GLOBAL_WORK_SIZE 1024 * 30

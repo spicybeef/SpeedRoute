@@ -316,6 +316,9 @@ bool GraphWalk_RouteNet(bool openCl, int netId)
     // Init the mask
     GraphWalk_InitMask();
     
+    // Allocate some memory on the device
+    OpenCl_GraphWalk_InitWavefrontData(g_vertexArraySize, g_maskArray, g_traceArray);
+    
     // Route until we run out of vertexes to route for this net
     do
     {
@@ -498,8 +501,6 @@ void GraphWalk_WavefrontVisit_Cl(void)
 {
     int sinkVertex;
     bool sinkFound = false;
-    // Allocate some memory on the device
-    OpenCl_GraphWalk_InitWavefrontData(g_vertexArraySize);
     // Transfer relevant data to the device
     GraphWalk_DebugPrint(PRIO_LOW, "OpenCL: Copying wavefront data\n");
     OpenCl_GraphWalk_SetWavefrontData(g_maskArray, g_traceArray, g_vertexArraySize);

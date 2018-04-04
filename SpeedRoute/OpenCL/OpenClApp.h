@@ -26,7 +26,7 @@ extern "C"
     void OpenCl_DeviceWalk(void);
     bool OpenCl_Init(unsigned int deviceId);
     void OpenCl_GraphWalk_InitGraphArrays(int * vertexArray, int * edgeArray, int vertexArraySize, int edgeArraySize);
-    void OpenCl_GraphWalk_InitWavefrontData(int vertexArraySize);
+    void OpenCl_GraphWalk_InitWavefrontData(int vertexArraySize, int * maskArray, int * traceArray);
     void OpenCl_GraphWalk_FreeWavefrontData(void);
     void OpenCl_GraphWalk_SetWavefrontData(int * maskArray, int * traceArray, int vertexArraySize);
     void OpenCl_GraphWalk_GetWavefrontData(int * maskArray, int vertexArraySize, bool * sinkFound, int * sinkVertexId);

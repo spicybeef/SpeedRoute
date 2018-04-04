@@ -78,7 +78,6 @@ int main(int argc, char *argv[])
                                          graphData.vertexArraySize,
                                          graphData.edgeArraySize
                                          );
-        OpenCl_GraphWalk_InitWavefrontData(graphData.vertexArraySize);
     }
     
     // Update arch side length

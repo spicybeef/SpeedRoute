@@ -63,7 +63,7 @@
       </BuildableProductRunnable>
       <CommandLineArguments>
          <CommandLineArgument
-            argument = "--clenable --cldevice 1"
+            argument = "--clenable --cldevice 2"
             isEnabled = "YES">
          </CommandLineArgument>
       </CommandLineArguments>

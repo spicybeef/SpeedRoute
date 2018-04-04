@@ -17,33 +17,37 @@
 #define MASK_VISITED            3
 
 kernel void GraphWalk_WavefrontVisit(
-                                     global const int * vertexArrayIn,
-                                     global const int * edgeArrayIn,
+                                     global const int * vertexArray,
+                                     global const int * edgeArray,
                                      global int * maskArray,
-                                     global int * traceArrayIn,
+                                     global int * traceArray,
                                      global int * sinkFoundOut,
-                                     global int * sinkVertexOut,
+                                     global int * sinkVertex,
                                      int firstNetVertex,
                                      int vertexArraySize)
 {
     int vertex = get_global_id(0);
-
     int start, end;
+    int maskArrayAtVertex = maskArray[vertex];
+    int vertexArrayAtVertex = vertexArray[vertex];
+    int vertexArrayAtVertexPlusOne = vertexArray[vertex + 1];
+    
+//    printf("maskArray[%d] = %d\n", vertex, maskArray[vertex]);
     
     // Check if we need to visit
-    if(maskArray[vertex] == MASK_VISIT)
+    if(maskArrayAtVertex == MASK_VISIT)
     {
         // We do! Turn it into a visited box
         maskArray[vertex] = MASK_VISITED;
         // Index of vertex array points to entry in edge array
         // Index + 1 of vertex array points to the first node of the next vertex's edges
         // Determine the start and end of the net vertex array to index for this net ID
-        start = vertexArrayIn[vertex];
+        start = vertexArrayAtVertex;
         // Check if we're at the end of the array
         if ((vertex + 1) < (vertexArraySize))
         {
             // We're still within bounds, end is next index
-            end = vertexArrayIn[vertex + 1];
+            end = vertexArrayAtVertexPlusOne;
         }
         else
         {
@@ -54,9 +58,11 @@ kernel void GraphWalk_WavefrontVisit(
         // Now go through the vertex's edges
         for(int edgeIndex = start; edgeIndex < end; edgeIndex++)
         {
-            int nextVertex = edgeArrayIn[edgeIndex];
+            int nextVertex = edgeArray[edgeIndex];
+            int traceArrayAtNextVertex = traceArray[nextVertex];
+            int maskArrayAtNextVertex = maskArray[nextVertex];
             // Check if it's a valid connection
-            if(traceArrayIn[nextVertex] == VERTEX_NET_UNCONN || traceArrayIn[nextVertex] == VERTEX_NET_CONN)
+            if(traceArrayAtNextVertex == VERTEX_NET_UNCONN || traceArrayAtNextVertex == VERTEX_NET_CONN)
             {
                 // OK, so if it's the first net vertex, we can sink to anything.
                 // Subsequent sinks MUST be already connected to avoid unconnected graphs.
@@ -64,7 +70,7 @@ kernel void GraphWalk_WavefrontVisit(
                 if(!firstNetVertex)
                 {
                     // We've started connecting nets already, ignore unconnected ones
-                    if(traceArrayIn[nextVertex] == VERTEX_NET_UNCONN)
+                    if(traceArray[nextVertex] == VERTEX_NET_UNCONN)
                     {
                         continue;
                     }
@@ -72,16 +78,16 @@ kernel void GraphWalk_WavefrontVisit(
                 // Stop the presses, we've found a sink
                 (*sinkFoundOut) = 1;
                 // We're going to trace back from here
-                (*sinkVertexOut) = nextVertex;
+                (*sinkVertex) = nextVertex;
                 break;
             }
-            if(traceArrayIn[nextVertex] == VERTEX_BLOCK)
+            if(traceArrayAtNextVertex == VERTEX_BLOCK)
             {
                 // Can't go here, go to next edge
                 continue;
             }
             // Check if it's been visited
-            if(maskArray[nextVertex] == MASK_VISITED)
+            if(maskArrayAtNextVertex == MASK_VISITED)
             {
                 // Can't go back, go to next edge
                 continue;
