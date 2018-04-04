@@ -14,8 +14,8 @@
             buildForAnalyzing = "YES">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "D0246ADE2068B12A00858977"
-               BuildableName = "SpeedRoute.app"
+               BlueprintIdentifier = "D03E254E20749E5D00BC5D37"
+               BuildableName = "SpeedRoute"
                BlueprintName = "SpeedRoute"
                ReferencedContainer = "container:SpeedRoute.xcodeproj">
             </BuildableReference>
@@ -32,8 +32,8 @@
       <MacroExpansion>
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "D0246ADE2068B12A00858977"
-            BuildableName = "SpeedRoute.app"
+            BlueprintIdentifier = "D03E254E20749E5D00BC5D37"
+            BuildableName = "SpeedRoute"
             BlueprintName = "SpeedRoute"
             ReferencedContainer = "container:SpeedRoute.xcodeproj">
          </BuildableReference>
@@ -48,15 +48,15 @@
       launchStyle = "0"
       useCustomWorkingDirectory = "NO"
       ignoresPersistentStateOnLaunch = "NO"
-      debugDocumentVersioning = "NO"
+      debugDocumentVersioning = "YES"
       debugServiceExtension = "internal"
       allowLocationSimulation = "YES">
       <BuildableProductRunnable
          runnableDebuggingMode = "0">
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "D0246ADE2068B12A00858977"
-            BuildableName = "SpeedRoute.app"
+            BlueprintIdentifier = "D03E254E20749E5D00BC5D37"
+            BuildableName = "SpeedRoute"
             BlueprintName = "SpeedRoute"
             ReferencedContainer = "container:SpeedRoute.xcodeproj">
          </BuildableReference>
@@ -80,8 +80,8 @@
          runnableDebuggingMode = "0">
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "D0246ADE2068B12A00858977"
-            BuildableName = "SpeedRoute.app"
+            BlueprintIdentifier = "D03E254E20749E5D00BC5D37"
+            BuildableName = "SpeedRoute"
             BlueprintName = "SpeedRoute"
             ReferencedContainer = "container:SpeedRoute.xcodeproj">
          </BuildableReference>

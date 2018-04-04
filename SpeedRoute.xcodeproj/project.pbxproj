@@ -3,157 +3,143 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 48;
+	objectVersion = 50;
 	objects = {
 
 /* Begin PBXBuildFile section */
-		D00CAEEA20698F2D00A774A8 /* ConnectionGraph.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D00CAEE920698F2D00A774A8 /* ConnectionGraph.cpp */; };
-		D00CAEED206C7BB600A774A8 /* GraphWalk.c in Sources */ = {isa = PBXBuildFile; fileRef = D00CAEEC206C7BB500A774A8 /* GraphWalk.c */; };
-		D0246AE52068B12A00858977 /* ResourcePath.mm in Sources */ = {isa = PBXBuildFile; fileRef = D0246AE42068B12A00858977 /* ResourcePath.mm */; };
-		D0246B0B2068B18A00858977 /* FileParser.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D0246B062068B18900858977 /* FileParser.cpp */; };
-		D0246B0D2068B18A00858977 /* main.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D0246B082068B18A00858977 /* main.cpp */; };
-		D0246B0E2068B18A00858977 /* Util.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D0246B0A2068B18A00858977 /* Util.cpp */; };
-		D0246B112068B1C300858977 /* OpenCL.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D0246B102068B1C300858977 /* OpenCL.framework */; };
-		D0246B132068B1FC00858977 /* libboost_program_options-mt.a in Frameworks */ = {isa = PBXBuildFile; fileRef = D0246B122068B1FC00858977 /* libboost_program_options-mt.a */; };
-		D06891FD2069651B00912AD3 /* OpenClApp.c in Sources */ = {isa = PBXBuildFile; fileRef = D06891FC2069651B00912AD3 /* OpenClApp.c */; };
-		D08214C32072AC36003C12A5 /* GraphWalk_WavefrontVisit.cl in Sources */ = {isa = PBXBuildFile; fileRef = D08214C22072AC36003C12A5 /* GraphWalk_WavefrontVisit.cl */; };
-		D0CD4A832068C327009430C0 /* Graphics.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D0CD4A812068C327009430C0 /* Graphics.cpp */; };
-		D0CD4A892068CAF1009430C0 /* ProgramOptions.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D0CD4A872068CAF1009430C0 /* ProgramOptions.cpp */; };
-		D0CD4A8B2068D6CD009430C0 /* icon.png in Resources */ = {isa = PBXBuildFile; fileRef = D0CD4A8A2068D6CD009430C0 /* icon.png */; };
-		D0CD4A8D2068D6EC009430C0 /* cute_image.jpg in Resources */ = {isa = PBXBuildFile; fileRef = D0CD4A8C2068D6EB009430C0 /* cute_image.jpg */; };
+		D03E255320749E5D00BC5D37 /* main.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D03E255220749E5D00BC5D37 /* main.cpp */; };
+		D03E256F20749EC100BC5D37 /* FileParser.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D03E255F20749EC000BC5D37 /* FileParser.cpp */; };
+		D03E257020749EC100BC5D37 /* GraphWalk.c in Sources */ = {isa = PBXBuildFile; fileRef = D03E256020749EC000BC5D37 /* GraphWalk.c */; };
+		D03E257120749EC100BC5D37 /* Util.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D03E256220749EC000BC5D37 /* Util.cpp */; };
+		D03E257220749EC100BC5D37 /* ResourcePath.mm in Sources */ = {isa = PBXBuildFile; fileRef = D03E256320749EC000BC5D37 /* ResourcePath.mm */; };
+		D03E257320749EC100BC5D37 /* ConnectionGraph.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D03E256520749EC000BC5D37 /* ConnectionGraph.cpp */; };
+		D03E257420749EC100BC5D37 /* Graphics.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D03E256620749EC000BC5D37 /* Graphics.cpp */; };
+		D03E257520749EC100BC5D37 /* ProgramOptions.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D03E256C20749EC100BC5D37 /* ProgramOptions.cpp */; };
+		D03E257820749F0C00BC5D37 /* OpenCL.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D03E257720749F0C00BC5D37 /* OpenCL.framework */; };
+		D03E257F2074A00500BC5D37 /* GraphWalk_WavefrontVisit.cl in Sources */ = {isa = PBXBuildFile; fileRef = D03E257C2074A00500BC5D37 /* GraphWalk_WavefrontVisit.cl */; };
+		D03E25802074A00500BC5D37 /* OpenClApp.c in Sources */ = {isa = PBXBuildFile; fileRef = D03E257D2074A00500BC5D37 /* OpenClApp.c */; };
+		D03E25822074A06000BC5D37 /* libboost_program_options-mt.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = D03E25812074A06000BC5D37 /* libboost_program_options-mt.dylib */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
-		D00CAEE820698F2D00A774A8 /* ConnectionGraph.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = ConnectionGraph.hpp; sourceTree = "<group>"; };
-		D00CAEE920698F2D00A774A8 /* ConnectionGraph.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ConnectionGraph.cpp; sourceTree = "<group>"; };
-		D00CAEEB206C7BB500A774A8 /* GraphWalk.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GraphWalk.h; sourceTree = "<group>"; };
-		D00CAEEC206C7BB500A774A8 /* GraphWalk.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = GraphWalk.c; sourceTree = "<group>"; };
-		D0246ADF2068B12A00858977 /* SpeedRoute.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SpeedRoute.app; sourceTree = BUILT_PRODUCTS_DIR; };
-		D0246AE32068B12A00858977 /* SpeedRoute-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "SpeedRoute-Info.plist"; sourceTree = "<group>"; };
-		D0246AE42068B12A00858977 /* ResourcePath.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = ResourcePath.mm; sourceTree = "<group>"; };
-		D0246AE62068B12A00858977 /* ResourcePath.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = ResourcePath.hpp; sourceTree = "<group>"; };
-		D0246B042068B18900858977 /* Util.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = Util.hpp; sourceTree = "<group>"; };
-		D0246B052068B18900858977 /* FileParser.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = FileParser.hpp; sourceTree = "<group>"; };
-		D0246B062068B18900858977 /* FileParser.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = FileParser.cpp; sourceTree = "<group>"; };
-		D0246B082068B18A00858977 /* main.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = main.cpp; sourceTree = "<group>"; };
-		D0246B0A2068B18A00858977 /* Util.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Util.cpp; sourceTree = "<group>"; };
-		D0246B102068B1C300858977 /* OpenCL.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = OpenCL.framework; path = System/Library/Frameworks/OpenCL.framework; sourceTree = SDKROOT; };
-		D0246B122068B1FC00858977 /* libboost_program_options-mt.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = "libboost_program_options-mt.a"; path = "../../../../usr/local/Cellar/boost/1.66.0/lib/libboost_program_options-mt.a"; sourceTree = "<group>"; };
-		D06891FB2069651B00912AD3 /* OpenClApp.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OpenClApp.h; sourceTree = "<group>"; };
-		D06891FC2069651B00912AD3 /* OpenClApp.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = OpenClApp.c; sourceTree = "<group>"; };
-		D08214C22072AC36003C12A5 /* GraphWalk_WavefrontVisit.cl */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.opencl; path = GraphWalk_WavefrontVisit.cl; sourceTree = "<group>"; };
-		D0CD4A812068C327009430C0 /* Graphics.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Graphics.cpp; sourceTree = "<group>"; };
-		D0CD4A822068C327009430C0 /* Graphics.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = Graphics.hpp; sourceTree = "<group>"; };
-		D0CD4A872068CAF1009430C0 /* ProgramOptions.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = ProgramOptions.cpp; sourceTree = "<group>"; };
-		D0CD4A882068CAF1009430C0 /* ProgramOptions.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = ProgramOptions.hpp; sourceTree = "<group>"; };
-		D0CD4A8A2068D6CD009430C0 /* icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = icon.png; sourceTree = "<group>"; };
-		D0CD4A8C2068D6EB009430C0 /* cute_image.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = cute_image.jpg; sourceTree = "<group>"; };
-		D0DB68CA206DE67E00E720DE /* Types.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Types.h; sourceTree = "<group>"; };
+		D03E254F20749E5D00BC5D37 /* SpeedRoute */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = SpeedRoute; sourceTree = BUILT_PRODUCTS_DIR; };
+		D03E255220749E5D00BC5D37 /* main.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = main.cpp; sourceTree = "<group>"; };
+		D03E255820749E5D00BC5D37 /* icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = icon.png; sourceTree = "<group>"; };
+		D03E255F20749EC000BC5D37 /* FileParser.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = FileParser.cpp; sourceTree = "<group>"; };
+		D03E256020749EC000BC5D37 /* GraphWalk.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = GraphWalk.c; sourceTree = "<group>"; };
+		D03E256120749EC000BC5D37 /* SpeedRoute-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "SpeedRoute-Info.plist"; sourceTree = "<group>"; };
+		D03E256220749EC000BC5D37 /* Util.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Util.cpp; sourceTree = "<group>"; };
+		D03E256320749EC000BC5D37 /* ResourcePath.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = ResourcePath.mm; sourceTree = "<group>"; };
+		D03E256420749EC000BC5D37 /* Types.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Types.h; sourceTree = "<group>"; };
+		D03E256520749EC000BC5D37 /* ConnectionGraph.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ConnectionGraph.cpp; sourceTree = "<group>"; };
+		D03E256620749EC000BC5D37 /* Graphics.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Graphics.cpp; sourceTree = "<group>"; };
+		D03E256720749EC000BC5D37 /* Graphics.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = Graphics.hpp; sourceTree = "<group>"; };
+		D03E256820749EC000BC5D37 /* ResourcePath.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = ResourcePath.hpp; sourceTree = "<group>"; };
+		D03E256920749EC100BC5D37 /* GraphWalk.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GraphWalk.h; sourceTree = "<group>"; };
+		D03E256A20749EC100BC5D37 /* FileParser.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = FileParser.hpp; sourceTree = "<group>"; };
+		D03E256B20749EC100BC5D37 /* ProgramOptions.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = ProgramOptions.hpp; sourceTree = "<group>"; };
+		D03E256C20749EC100BC5D37 /* ProgramOptions.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ProgramOptions.cpp; sourceTree = "<group>"; };
+		D03E256D20749EC100BC5D37 /* Util.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = Util.hpp; sourceTree = "<group>"; };
+		D03E256E20749EC100BC5D37 /* ConnectionGraph.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = ConnectionGraph.hpp; sourceTree = "<group>"; };
+		D03E257720749F0C00BC5D37 /* OpenCL.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = OpenCL.framework; path = System/Library/Frameworks/OpenCL.framework; sourceTree = SDKROOT; };
+		D03E257C2074A00500BC5D37 /* GraphWalk_WavefrontVisit.cl */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.opencl; name = GraphWalk_WavefrontVisit.cl; path = OpenCL/GraphWalk_WavefrontVisit.cl; sourceTree = "<group>"; };
+		D03E257D2074A00500BC5D37 /* OpenClApp.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = OpenClApp.c; path = OpenCL/OpenClApp.c; sourceTree = "<group>"; };
+		D03E257E2074A00500BC5D37 /* OpenClApp.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = OpenClApp.h; path = OpenCL/OpenClApp.h; sourceTree = "<group>"; };
+		D03E25812074A06000BC5D37 /* libboost_program_options-mt.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = "libboost_program_options-mt.dylib"; path = "../../../../usr/local/Cellar/boost/1.66.0/lib/libboost_program_options-mt.dylib"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
-		D0246ADB2068B12A00858977 /* Frameworks */ = {
+		D03E254D20749E5D00BC5D37 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				D0246B132068B1FC00858977 /* libboost_program_options-mt.a in Frameworks */,
-				D0246B112068B1C300858977 /* OpenCL.framework in Frameworks */,
+				D03E25822074A06000BC5D37 /* libboost_program_options-mt.dylib in Frameworks */,
+				D03E257820749F0C00BC5D37 /* OpenCL.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		D0246AD52068B12A00858977 = {
+		D03E254720749E5D00BC5D37 = {
 			isa = PBXGroup;
 			children = (
-				D0246AE12068B12A00858977 /* SpeedRoute */,
-				D0246AE02068B12A00858977 /* Products */,
-				D0246B0F2068B1C200858977 /* Frameworks */,
+				D03E255120749E5D00BC5D37 /* SpeedRoute */,
+				D03E255020749E5D00BC5D37 /* Products */,
+				D03E257620749F0C00BC5D37 /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
-		D0246AE02068B12A00858977 /* Products */ = {
+		D03E255020749E5D00BC5D37 /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				D0246ADF2068B12A00858977 /* SpeedRoute.app */,
+				D03E254F20749E5D00BC5D37 /* SpeedRoute */,
 			);
 			name = Products;
 			sourceTree = "<group>";
 		};
-		D0246AE12068B12A00858977 /* SpeedRoute */ = {
+		D03E255120749E5D00BC5D37 /* SpeedRoute */ = {
 			isa = PBXGroup;
 			children = (
-				D08214C12072ABA6003C12A5 /* OpenCL */,
-				D0DB68CA206DE67E00E720DE /* Types.h */,
-				D00CAEEC206C7BB500A774A8 /* GraphWalk.c */,
-				D00CAEEB206C7BB500A774A8 /* GraphWalk.h */,
-				D00CAEE920698F2D00A774A8 /* ConnectionGraph.cpp */,
-				D00CAEE820698F2D00A774A8 /* ConnectionGraph.hpp */,
-				D0CD4A812068C327009430C0 /* Graphics.cpp */,
-				D0CD4A822068C327009430C0 /* Graphics.hpp */,
-				D0246B062068B18900858977 /* FileParser.cpp */,
-				D0246B052068B18900858977 /* FileParser.hpp */,
-				D0246B082068B18A00858977 /* main.cpp */,
-				D0246B0A2068B18A00858977 /* Util.cpp */,
-				D0246B042068B18900858977 /* Util.hpp */,
-				D0246AE42068B12A00858977 /* ResourcePath.mm */,
-				D0246AE62068B12A00858977 /* ResourcePath.hpp */,
-				D0246AE92068B12A00858977 /* Resources */,
-				D0246AE22068B12A00858977 /* Supporting Files */,
-				D0CD4A872068CAF1009430C0 /* ProgramOptions.cpp */,
-				D0CD4A882068CAF1009430C0 /* ProgramOptions.hpp */,
+				D03E257B20749FFA00BC5D37 /* OpenCL */,
+				D03E256520749EC000BC5D37 /* ConnectionGraph.cpp */,
+				D03E256E20749EC100BC5D37 /* ConnectionGraph.hpp */,
+				D03E255F20749EC000BC5D37 /* FileParser.cpp */,
+				D03E256A20749EC100BC5D37 /* FileParser.hpp */,
+				D03E256620749EC000BC5D37 /* Graphics.cpp */,
+				D03E256720749EC000BC5D37 /* Graphics.hpp */,
+				D03E256020749EC000BC5D37 /* GraphWalk.c */,
+				D03E256920749EC100BC5D37 /* GraphWalk.h */,
+				D03E256C20749EC100BC5D37 /* ProgramOptions.cpp */,
+				D03E256B20749EC100BC5D37 /* ProgramOptions.hpp */,
+				D03E256820749EC000BC5D37 /* ResourcePath.hpp */,
+				D03E256320749EC000BC5D37 /* ResourcePath.mm */,
+				D03E256120749EC000BC5D37 /* SpeedRoute-Info.plist */,
+				D03E256420749EC000BC5D37 /* Types.h */,
+				D03E256220749EC000BC5D37 /* Util.cpp */,
+				D03E256D20749EC100BC5D37 /* Util.hpp */,
+				D03E255220749E5D00BC5D37 /* main.cpp */,
+				D03E255420749E5D00BC5D37 /* Resources */,
 			);
 			path = SpeedRoute;
 			sourceTree = "<group>";
 		};
-		D0246AE22068B12A00858977 /* Supporting Files */ = {
+		D03E255420749E5D00BC5D37 /* Resources */ = {
 			isa = PBXGroup;
 			children = (
-				D0246AE32068B12A00858977 /* SpeedRoute-Info.plist */,
-			);
-			name = "Supporting Files";
-			sourceTree = "<group>";
-		};
-		D0246AE92068B12A00858977 /* Resources */ = {
-			isa = PBXGroup;
-			children = (
-				D0CD4A8C2068D6EB009430C0 /* cute_image.jpg */,
-				D0CD4A8A2068D6CD009430C0 /* icon.png */,
+				D03E255820749E5D00BC5D37 /* icon.png */,
 			);
 			name = Resources;
 			sourceTree = "<group>";
 		};
-		D0246B0F2068B1C200858977 /* Frameworks */ = {
+		D03E257620749F0C00BC5D37 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
-				D0246B122068B1FC00858977 /* libboost_program_options-mt.a */,
-				D0246B102068B1C300858977 /* OpenCL.framework */,
+				D03E25812074A06000BC5D37 /* libboost_program_options-mt.dylib */,
+				D03E257720749F0C00BC5D37 /* OpenCL.framework */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
 		};
-		D08214C12072ABA6003C12A5 /* OpenCL */ = {
+		D03E257B20749FFA00BC5D37 /* OpenCL */ = {
 			isa = PBXGroup;
 			children = (
-				D06891FC2069651B00912AD3 /* OpenClApp.c */,
-				D06891FB2069651B00912AD3 /* OpenClApp.h */,
-				D08214C22072AC36003C12A5 /* GraphWalk_WavefrontVisit.cl */,
+				D03E257C2074A00500BC5D37 /* GraphWalk_WavefrontVisit.cl */,
+				D03E257D2074A00500BC5D37 /* OpenClApp.c */,
+				D03E257E2074A00500BC5D37 /* OpenClApp.h */,
 			);
-			path = OpenCL;
+			name = OpenCL;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
-		D0246ADE2068B12A00858977 /* SpeedRoute */ = {
+		D03E254E20749E5D00BC5D37 /* SpeedRoute */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = D0246AF42068B12A00858977 /* Build configuration list for PBXNativeTarget "SpeedRoute" */;
+			buildConfigurationList = D03E255B20749E5D00BC5D37 /* Build configuration list for PBXNativeTarget "SpeedRoute" */;
 			buildPhases = (
-				D0246ADA2068B12A00858977 /* Sources */,
-				D0246ADB2068B12A00858977 /* Frameworks */,
-				D0246ADC2068B12A00858977 /* Resources */,
-				D0246ADD2068B12A00858977 /* ShellScript */,
+				D03E254C20749E5D00BC5D37 /* Sources */,
+				D03E254D20749E5D00BC5D37 /* Frameworks */,
 			);
 			buildRules = (
 			);
@@ -161,127 +147,72 @@
 			);
 			name = SpeedRoute;
 			productName = SpeedRoute;
-			productReference = D0246ADF2068B12A00858977 /* SpeedRoute.app */;
-			productType = "com.apple.product-type.application";
+			productReference = D03E254F20749E5D00BC5D37 /* SpeedRoute */;
+			productType = "com.apple.product-type.tool";
 		};
 /* End PBXNativeTarget section */
 
 /* Begin PBXProject section */
-		D0246AD62068B12A00858977 /* Project object */ = {
+		D03E254820749E5D00BC5D37 /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
 				LastUpgradeCheck = 0930;
 				ORGANIZATIONNAME = "Michel Kakulphimp";
 				TargetAttributes = {
-					D0246ADE2068B12A00858977 = {
-						CreatedOnToolsVersion = 9.2;
-						ProvisioningStyle = Automatic;
+					D03E254E20749E5D00BC5D37 = {
+						CreatedOnToolsVersion = 9.3;
 					};
 				};
 			};
-			buildConfigurationList = D0246AD92068B12A00858977 /* Build configuration list for PBXProject "SpeedRoute" */;
-			compatibilityVersion = "Xcode 8.0";
+			buildConfigurationList = D03E254B20749E5D00BC5D37 /* Build configuration list for PBXProject "SpeedRoute" */;
+			compatibilityVersion = "Xcode 9.3";
 			developmentRegion = en;
 			hasScannedForEncodings = 0;
 			knownRegions = (
 				en,
 			);
-			mainGroup = D0246AD52068B12A00858977;
-			productRefGroup = D0246AE02068B12A00858977 /* Products */;
+			mainGroup = D03E254720749E5D00BC5D37;
+			productRefGroup = D03E255020749E5D00BC5D37 /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
-				D0246ADE2068B12A00858977 /* SpeedRoute */,
+				D03E254E20749E5D00BC5D37 /* SpeedRoute */,
 			);
 		};
 /* End PBXProject section */
 
-/* Begin PBXResourcesBuildPhase section */
-		D0246ADC2068B12A00858977 /* Resources */ = {
-			isa = PBXResourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-				D0CD4A8D2068D6EC009430C0 /* cute_image.jpg in Resources */,
-				D0CD4A8B2068D6CD009430C0 /* icon.png in Resources */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-/* End PBXResourcesBuildPhase section */
-
-/* Begin PBXShellScriptBuildPhase section */
-		D0246ADD2068B12A00858977 /* ShellScript */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-			);
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "# This shell script simply copies required SFML dylibs/frameworks into the application bundle frameworks folder.\n# If you're using static libraries (which is not recommended) you should remove this script from your project.\n\n# SETTINGS\nCMAKE_INSTALL_FRAMEWORK_PREFIX=\"/Library/Frameworks\"\nCMAKE_INSTALL_LIB_PREFIX=\"/usr/local/lib\"\nFRAMEWORKS_FULL_PATH=\"$BUILT_PRODUCTS_DIR/$FRAMEWORKS_FOLDER_PATH/\"\n\n# Are we building a project that uses frameworks or dylibs?\ncase \"$SFML_BINARY_TYPE\" in\n    DYLIBS)\n        frameworks=\"false\"\n        ;;\n    *)\n        frameworks=\"true\"\n        ;;\nesac\n\n# Echoes to stderr\nerror () # $* message to display\n{\n    echo $* 1>&2\n    exit 2\n}\n\nassert () # $1 is a boolean, $2...N is an error message\n{\n    if [ $# -lt 2 ]\n    then\n        error \"Internal error in assert: not enough args\"\n    fi\n\n    if [ $1 -ne 0 ]\n    then\n        shift\n        error \"$*\"\n    fi\n}\n\nforce_remove () # $@ is some paths\n{\n    test $# -ge 1\n    assert $? \"force_remove() requires at least one parameter\"\n    rm -fr $@\n    assert $? \"couldn't remove $@\"\n}\n\ncopy () # $1 is a source, $2 is a destination\n{\n    test $# -eq 2\n    assert $? \"copy() requires two parameters\"\n    ditto \"$1\" \"$2\"\n    assert $? \"couldn't copy $1 to $2\"\n}\n\nrequire () # $1 is a SFML module like 'system' or 'audio'\n{\n    dest=\"$BUILT_PRODUCTS_DIR/$FRAMEWORKS_FOLDER_PATH/\"\n\n    if [ -z \"$1\" ]\n    then\n        error \"require() requires one parameter!\"\n    else\n        # clean potentially old stuff\n        force_remove \"$dest/libsfml-$1\"*\n        force_remove \"$dest/sfml-$1.framework\"\n\n        # copy SFML libraries\n        if [ \"$frameworks\" = \"true\" ]\n        then\n            source=\"$CMAKE_INSTALL_FRAMEWORK_PREFIX/sfml-$1.framework\"\n            target=\"sfml-$1.framework\"\n        elif [ \"$SFML_LINK_DYLIBS_SUFFIX\" = \"-d\" ]\n        then\n            source=\"$CMAKE_INSTALL_LIB_PREFIX/libsfml-$1-d.dylib\"\n            target=\"`readlink $source`\"\n        else\n            source=\"$CMAKE_INSTALL_LIB_PREFIX/libsfml-$1.dylib\"\n            target=\"`readlink $source`\"\n        fi\n\n        copy \"$source\" \"$dest/$target\"\n\n        # copy extra dependencies\n        if [ \"$1\" = \"audio\" ]\n        then\n            # copy \"FLAC\" \"ogg\" \"vorbis\" \"vorbisenc\" \"vorbisfile\" \"OpenAL\" frameworks too\n            for f in \"FLAC\" \"ogg\" \"vorbis\" \"vorbisenc\" \"vorbisfile\" \"OpenAL\"\n            do\n                copy \"$CMAKE_INSTALL_FRAMEWORK_PREFIX/$f.framework\" \"$dest/$f.framework\"\n            done\n        elif [ \"$1\" = \"graphics\" ]\n        then\n            copy \"$CMAKE_INSTALL_FRAMEWORK_PREFIX/freetype.framework\" \"$dest/freetype.framework\"\n        fi\n    fi\n}\n\nif [ -n \"$SFML_SYSTEM\" ]\nthen\n    require \"system\"\nfi\n\nif [ -n \"$SFML_AUDIO\" ]\nthen\n    require \"audio\"\nfi\n\nif [ -n \"$SFML_NETWORK\" ]\nthen\n    require \"network\"\nfi\n\nif [ -n \"$SFML_WINDOW\" ]\nthen\n    require \"window\"\nfi\n\nif [ -n \"$SFML_GRAPHICS\" ]\nthen\n    require \"graphics\"\nfi\n\n                ";
-		};
-/* End PBXShellScriptBuildPhase section */
-
 /* Begin PBXSourcesBuildPhase section */
-		D0246ADA2068B12A00858977 /* Sources */ = {
+		D03E254C20749E5D00BC5D37 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				D0246B0B2068B18A00858977 /* FileParser.cpp in Sources */,
-				D0246B0D2068B18A00858977 /* main.cpp in Sources */,
-				D0246AE52068B12A00858977 /* ResourcePath.mm in Sources */,
-				D00CAEEA20698F2D00A774A8 /* ConnectionGraph.cpp in Sources */,
-				D08214C32072AC36003C12A5 /* GraphWalk_WavefrontVisit.cl in Sources */,
-				D0CD4A832068C327009430C0 /* Graphics.cpp in Sources */,
-				D0CD4A892068CAF1009430C0 /* ProgramOptions.cpp in Sources */,
-				D06891FD2069651B00912AD3 /* OpenClApp.c in Sources */,
-				D0246B0E2068B18A00858977 /* Util.cpp in Sources */,
-				D00CAEED206C7BB600A774A8 /* GraphWalk.c in Sources */,
+				D03E257320749EC100BC5D37 /* ConnectionGraph.cpp in Sources */,
+				D03E257020749EC100BC5D37 /* GraphWalk.c in Sources */,
+				D03E256F20749EC100BC5D37 /* FileParser.cpp in Sources */,
+				D03E257220749EC100BC5D37 /* ResourcePath.mm in Sources */,
+				D03E257F2074A00500BC5D37 /* GraphWalk_WavefrontVisit.cl in Sources */,
+				D03E255320749E5D00BC5D37 /* main.cpp in Sources */,
+				D03E257420749EC100BC5D37 /* Graphics.cpp in Sources */,
+				D03E257120749EC100BC5D37 /* Util.cpp in Sources */,
+				D03E25802074A00500BC5D37 /* OpenClApp.c in Sources */,
+				D03E257520749EC100BC5D37 /* ProgramOptions.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXSourcesBuildPhase section */
 
 /* Begin XCBuildConfiguration section */
-		D0246AF22068B12A00858977 /* Debug */ = {
+		D03E255920749E5D00BC5D37 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ARCHS = "$(NATIVE_ARCH_ACTUAL)";
 				CLANG_CXX_LANGUAGE_STANDARD = "c++0x";
 				CLANG_CXX_LIBRARY = "libc++";
-				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
-				CLANG_WARN_BOOL_CONVERSION = YES;
-				CLANG_WARN_COMMA = YES;
-				CLANG_WARN_CONSTANT_CONVERSION = YES;
-				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
-				CLANG_WARN_EMPTY_BODY = YES;
-				CLANG_WARN_ENUM_CONVERSION = YES;
-				CLANG_WARN_INFINITE_RECURSION = YES;
-				CLANG_WARN_INT_CONVERSION = YES;
-				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
-				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
-				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
-				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
-				CLANG_WARN_STRICT_PROTOTYPES = YES;
-				CLANG_WARN_SUSPICIOUS_MOVE = YES;
-				CLANG_WARN_UNREACHABLE_CODE = YES;
-				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
-				ENABLE_STRICT_OBJC_MSGSEND = YES;
-				ENABLE_TESTABILITY = YES;
 				FRAMEWORK_SEARCH_PATHS = (
 					/Library/Frameworks/,
 					"$(inherited)",
 				);
-				GCC_NO_COMMON_BLOCKS = YES;
-				GCC_OPTIMIZATION_LEVEL = fast;
 				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
-				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
-				GCC_WARN_ABOUT_RETURN_TYPE = YES;
-				GCC_WARN_UNDECLARED_SELECTOR = YES;
-				GCC_WARN_UNINITIALIZED_AUTOS = YES;
-				GCC_WARN_UNUSED_FUNCTION = YES;
-				GCC_WARN_UNUSED_VARIABLE = YES;
 				HEADER_SEARCH_PATHS = (
 					/usr/local/include/,
 					"$(inherited)",
@@ -291,10 +222,6 @@
 					"$(inherited)",
 				);
 				MACOSX_DEPLOYMENT_TARGET = 10.7;
-				ONLY_ACTIVE_ARCH = YES;
-				OPENCL_AUTO_VECTORIZE_ENABLE = NO;
-				OPENCL_COMPILER_VERSION = CL1.2;
-				OPENCL_OPTIMIZATION_LEVEL = s;
 				OTHER_LDFLAGS = (
 					"$(inherited)",
 					"$(SFML_SYSTEM)",
@@ -319,42 +246,17 @@
 			};
 			name = Debug;
 		};
-		D0246AF32068B12A00858977 /* Release */ = {
+		D03E255A20749E5D00BC5D37 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ARCHS = "$(NATIVE_ARCH_ACTUAL)";
 				CLANG_CXX_LANGUAGE_STANDARD = "c++0x";
 				CLANG_CXX_LIBRARY = "libc++";
-				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
-				CLANG_WARN_BOOL_CONVERSION = YES;
-				CLANG_WARN_COMMA = YES;
-				CLANG_WARN_CONSTANT_CONVERSION = YES;
-				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
-				CLANG_WARN_EMPTY_BODY = YES;
-				CLANG_WARN_ENUM_CONVERSION = YES;
-				CLANG_WARN_INFINITE_RECURSION = YES;
-				CLANG_WARN_INT_CONVERSION = YES;
-				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
-				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
-				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
-				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
-				CLANG_WARN_STRICT_PROTOTYPES = YES;
-				CLANG_WARN_SUSPICIOUS_MOVE = YES;
-				CLANG_WARN_UNREACHABLE_CODE = YES;
-				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
-				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				FRAMEWORK_SEARCH_PATHS = (
 					/Library/Frameworks/,
 					"$(inherited)",
 				);
-				GCC_NO_COMMON_BLOCKS = YES;
-				GCC_OPTIMIZATION_LEVEL = fast;
 				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
-				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
-				GCC_WARN_ABOUT_RETURN_TYPE = YES;
-				GCC_WARN_UNDECLARED_SELECTOR = YES;
-				GCC_WARN_UNINITIALIZED_AUTOS = YES;
-				GCC_WARN_UNUSED_FUNCTION = YES;
-				GCC_WARN_UNUSED_VARIABLE = YES;
 				HEADER_SEARCH_PATHS = (
 					/usr/local/include/,
 					"$(inherited)",
@@ -364,9 +266,6 @@
 					"$(inherited)",
 				);
 				MACOSX_DEPLOYMENT_TARGET = 10.7;
-				OPENCL_AUTO_VECTORIZE_ENABLE = NO;
-				OPENCL_COMPILER_VERSION = CL1.2;
-				OPENCL_OPTIMIZATION_LEVEL = s;
 				OTHER_LDFLAGS = (
 					"$(inherited)",
 					"$(SFML_SYSTEM)",
@@ -391,42 +290,44 @@
 			};
 			name = Release;
 		};
-		D0246AF52068B12A00858977 /* Debug */ = {
+		D03E255C20749E5D00BC5D37 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				CLANG_ENABLE_OBJC_WEAK = YES;
 				CODE_SIGN_STYLE = Automatic;
+				GCC_OPTIMIZATION_LEVEL = fast;
 				HEADER_SEARCH_PATHS = (
 					"$(inherited)",
 					/usr/local/Cellar/boost/1.66.0/include,
 				);
-				INFOPLIST_FILE = "SpeedRoute/SpeedRoute-Info.plist";
-				LD_RUNPATH_SEARCH_PATHS = "@loader_path/../Frameworks";
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
 					/usr/local/Cellar/boost/1.66.0/lib,
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = "MettaDev.${PRODUCT_NAME:rfc1034identifier}";
+				LLVM_LTO = YES_THIN;
+				OPENCL_AUTO_VECTORIZE_ENABLE = NO;
+				OPENCL_COMPILER_VERSION = CL1.2;
+				OPENCL_OPTIMIZATION_LEVEL = s;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 			};
 			name = Debug;
 		};
-		D0246AF62068B12A00858977 /* Release */ = {
+		D03E255D20749E5D00BC5D37 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				CLANG_ENABLE_OBJC_WEAK = YES;
 				CODE_SIGN_STYLE = Automatic;
+				GCC_OPTIMIZATION_LEVEL = fast;
 				HEADER_SEARCH_PATHS = (
 					"$(inherited)",
 					/usr/local/Cellar/boost/1.66.0/include,
 				);
-				INFOPLIST_FILE = "SpeedRoute/SpeedRoute-Info.plist";
-				LD_RUNPATH_SEARCH_PATHS = "@loader_path/../Frameworks";
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
 					/usr/local/Cellar/boost/1.66.0/lib,
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = "MettaDev.${PRODUCT_NAME:rfc1034identifier}";
+				LLVM_LTO = YES_THIN;
+				OPENCL_AUTO_VECTORIZE_ENABLE = NO;
+				OPENCL_COMPILER_VERSION = CL1.2;
+				OPENCL_OPTIMIZATION_LEVEL = s;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 			};
 			name = Release;
@@ -434,25 +335,25 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		D0246AD92068B12A00858977 /* Build configuration list for PBXProject "SpeedRoute" */ = {
+		D03E254B20749E5D00BC5D37 /* Build configuration list for PBXProject "SpeedRoute" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
-				D0246AF22068B12A00858977 /* Debug */,
-				D0246AF32068B12A00858977 /* Release */,
+				D03E255920749E5D00BC5D37 /* Debug */,
+				D03E255A20749E5D00BC5D37 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		D0246AF42068B12A00858977 /* Build configuration list for PBXNativeTarget "SpeedRoute" */ = {
+		D03E255B20749E5D00BC5D37 /* Build configuration list for PBXNativeTarget "SpeedRoute" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
-				D0246AF52068B12A00858977 /* Debug */,
-				D0246AF62068B12A00858977 /* Release */,
+				D03E255C20749E5D00BC5D37 /* Debug */,
+				D03E255D20749E5D00BC5D37 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};
-	rootObject = D0246AD62068B12A00858977 /* Project object */;
+	rootObject = D03E254820749E5D00BC5D37 /* Project object */;
 }
