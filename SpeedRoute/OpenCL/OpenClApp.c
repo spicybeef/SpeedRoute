@@ -244,6 +244,14 @@ void OpenCl_GraphWalk_InitWavefrontData(int vertexArraySize, int * maskArray, in
     d_traceArray = gcl_malloc(sizeof(cl_int) * vertexArraySize, traceArray, CL_MEM_READ_ONLY | CL_MEM_USE_HOST_PTR);
 }
 
+void OpenCl_GraphWalk_FreeAllData(void)
+{
+    gcl_free(d_vertexArray);
+    gcl_free(d_edgeArray);
+    gcl_free(d_maskArray);
+    gcl_free(d_traceArray);
+}
+
 void OpenCl_GraphWalk_FreeWavefrontData(void)
 {
     // Output wavefront data

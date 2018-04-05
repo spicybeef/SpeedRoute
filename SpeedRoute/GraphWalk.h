@@ -11,7 +11,7 @@
 
 #include <stdbool.h>
 #include "Types.h"
-
+    
 void GraphWalk_Test(int priority, graphData_t graph, netData_t nets);
 void GraphWalk_DebugPrint(int priority, const char * format, ... );
 void GraphWalk_DebugPrintGrid(int priority, char * string, int * gridArray);
@@ -19,9 +19,10 @@ void GraphWalk_DebugPrintRoutes(int priority);
 
 void GraphWalk_Main(bool clEnable);
 bool GraphWalk_IsRoutingRunning(void);
+bool GraphWalk_IsTracingBack(void);
 
 void GraphWalk_InitWalkData(graphData_t graph, netData_t nets, int channelWidth);
-void GraphWalk_FreeWalkData(graphData_t data);
+void GraphWalk_FreeWalkData(void);
 
 void GraphWalk_InitMask(void);
 void GraphWalk_InitTrace(void);
@@ -41,6 +42,7 @@ void GraphWalk_FreeNetRoutes(void);
 void GraphWalk_NewNetRoute(void);
 void GraphWalk_NewSegment(void);
 void GraphWalk_SegmentAppend(int vertex);
+netRoutes_t GraphWalk_GetNetRoutes(void);
 
 bool GraphWalk_IsNetUnconnected(int startIndex, int endIndex, int * netStatusArray);
 bool GraphWalk_IsMaskArrayEmpty(int * maskArray, int maskArraySize);

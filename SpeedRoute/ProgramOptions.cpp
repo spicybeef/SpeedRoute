@@ -7,8 +7,6 @@
 //
 
 #include "ProgramOptions.hpp"
-#include "OpenClApp.h"
-#include "Types.h"
 
 ProgramOptions::ProgramOptions(int argc, char *argv[]):
     mDesc("Usage")

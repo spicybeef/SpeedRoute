@@ -54,17 +54,6 @@ int main(int argc, char *argv[])
     programOptions.validate();
     programOptions_t options = programOptions.getOptions();
     
-    // Instantiate the window and graphics object
-    sf::RenderWindow window(sf::VideoMode(
-                                         static_cast<unsigned int>(WIN_VIEWPORT_WIDTH),
-                                         static_cast<unsigned int>(WIN_VIEWPORT_HEIGHT)),
-                            "Partitioner", sf::Style::Titlebar | sf::Style::Close | sf::Style::Resize);
-    Graphics graphics(&window);
-    // Deactive the window's OpenGL context
-    window.setActive(false);
-    sf::Thread renderThread(&Graphics::render, &graphics);
-    renderThread.launch();
-    
     // Set debug level
     g_debugLevel = options.debugLevel;
     // Set enlargement factor
@@ -78,12 +67,24 @@ int main(int argc, char *argv[])
     }
     parsedInputStruct_t input = fileParse.getParsedInput();
     
+    // Instantiate the window and graphics object
+    sf::RenderWindow window(sf::VideoMode(
+                                          static_cast<unsigned int>(WIN_VIEWPORT_WIDTH),
+                                          static_cast<unsigned int>(WIN_VIEWPORT_HEIGHT)),
+                            "SpeedRoute", sf::Style::Titlebar | sf::Style::Close | sf::Style::Resize);
+    
     // Instantiate a new connection graph using the placement's col, row, and some padding
     ConnectionGraph connectionGraph(input.placement, input.numCols, input.numRows, ARCH_PADDING);
     // Grab the C-friendly graph data
     graphData_t graphData = connectionGraph.getGraphData();
     netData_t netData = connectionGraph.getNetVectors(input.nets, input.placement);
 
+    Graphics graphics(&window, connectionGraph.getGrid(), graphData.sideLength);
+    // Deactive the window's OpenGL context
+    window.setActive(false);
+    sf::Thread renderThread(&Graphics::render, &graphics);
+    renderThread.launch();
+    
     // If OpenCL is being used, get a queue pointer and setup the memory structures
     if(options.openClEnableFlag)
     {
@@ -113,6 +114,10 @@ int main(int argc, char *argv[])
     while(window.isOpen())
     {
         graphics.processEvents();
+        if(graphics.terminated())
+        {
+            renderThread.terminate();
+        }
         
         if(checkForRunning)
         {
@@ -130,6 +135,9 @@ int main(int argc, char *argv[])
             }
         }
     }
+    
+    OpenCl_GraphWalk_FreeAllData();
+    GraphWalk_FreeWalkData();
     
     return EXIT_SUCCESS;
 }

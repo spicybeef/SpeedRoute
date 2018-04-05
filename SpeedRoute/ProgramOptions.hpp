@@ -13,6 +13,14 @@
 #include <iostream>
 #include <boost/program_options.hpp>
 
+extern "C"
+{
+#include "GraphWalk.h"
+#include "OpenClApp.h"
+}
+
+#include "Types.h"
+
 namespace po = boost::program_options;
 
 typedef struct
