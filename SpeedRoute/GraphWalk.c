@@ -57,6 +57,7 @@ static bool g_firstNetVertex;
 static bool g_sinkFound;
 static volatile bool g_routingRunning = false;
 static volatile bool g_tracingBack = false;
+static volatile bool g_netRoutesDataClean = false;
 
 #define VERTEX_NONETYPE         -1
 #define VERTEX_BLOCK            -2
@@ -226,6 +227,11 @@ bool GraphWalk_IsRoutingRunning(void)
 bool GraphWalk_IsTracingBack(void)
 {
     return g_tracingBack;
+}
+
+bool GraphWalk_IsNetDataClean(void)
+{
+    return g_netRoutesDataClean;
 }
 
 void GraphWalk_InitWalkData(graphData_t graph, netData_t nets, int channelWidth)
@@ -678,6 +684,7 @@ void GraphWalk_InitNetRoutes(void)
     // Our route is initially completely empty
     GraphWalk_FreeNetRoutes();
     memset(&g_netRoutes, 0, sizeof(netRoutes_t));
+    g_netRoutesDataClean = true;
 }
 
 void GraphWalk_FreeNetRoutes(void)

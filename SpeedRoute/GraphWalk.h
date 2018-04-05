@@ -20,6 +20,7 @@ void GraphWalk_DebugPrintRoutes(int priority);
 void GraphWalk_Main(bool clEnable);
 bool GraphWalk_IsRoutingRunning(void);
 bool GraphWalk_IsTracingBack(void);
+bool GraphWalk_IsNetDataClean(void);
 
 void GraphWalk_InitWalkData(graphData_t graph, netData_t nets, int channelWidth);
 void GraphWalk_FreeWalkData(void);

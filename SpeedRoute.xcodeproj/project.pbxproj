@@ -24,7 +24,6 @@
 /* Begin PBXFileReference section */
 		D03E254F20749E5D00BC5D37 /* SpeedRoute */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = SpeedRoute; sourceTree = BUILT_PRODUCTS_DIR; };
 		D03E255220749E5D00BC5D37 /* main.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = main.cpp; sourceTree = "<group>"; };
-		D03E255820749E5D00BC5D37 /* icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = icon.png; sourceTree = "<group>"; };
 		D03E255F20749EC000BC5D37 /* FileParser.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = FileParser.cpp; sourceTree = "<group>"; };
 		D03E256020749EC000BC5D37 /* GraphWalk.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = GraphWalk.c; sourceTree = "<group>"; };
 		D03E256120749EC000BC5D37 /* SpeedRoute-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "SpeedRoute-Info.plist"; sourceTree = "<group>"; };
@@ -46,6 +45,7 @@
 		D03E257D2074A00500BC5D37 /* OpenClApp.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = OpenClApp.c; path = OpenCL/OpenClApp.c; sourceTree = "<group>"; };
 		D03E257E2074A00500BC5D37 /* OpenClApp.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = OpenClApp.h; path = OpenCL/OpenClApp.h; sourceTree = "<group>"; };
 		D03E25812074A06000BC5D37 /* libboost_program_options-mt.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = "libboost_program_options-mt.dylib"; path = "../../../../usr/local/Cellar/boost/1.66.0/lib/libboost_program_options-mt.dylib"; sourceTree = "<group>"; };
+		D0C16CE5207614CE00B1C786 /* sansation.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = sansation.ttf; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -107,7 +107,7 @@
 		D03E255420749E5D00BC5D37 /* Resources */ = {
 			isa = PBXGroup;
 			children = (
-				D03E255820749E5D00BC5D37 /* icon.png */,
+				D0C16CE5207614CE00B1C786 /* sansation.ttf */,
 			);
 			name = Resources;
 			sourceTree = "<group>";
@@ -294,7 +294,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				CODE_SIGN_STYLE = Automatic;
-				GCC_OPTIMIZATION_LEVEL = fast;
+				GCC_OPTIMIZATION_LEVEL = 0;
 				HEADER_SEARCH_PATHS = (
 					"$(inherited)",
 					/usr/local/Cellar/boost/1.66.0/include,
@@ -315,7 +315,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				CODE_SIGN_STYLE = Automatic;
-				GCC_OPTIMIZATION_LEVEL = fast;
+				GCC_OPTIMIZATION_LEVEL = 0;
 				HEADER_SEARCH_PATHS = (
 					"$(inherited)",
 					/usr/local/Cellar/boost/1.66.0/include,

@@ -133,7 +133,7 @@ int main(int argc, char *argv[])
                 GraphWalk_DebugPrintGrid(PRIO_LOW, const_cast<char *>("Final weights"), GraphWalk_GetWeightArray());
                 outputGrid(GraphWalk_GetWeightArray());
                 // Output routes
-                GraphWalk_DebugPrintRoutes(PRIO_LOW);
+                GraphWalk_DebugPrintRoutes(PRIO_HIGH);
             }
         }
     }

@@ -24,6 +24,8 @@ Graphics::Graphics(sf::RenderWindow * window, vertexGrid grid, int sideLength) :
     mSideLength = sideLength;
     // Initialize cell properties
     initializeCellProperties();
+    // Load font
+    mFont.loadFromFile("sansation.ttf");
 }
 
 void Graphics::processEvents(void)
@@ -149,45 +151,107 @@ std::vector<sf::RectangleShape> Graphics::generateGridGeometries(void)
 
 std::vector<std::vector<std::vector<sf::Vertex>>> Graphics::generateNetGeometries()
 {
-    // Get the latest route data, safely
-    sf::Mutex mutex;
-    while(GraphWalk_IsTracingBack());
-    mutex.lock();
-    netRoutes_t netRoutes = GraphWalk_GetNetRoutes();
-    mutex.unlock();
-
     std::vector<std::vector<std::vector<sf::Vertex>>> netGeometries;
     
-    // Net ID -> Segment ID -> Vertex ID
-    for(int net = 0; net < netRoutes.netRouteArraySize; net++)
+    // Get the latest route data, safely
+    if(GraphWalk_IsNetDataClean())
     {
-        std::vector<std::vector<sf::Vertex>> netSegments;
-        for(int segment = 0; segment < netRoutes.segmentIdArraySize; segment++)
+        sf::Mutex mutex;
+        while(GraphWalk_IsTracingBack());
+        mutex.lock();
+        netRoutes_t netRoutes = GraphWalk_GetNetRoutes();
+        mutex.unlock();
+        
+        GraphWalk_DebugPrintRoutes(PRIO_HIGH);
+        
+        // Net ID -> Segment ID -> Vertex ID
+        for(int net = 0; net < netRoutes.netRouteArraySize; net++)
         {
-            std::vector<sf::Vertex> netSegment;
-            for(int vertex = 0; vertex < netRoutes.segmentVertexArraySize; vertex++)
+            int segmentStart = netRoutes.netRouteArrayPointer[net];
+            int segmentEnd;
+            if((net + 1) < netRoutes.netRouteArraySize)
             {
-                sf::Vector2f netVertex;
-                int currentVertex = netRoutes.segmentVertexArrayPointer[vertex];
-                // Column and row are function of vertex ID and architecture side length
-                int col = currentVertex % mSideLength;
-                int row = currentVertex / mSideLength;
-                // Get vertex position
-                drawPosStruct_t drawPos = getGridCellCoordinate(col, row);
-                // Push back the vertex coordinate
-                netVertex = sf::Vector2f(drawPos.x, drawPos.y);
-                // Pick a color
-                sf::Color color = sf::Color(0, 0, 255, 255);
-                // Push back a vertex
-                netSegment.push_back(sf::Vertex(netVertex, color));
+                segmentEnd = netRoutes.netRouteArrayPointer[net + 1];
             }
-            // Push back the segment into the net's segments
-            netSegments.push_back(netSegment);
+            else
+            {
+                segmentEnd = netRoutes.netRouteArraySize;
+            }
+            
+            std::vector<std::vector<sf::Vertex>> netSegments;
+            for(int segment = segmentStart; segment < segmentEnd; segment++)
+            {
+                if(netRoutes.segmentIdArraySize == 0)
+                {
+                    break;
+                }
+                int vertexStart = netRoutes.segmentIdArrayPointer[segment];
+                int vertexEnd;
+                if((segment + 1) < netRoutes.segmentIdArraySize)
+                {
+                    vertexEnd = netRoutes.segmentIdArrayPointer[segment + 1];
+                }
+                else
+                {
+                    vertexEnd = netRoutes.segmentIdArraySize;
+                }
+                std::vector<sf::Vertex> netSegment;
+                for(int vertex = vertexStart; vertex < vertexEnd; vertex++)
+                {
+                    if(netRoutes.segmentVertexArraySize == 0)
+                    {
+                        break;
+                    }
+                    sf::Vector2f netVertex;
+                    int currentVertex = netRoutes.segmentVertexArrayPointer[vertex];
+                    // Column and row are function of vertex ID and architecture side length
+                    int col = currentVertex % mSideLength;
+                    int row = currentVertex / mSideLength;
+                    // Get vertex position
+                    drawPosStruct_t drawPos = getGridCellCoordinate(col, row);
+                    // Push back the vertex coordinate
+                    netVertex = sf::Vector2f(drawPos.x, drawPos.y);
+                    // Pick a color
+                    sf::Color color = sf::Color(0, 0, 255, 255);
+                    // Push back a vertex
+                    netSegment.push_back(sf::Vertex(netVertex, color));
+                }
+                // Push back the segment into the net's segments
+                netSegments.push_back(netSegment);
+            }
+            netGeometries.push_back(netSegments);
         }
-        netGeometries.push_back(netSegments);
+    }
+    else
+    {
+        return netGeometries;
     }
     
     return netGeometries;
+}
+
+sf::Text Graphics::generateVertexText(int vertex)
+{
+    std::stringstream stringStream;
+    sf::Text placedNodeText;
+    
+    stringStream.str(std::string());
+    
+    stringStream << vertex;
+    placedNodeText.setFont(mFont);
+    placedNodeText.setString(stringStream.str());
+    int col = vertex % mSideLength;
+    int row = vertex / mSideLength;
+    placedNodeText.setPosition(
+                                      static_cast<float>((col * mCellProperties.cellSize) + mCellProperties.cellOppositeOffset),
+                                      static_cast<float>((row * mCellProperties.cellSize) + mCellProperties.cellOffset)
+                                      );
+    placedNodeText.setCharacterSize(9);
+    placedNodeText.setFillColor(sf::Color::Black);
+    placedNodeText.setStyle(sf::Text::Regular);
+    placedNodeText.setOrigin(sf::Vector2f(mCellProperties.cellSize * CELL_SHRINK_FACTOR * 0.5f, mCellProperties.cellSize * CELL_SHRINK_FACTOR * 0.5f));
+
+    return placedNodeText;
 }
 
 bool Graphics::terminated(void)
@@ -209,17 +273,18 @@ void Graphics::render(void)
         // Draw background
         mWindow->draw(background);
         // Draw grid
-        for(int i = 0; i < grid.size(); i++)
-        {
-            mWindow->draw(grid[i]);
-        }
+//        for(int i = 0; i < grid.size(); i++)
+//        {
+//            mWindow->draw(grid[i]);
+//            mWindow->draw(generateVertexText(i));
+//        }
         // Draw nets
         std::vector<std::vector<std::vector<sf::Vertex>>> netGeometries = generateNetGeometries();
         for(int net = 0; net < netGeometries.size(); net++)
         {
             for(int segment = 0; segment < netGeometries[net].size(); segment++)
             {
-                mWindow->draw((sf::Vertex*)(&netGeometries[net][segment].front()), netGeometries[net][segment].size(), sf::Lines);
+                mWindow->draw((sf::Vertex*)(&netGeometries[net][segment].front()), netGeometries[net][segment].size(), sf::LinesStrip);
             }
         }
         mWindow->display();

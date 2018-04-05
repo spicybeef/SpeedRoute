@@ -54,6 +54,7 @@ public:
     void processEvents(void);
     std::vector<sf::RectangleShape> generateGridGeometries(void);
     std::vector<std::vector<std::vector<sf::Vertex>>> generateNetGeometries();
+    sf::Text generateVertexText(int vertex);
     bool terminated(void);
     
 // Private members
@@ -73,6 +74,7 @@ private:
     int mSideLength;
     // Geometry
     std::vector<sf::RectangleShape> mBackgroundGrid;
+    sf::Font mFont;
     
     bool mTerminated;
     
