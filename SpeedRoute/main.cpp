@@ -54,6 +54,17 @@ int main(int argc, char *argv[])
     programOptions.validate();
     programOptions_t options = programOptions.getOptions();
     
+    // Instantiate the window and graphics object
+    sf::RenderWindow window(sf::VideoMode(
+                                         static_cast<unsigned int>(WIN_VIEWPORT_WIDTH),
+                                         static_cast<unsigned int>(WIN_VIEWPORT_HEIGHT)),
+                            "Partitioner", sf::Style::Titlebar | sf::Style::Close | sf::Style::Resize);
+    Graphics graphics(&window);
+    // Deactive the window's OpenGL context
+    window.setActive(false);
+    sf::Thread renderThread(&Graphics::render, &graphics);
+    renderThread.launch();
+    
     // Set debug level
     g_debugLevel = options.debugLevel;
     // Set enlargement factor
@@ -88,46 +99,37 @@ int main(int argc, char *argv[])
     // Update arch side length
     g_sideLength = graphData.sideLength;
     
-    // Initialize the graph walker arrays
-    GraphWalk_InitWalkData(graphData, netData, 8);
-    // Initialize the net status array
-    GraphWalk_InitNetStatus();
-    
-    // Route nets
-    // Initiailize the weight array
-    GraphWalk_InitWeight();
-    // Initialize the routing arrays
-    GraphWalk_InitNetRoutes();
     std::cout << "Routing starting..." << std::endl << std::endl;
     // Record start time
     auto start = std::chrono::high_resolution_clock::now();
-    bool routeFailed = false;
-    for(int i = 0; i < input.nets.size(); i++)
+    
+    // Initialize the graph walker arrays
+    GraphWalk_InitWalkData(graphData, netData, 8);
+    // Do routing in a separate thread
+    sf::Thread routingThread(&GraphWalk_Main, &options.openClEnableFlag);
+    routingThread.launch();
+    
+    bool checkForRunning = true;
+    while(window.isOpen())
     {
-        GraphWalk_DebugPrint(PRIO_HIGH, "Routing net: %d of %d\n", i, input.nets.size());
-        // Init a new net route
-        GraphWalk_NewNetRoute();
-        // Route the nets
-        if(!GraphWalk_RouteNet(options.openClEnableFlag, i))
+        graphics.processEvents();
+        
+        if(checkForRunning)
         {
-            routeFailed = true;
-            break;
+            if(!GraphWalk_IsRoutingRunning())
+            {
+                // No longer check
+                checkForRunning = false;
+                // Record end time
+                auto finish = std::chrono::high_resolution_clock::now();
+                std::chrono::duration<double> elapsed = finish - start;
+                std::cout << "Routing finished in: " << elapsed.count() << " s" << std::endl;
+                // Output grid
+                GraphWalk_DebugPrintGrid(PRIO_NORM, const_cast<char *>("Final weights"), GraphWalk_GetWeightArray());
+                outputGrid(GraphWalk_GetWeightArray());
+            }
         }
     }
-    // Record end time
-    auto finish = std::chrono::high_resolution_clock::now();
-    std::chrono::duration<double> elapsed = finish - start;
-    
-    if(!routeFailed)
-    {
-        GraphWalk_DebugPrintGrid(PRIO_NORM, const_cast<char *>("Final weights"), GraphWalk_GetWeightArray());
-        outputGrid(GraphWalk_GetWeightArray());
-        std::cout << "Routing finished in: " << elapsed.count() << " s" << std::endl;
-    }
-    
-    // Run the graphics for the router
-//    Graphics graphics;
-//    graphics.run();
     
     return EXIT_SUCCESS;
 }

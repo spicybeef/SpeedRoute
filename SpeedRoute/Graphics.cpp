@@ -7,54 +7,29 @@
 //
 
 #include "Graphics.hpp"
+#include "Types.h"
 
-Graphics::Graphics(void) :
-    mWindow(sf::VideoMode(WINDOW_WIDTH, WINDOW_HEIGHT), "Speed Route"),
-    mIcon(),
-    mTexture(),
-    mSprite()
+Graphics::Graphics(sf::RenderWindow * window) :
+    mWindow(window),
+    mViewportSize(
+                  static_cast<unsigned int>(WIN_VIEWPORT_WIDTH), static_cast<unsigned int>(WIN_VIEWPORT_HEIGHT))
 {
     // Set a framerate limit
-    mWindow.setFramerateLimit(FRAMERATE_LIM);
-    
-    // Set the Icon
-    if (!mIcon.loadFromFile(resourcePath() + "icon.png"))
-    {
-        throw "Can't load icon!";
-        return;
-    }
-    mWindow.setIcon(mIcon.getSize().x, mIcon.getSize().y, mIcon.getPixelsPtr());
-    
-    // Set the texture
-    if (!mTexture.loadFromFile(resourcePath() + "cute_image.jpg"))
-    {
-        throw "Can't load texture!";
-        return;
-    }
-    mSprite.setTexture(mTexture);
-}
-
-void Graphics::run(void)
-{
-    while (mWindow.isOpen())
-    {
-        processEvents();
-        update();
-        render();
-    }
+    mWindow->setFramerateLimit(FRAMERATE_LIM);
 }
 
 void Graphics::processEvents(void)
 {
     sf::Event event;
-    while (mWindow.pollEvent(event))
+    while (mWindow->pollEvent(event))
     {
         switch (event.type)
         {
             case sf::Event::Closed:
-                mWindow.close();
+                mWindow->close();
                 break;
             case sf::Event::Resized:
+                mWindow->setView(calcView(sf::Vector2u(event.size.width, event.size.height), mViewportSize));
                 break;
             case sf::Event::LostFocus:
                 break;
@@ -112,10 +87,35 @@ void Graphics::update(void)
 
 void Graphics::render(void)
 {
-    mWindow.clear();
+    while(mWindow->isOpen())
+    {
+        mWindow->clear();
+        update();
+        mWindow->display();
+    }
+}
+
+sf::View Graphics::calcView(const sf::Vector2u &windowSize, const sf::Vector2u &mViewportSize)
+{
+    sf::FloatRect viewport(0.f, 0.f, 1.f, 1.f);
+    float viewportWidth = static_cast<float>(mViewportSize.x);
+    float viewportHeight = static_cast<float>(mViewportSize.y);
+    float screenwidth = windowSize.x / static_cast<float>(mViewportSize.x);
+    float screenheight = windowSize.y / static_cast<float>(mViewportSize.y);
     
-    // Draw the sprite
-    mWindow.draw(mSprite);
+    if (screenwidth > screenheight)
+    {
+        viewport.width = screenheight / screenwidth;
+        viewport.left = (1.f - viewport.width) / 2.f;
+    }
+    else if (screenwidth < screenheight)
+    {
+        viewport.height = screenwidth / screenheight;
+        viewport.top = (1.f - viewport.height) / 2.f;
+    }
     
-    mWindow.display();
+    sf::View view(sf::FloatRect(0.f, 0.f, viewportWidth, viewportHeight));
+    view.setViewport(viewport);
+    
+    return view;
 }

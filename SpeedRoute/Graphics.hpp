@@ -26,22 +26,19 @@ class Graphics
 {
 // Public members
 public:
-    Graphics(void);
-    void run(void);
+    Graphics(sf::RenderWindow * window);
+    void render(void);
+    void processEvents(void);
     
 // Private members
 private:
-    void processEvents(void);
     void update(void);
-    void render(void);
+    sf::View calcView(const sf::Vector2u &windowSize, const sf::Vector2u &viewportSize);
     
-    // Windows object
-    sf::RenderWindow mWindow;
-    // Icon
-    sf::Image mIcon;
-    // Texture
-    sf::Texture mTexture;
-    sf::Sprite mSprite;
+    // Window
+    sf::RenderWindow * mWindow;
+    // Viewport size
+    const sf::Vector2u mViewportSize;
     
     // Graphics constants
     static const unsigned int WINDOW_WIDTH = 1920;

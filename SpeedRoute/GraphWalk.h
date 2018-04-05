@@ -17,6 +17,9 @@ void GraphWalk_DebugPrint(int priority, const char * format, ... );
 void GraphWalk_DebugPrintGrid(int priority, char * string, int * gridArray);
 void GraphWalk_DebugPrintRoutes(int priority);
 
+void GraphWalk_Main(bool clEnable);
+bool GraphWalk_IsRoutingRunning(void);
+
 void GraphWalk_InitWalkData(graphData_t graph, netData_t nets, int channelWidth);
 void GraphWalk_FreeWalkData(graphData_t data);
 

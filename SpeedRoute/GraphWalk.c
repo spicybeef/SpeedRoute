@@ -61,6 +61,7 @@ static int g_currentSinkVertex;
 static int g_currentExpansion;
 static bool g_firstNetVertex;
 static bool g_sinkFound;
+static bool g_routingRunning;
 
 #define VERTEX_NONETYPE         -1
 #define VERTEX_BLOCK            -2
@@ -192,6 +193,39 @@ void GraphWalk_DebugPrintRoutes(int priority)
         }
         printf("\n");
     }
+}
+
+void GraphWalk_Main(bool clEnable)
+{
+    // Signal that we've started routing
+    g_routingRunning = true;
+    // Initialize the net status array
+    GraphWalk_InitNetStatus();
+    // Initiailize the weight array
+    GraphWalk_InitWeight();
+    // Initialize the routing arrays
+    GraphWalk_InitNetRoutes();
+    bool routeFailed = false;
+    for(int i = 0; i < g_netVertexesArraySize; i++)
+    {
+        GraphWalk_DebugPrint(PRIO_HIGH, "Routing net: %d of %d\n", i+1, g_netVertexesArraySize);
+        // Init a new net route
+        GraphWalk_NewNetRoute();
+        // Route the nets
+        if(!GraphWalk_RouteNet(clEnable, i))
+        {
+            routeFailed = true;
+            break;
+        }
+    }
+    GraphWalk_DebugPrint(PRIO_HIGH, "ROUTE SUCCESS!\n");
+    // No longer routing
+    g_routingRunning = false;
+}
+
+bool GraphWalk_IsRoutingRunning(void)
+{
+    return g_routingRunning;
 }
 
 void GraphWalk_InitWalkData(graphData_t graph, netData_t nets, int channelWidth)
