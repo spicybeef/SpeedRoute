@@ -61,6 +61,17 @@ kernel void GraphWalk_WavefrontVisit(
             int nextVertex = edgeArray[edgeIndex];
             int traceArrayAtNextVertex = traceArray[nextVertex];
             int maskArrayAtNextVertex = maskArray[nextVertex];
+            if(traceArrayAtNextVertex == VERTEX_BLOCK)
+            {
+                // Can't go here, go to next edge
+                continue;
+            }
+            // Check if it's been visited
+            if(maskArrayAtNextVertex == MASK_VISITED)
+            {
+                // Can't go back, go to next edge
+                continue;
+            }
             // Check if it's a valid connection
             if(traceArrayAtNextVertex == VERTEX_NET_UNCONN || traceArrayAtNextVertex == VERTEX_NET_CONN)
             {
@@ -80,17 +91,6 @@ kernel void GraphWalk_WavefrontVisit(
                 // We're going to trace back from here
                 (*sinkVertex) = nextVertex;
                 break;
-            }
-            if(traceArrayAtNextVertex == VERTEX_BLOCK)
-            {
-                // Can't go here, go to next edge
-                continue;
-            }
-            // Check if it's been visited
-            if(maskArrayAtNextVertex == MASK_VISITED)
-            {
-                // Can't go back, go to next edge
-                continue;
             }
             maskArray[nextVertex] = MASK_VISIT_NEXT;
         }

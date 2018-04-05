@@ -107,7 +107,7 @@ int main(int argc, char *argv[])
     // Initialize the graph walker arrays
     GraphWalk_InitWalkData(graphData, netData, 8);
     // Do routing in a separate thread
-    sf::Thread routingThread(&GraphWalk_Main, &options.openClEnableFlag);
+    sf::Thread routingThread(&GraphWalk_Main, options.openClEnableFlag);
     routingThread.launch();
     
     bool checkForRunning = true;
@@ -130,8 +130,10 @@ int main(int argc, char *argv[])
                 std::chrono::duration<double> elapsed = finish - start;
                 std::cout << "Routing finished in: " << elapsed.count() << " s" << std::endl;
                 // Output grid
-                GraphWalk_DebugPrintGrid(PRIO_NORM, const_cast<char *>("Final weights"), GraphWalk_GetWeightArray());
+                GraphWalk_DebugPrintGrid(PRIO_LOW, const_cast<char *>("Final weights"), GraphWalk_GetWeightArray());
                 outputGrid(GraphWalk_GetWeightArray());
+                // Output routes
+                GraphWalk_DebugPrintRoutes(PRIO_LOW);
             }
         }
     }

@@ -24,7 +24,7 @@ ProgramOptions::ProgramOptions(int argc, char *argv[]):
         ("clenable", po::bool_switch(&(mProgramOptions.openClEnableFlag)), "enabled the program to be accelerated by OpenCL")
         ("cldevice", po::value<unsigned int>(&(mProgramOptions.openClDeviceId))->default_value(0), "the OpenCL device ID to use")
         ("clinfo", po::bool_switch(&(mProgramOptions.openClInfoFlag)), "displays the OpenCL device support summary")
-        ("debug", po::value<unsigned int>(&(mProgramOptions.debugLevel))->default_value(PRIO_HIGH), "the debug level to use (0: PRIO_LOW, 1: PRIO_NORM, 2: PRIO_HIGH)")
+        ("debug", po::value<unsigned int>(&(mProgramOptions.debugLevel))->default_value(PRIO_DEFAULT), "the debug level to use (0: PRIO_LOW, 1: PRIO_NORM, 2: PRIO_HIGH)")
         ("enlargement", po::value<unsigned int>(&(mProgramOptions.enlargementFactor))->default_value(SPACE_ENLARGEMENT_FACTOR), "the problem space enlargement factor");
         
         po::store(po::command_line_parser(argc, argv).
