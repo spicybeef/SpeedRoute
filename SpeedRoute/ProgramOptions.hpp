@@ -30,6 +30,7 @@ typedef struct
     
     bool openClInfoFlag;
     bool openClEnableFlag;
+    unsigned int programVisualMode;
     unsigned int openClDeviceId;
     unsigned int debugLevel;
     unsigned int enlargementFactor;

@@ -11,15 +11,24 @@
 
 // Global types and definitions to be shared
 
+// Program mode (CLI or visual)
+#define MODE_CLI                    0   // Only command line
+#define MODE_VISUAL_PROGRESS        1   // Show the progress
+#define MODE_VISUAL_END_RESULT      2   // Only show the end result
+#define MODE_DEFAULT                MODE_CLI
 // This increases the solution space to make the routing harder
-#define SPACE_ENLARGEMENT_FACTOR    1
-
+#define SPACE_ENLARGEMENT_FACTOR    10
 // Debug priorities
 #define PRIO_LOW                    0
 #define PRIO_NORM                   1
 #define PRIO_HIGH                   2
 #define PRIO_DEFAULT                PRIO_HIGH
-
+// Render rate
+#define RENDER_PERIOD_S             1.0 // Update every 1s
+// Architecture channel width
+#define ARCH_CHANNEL_WIDTH          8
+// Architecture padding
+#define ARCH_PADDING                2
 // Default input files
 #define DEBUG_TO_BENCHMARKS_FOLDER_PATH "../../../../../benchmarks/"
 #define DEFAULT_NET_FILE "apex4.txt"
@@ -40,7 +49,6 @@ extern int g_enlargementFactor;
 #define WIN_GRAPHICPORT_WIDTH                   WIN_VIEWPORT_WIDTH
 #define WIN_GRAPHICPORT_HEIGHT                  (WIN_VIEWPORT_HEIGHT - WIN_INFOPORT_HEIGHT)
 #define WIN_INFOPORT_PADDING                    10.f
-
 // Grid constants
 #define GRID_SHRINK_FACTOR                      0.1f
 #define CELL_SHRINK_FACTOR                      0.7f
@@ -99,6 +107,7 @@ typedef struct
     int segmentIdArraySize;
     int * segmentVertexArrayPointer;
     int segmentVertexArraySize;
+    int lastSafeSegment;
 } netRoutes_t;
 
 #endif /* Types_h */

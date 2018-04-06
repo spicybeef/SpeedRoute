@@ -50,6 +50,7 @@ class Graphics
 // Public members
 public:
     Graphics(sf::RenderWindow * window, vertexGrid grid, int sideLength);
+    void setRenderMode(unsigned int mode);
     void render(void);
     void processEvents(void);
     std::vector<sf::RectangleShape> generateGridGeometries(void);
@@ -63,6 +64,9 @@ private:
     sf::View calcView(const sf::Vector2u &windowSize, const sf::Vector2u &viewportSize);
     void initializeCellProperties(void);
     drawPosStruct_t getGridCellCoordinate(int col, int row);
+    
+    // Render mode
+    unsigned int mRenderMode;
     
     // Window
     sf::RenderWindow * mWindow;

@@ -19,9 +19,8 @@ extern "C"
 #include "OpenClApp.h"
 }
 
-#include <chrono>
+#include "Types.h"
 
-static const int ARCH_PADDING = 2;
 static int g_sideLength;
 
 void outputGrid(int * weightArray)
@@ -79,12 +78,6 @@ int main(int argc, char *argv[])
     graphData_t graphData = connectionGraph.getGraphData();
     netData_t netData = connectionGraph.getNetVectors(input.nets, input.placement);
 
-    Graphics graphics(&window, connectionGraph.getGrid(), graphData.sideLength);
-    // Deactive the window's OpenGL context
-    window.setActive(false);
-    sf::Thread renderThread(&Graphics::render, &graphics);
-    renderThread.launch();
-    
     // If OpenCL is being used, get a queue pointer and setup the memory structures
     if(options.openClEnableFlag)
     {
@@ -96,7 +89,7 @@ int main(int argc, char *argv[])
                                          graphData.edgeArraySize
                                          );
     }
-
+    
     // Update arch side length
     g_sideLength = graphData.sideLength;
     
@@ -105,37 +98,66 @@ int main(int argc, char *argv[])
     auto start = std::chrono::high_resolution_clock::now();
     
     // Initialize the graph walker arrays
-    GraphWalk_InitWalkData(graphData, netData, 8);
+    GraphWalk_InitWalkData(graphData, netData, ARCH_CHANNEL_WIDTH);
     // Do routing in a separate thread
     sf::Thread routingThread(&GraphWalk_Main, options.openClEnableFlag);
     routingThread.launch();
     
-    bool checkForRunning = true;
-    while(window.isOpen())
+    // Start a renderer in another thread if we're not in CLI mode
+    if(options.programVisualMode != MODE_CLI)
     {
-        graphics.processEvents();
-        if(graphics.terminated())
-        {
-            renderThread.terminate();
-        }
+        Graphics graphics(&window, connectionGraph.getGrid(), graphData.sideLength);
+        graphics.setRenderMode(options.programVisualMode);
+        // Deactive the window's OpenGL context
+        window.setActive(false);
+        sf::Thread renderThread(&Graphics::render, &graphics);
+        renderThread.launch();
         
-        if(checkForRunning)
+        bool checkForRunning = true;
+        while(window.isOpen())
         {
-            if(!GraphWalk_IsRoutingRunning())
+            graphics.processEvents();
+            if(graphics.terminated())
             {
-                // No longer check
-                checkForRunning = false;
-                // Record end time
-                auto finish = std::chrono::high_resolution_clock::now();
-                std::chrono::duration<double> elapsed = finish - start;
-                std::cout << "Routing finished in: " << elapsed.count() << " s" << std::endl;
-                // Output grid
-                GraphWalk_DebugPrintGrid(PRIO_LOW, const_cast<char *>("Final weights"), GraphWalk_GetWeightArray());
-                outputGrid(GraphWalk_GetWeightArray());
-                // Output routes
-                GraphWalk_DebugPrintRoutes(PRIO_HIGH);
+                renderThread.terminate();
+            }
+            
+            if(checkForRunning)
+            {
+                if(!GraphWalk_IsRoutingRunning())
+                {
+                    // No longer check
+                    checkForRunning = false;
+                    // Record end time
+                    auto finish = std::chrono::high_resolution_clock::now();
+                    std::chrono::duration<double> elapsed = finish - start;
+                    std::cout << "Routing finished in: " << elapsed.count() << " s" << std::endl;
+                    // Output grid
+                    GraphWalk_DebugPrintGrid(PRIO_LOW, const_cast<char *>("Final weights"), GraphWalk_GetWeightArray());
+                    outputGrid(GraphWalk_GetWeightArray());
+                    // Output routes
+                    GraphWalk_DebugPrintRoutes(PRIO_LOW);
+                }
             }
         }
+    }
+    else
+    {
+
+        while(GraphWalk_IsRoutingRunning())
+        {
+            // Wait until routing has finished...
+        }
+        
+        // Record end time
+        auto finish = std::chrono::high_resolution_clock::now();
+        std::chrono::duration<double> elapsed = finish - start;
+        std::cout << "Routing finished in: " << elapsed.count() << " s" << std::endl;
+        // Output grid
+        GraphWalk_DebugPrintGrid(PRIO_LOW, const_cast<char *>("Final weights"), GraphWalk_GetWeightArray());
+        outputGrid(GraphWalk_GetWeightArray());
+        // Output routes
+        GraphWalk_DebugPrintRoutes(PRIO_LOW);
     }
     
     OpenCl_GraphWalk_FreeAllData();

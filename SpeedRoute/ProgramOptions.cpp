@@ -21,11 +21,12 @@ ProgramOptions::ProgramOptions(int argc, char *argv[]):
         ("help", "produce help message")
         ("netfile", po::value<std::string>(&(mProgramOptions.netFilenameIn))->default_value(defaultPath + defaultNetFile), "the input net file")
         ("placementfile", po::value<std::string>(&(mProgramOptions.placementFilenameIn))->default_value(defaultPath + defaultPlacementFile), "the input placement file")
-        ("clenable", po::bool_switch(&(mProgramOptions.openClEnableFlag)), "enabled the program to be accelerated by OpenCL")
+        ("clenable", po::bool_switch(&(mProgramOptions.openClEnableFlag)), "enable the program to be accelerated by OpenCL")
         ("cldevice", po::value<unsigned int>(&(mProgramOptions.openClDeviceId))->default_value(0), "the OpenCL device ID to use")
         ("clinfo", po::bool_switch(&(mProgramOptions.openClInfoFlag)), "displays the OpenCL device support summary")
         ("debug", po::value<unsigned int>(&(mProgramOptions.debugLevel))->default_value(PRIO_DEFAULT), "the debug level to use (0: PRIO_LOW, 1: PRIO_NORM, 2: PRIO_HIGH)")
-        ("enlargement", po::value<unsigned int>(&(mProgramOptions.enlargementFactor))->default_value(SPACE_ENLARGEMENT_FACTOR), "the problem space enlargement factor");
+        ("enlargement", po::value<unsigned int>(&(mProgramOptions.enlargementFactor))->default_value(SPACE_ENLARGEMENT_FACTOR), "the problem space enlargement factor")
+        ("visual", po::value<unsigned int>(&(mProgramOptions.programVisualMode))->default_value(MODE_DEFAULT), "program's visual mode (0: CLI, 1: visual progress, 2: visual end result");
         
         po::store(po::command_line_parser(argc, argv).
                   options(mDesc).positional(mPosOptDesc).run(), mVarMap);
@@ -67,6 +68,21 @@ void ProgramOptions::validate(void)
     }
     std::cout << "Current debug priority level: " << mProgramOptions.debugLevel << std::endl;
     std::cout << std::endl;
+    switch(mProgramOptions.programVisualMode)
+    {
+        case MODE_CLI:
+            std::cout << "CLI only mode, no visuals" << std::endl;
+            break;
+        case MODE_VISUAL_PROGRESS:
+            std::cout << "Show visual progress of route (WARNING! Slows down route!)" << std::endl;
+            break;
+        case MODE_VISUAL_END_RESULT:
+            std::cout << "Showing only final result of route..." << std::endl;
+            break;
+        default:
+            std::cout << "CLI only mode, no visuals" << std::endl;
+            return;
+    }
 }
 
 programOptions_t ProgramOptions::getOptions(void)
