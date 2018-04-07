@@ -51,12 +51,12 @@ class Graphics
 public:
     Graphics(sf::RenderWindow * window, vertexGrid grid, int sideLength);
     void setRenderMode(unsigned int mode);
+    void setLogString(std::string inputString);
     void render(void);
     void processEvents(void);
     std::vector<sf::RectangleShape> generateGridGeometries(void);
     std::vector<std::vector<std::vector<sf::Vertex>>> generateNetGeometries();
     sf::Text generateVertexText(int vertex);
-    bool terminated(void);
     
 // Private members
 private:
@@ -79,8 +79,11 @@ private:
     // Geometry
     std::vector<sf::RectangleShape> mBackgroundGrid;
     sf::Font mFont;
-    
-    bool mTerminated;
+
+    // Log font and text
+    sf::Font mLogFont;
+    sf::Text mLogText;
+    std::string mLogContents;
     
     // Graphics constants
     static const unsigned int WINDOW_WIDTH = 1920;

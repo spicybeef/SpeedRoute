@@ -136,8 +136,8 @@ bool FileParser::parsePlacementFile(void)
         stringVec = splitString(line, ' ');
         
         // Row comes first followed by column
-        tempPos.row = stoi(stringVec[1]) * SPACE_ENLARGEMENT_FACTOR;
-        tempPos.col = stoi(stringVec[2]) * SPACE_ENLARGEMENT_FACTOR;
+        tempPos.row = stoi(stringVec[1]) * g_enlargementFactor;
+        tempPos.col = stoi(stringVec[2]) * g_enlargementFactor;
         
         // Push back a placement
         mParsedInput.placement.push_back(tempPos);

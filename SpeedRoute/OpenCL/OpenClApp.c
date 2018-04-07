@@ -246,10 +246,11 @@ void OpenCl_GraphWalk_InitWavefrontData(int vertexArraySize, int * maskArray, in
 
 void OpenCl_GraphWalk_FreeAllData(void)
 {
-    gcl_free(d_vertexArray);
-    gcl_free(d_edgeArray);
-    gcl_free(d_maskArray);
-    gcl_free(d_traceArray);
+    // These are allocated by the host now
+    // gcl_free(d_vertexArray);
+    // gcl_free(d_edgeArray);
+    // gcl_free(d_maskArray);
+    // gcl_free(d_traceArray);
 }
 
 void OpenCl_GraphWalk_FreeWavefrontData(void)

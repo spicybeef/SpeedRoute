@@ -19,7 +19,21 @@
 		D03E257F2074A00500BC5D37 /* GraphWalk_WavefrontVisit.cl in Sources */ = {isa = PBXBuildFile; fileRef = D03E257C2074A00500BC5D37 /* GraphWalk_WavefrontVisit.cl */; };
 		D03E25802074A00500BC5D37 /* OpenClApp.c in Sources */ = {isa = PBXBuildFile; fileRef = D03E257D2074A00500BC5D37 /* OpenClApp.c */; };
 		D03E25822074A06000BC5D37 /* libboost_program_options-mt.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = D03E25812074A06000BC5D37 /* libboost_program_options-mt.dylib */; };
+		D0582A712077429800D02A3A /* consola.ttf in CopyFiles */ = {isa = PBXBuildFile; fileRef = D0582A6F2077421900D02A3A /* consola.ttf */; };
 /* End PBXBuildFile section */
+
+/* Begin PBXCopyFilesBuildPhase section */
+		D0582A702077428500D02A3A /* CopyFiles */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 16;
+			files = (
+				D0582A712077429800D02A3A /* consola.ttf in CopyFiles */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
 		D03E254F20749E5D00BC5D37 /* SpeedRoute */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = SpeedRoute; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -45,7 +59,7 @@
 		D03E257D2074A00500BC5D37 /* OpenClApp.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = OpenClApp.c; path = OpenCL/OpenClApp.c; sourceTree = "<group>"; };
 		D03E257E2074A00500BC5D37 /* OpenClApp.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = OpenClApp.h; path = OpenCL/OpenClApp.h; sourceTree = "<group>"; };
 		D03E25812074A06000BC5D37 /* libboost_program_options-mt.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = "libboost_program_options-mt.dylib"; path = "../../../../usr/local/Cellar/boost/1.66.0/lib/libboost_program_options-mt.dylib"; sourceTree = "<group>"; };
-		D0C16CE5207614CE00B1C786 /* sansation.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = sansation.ttf; sourceTree = "<group>"; };
+		D0582A6F2077421900D02A3A /* consola.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = consola.ttf; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -107,7 +121,7 @@
 		D03E255420749E5D00BC5D37 /* Resources */ = {
 			isa = PBXGroup;
 			children = (
-				D0C16CE5207614CE00B1C786 /* sansation.ttf */,
+				D0582A6F2077421900D02A3A /* consola.ttf */,
 			);
 			name = Resources;
 			sourceTree = "<group>";
@@ -140,6 +154,7 @@
 			buildPhases = (
 				D03E254C20749E5D00BC5D37 /* Sources */,
 				D03E254D20749E5D00BC5D37 /* Frameworks */,
+				D0582A702077428500D02A3A /* CopyFiles */,
 			);
 			buildRules = (
 			);
@@ -294,7 +309,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				CODE_SIGN_STYLE = Automatic;
-				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_OPTIMIZATION_LEVEL = fast;
 				HEADER_SEARCH_PATHS = (
 					"$(inherited)",
 					/usr/local/Cellar/boost/1.66.0/include,
@@ -315,7 +330,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				CODE_SIGN_STYLE = Automatic;
-				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_OPTIMIZATION_LEVEL = fast;
 				HEADER_SEARCH_PATHS = (
 					"$(inherited)",
 					/usr/local/Cellar/boost/1.66.0/include,

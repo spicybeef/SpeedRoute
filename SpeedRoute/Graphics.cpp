@@ -13,8 +13,7 @@
 Graphics::Graphics(sf::RenderWindow * window, vertexGrid grid, int sideLength) :
     mWindow(window),
     mViewportSize(
-                  static_cast<unsigned int>(WIN_VIEWPORT_WIDTH), static_cast<unsigned int>(WIN_VIEWPORT_HEIGHT)),
-    mTerminated(false)
+                  static_cast<unsigned int>(WIN_VIEWPORT_WIDTH), static_cast<unsigned int>(WIN_VIEWPORT_HEIGHT))
 {
     // Set a framerate limit
     mWindow->setFramerateLimit(FRAMERATE_LIM);
@@ -24,8 +23,16 @@ Graphics::Graphics(sf::RenderWindow * window, vertexGrid grid, int sideLength) :
     mSideLength = sideLength;
     // Initialize cell properties
     initializeCellProperties();
-    // Load font
-    mFont.loadFromFile("sansation.ttf");
+    // Load general font
+    mFont.loadFromFile("consola.ttf");
+    // Load console font
+    mLogFont.loadFromFile("consola.ttf");
+    // Set log text
+    mLogText.setFont(mLogFont);
+    mLogText.setCharacterSize(17);
+    mLogText.setFillColor(sf::Color::Green);
+    mLogText.setStyle(sf::Text::Regular);
+    mLogText.setPosition(sf::Vector2f(0.f + WIN_INFOPORT_PADDING, WIN_VIEWPORT_HEIGHT - WIN_INFOPORT_HEIGHT + WIN_INFOPORT_PADDING));
 }
 
 void Graphics::processEvents(void)
@@ -37,7 +44,6 @@ void Graphics::processEvents(void)
         {
             case sf::Event::Closed:
                 mWindow->close();
-                mTerminated = true;
                 break;
             case sf::Event::Resized:
                 mWindow->setView(calcView(sf::Vector2u(event.size.width, event.size.height), mViewportSize));
@@ -239,14 +245,14 @@ sf::Text Graphics::generateVertexText(int vertex)
     return placedNodeText;
 }
 
-bool Graphics::terminated(void)
-{
-    return mTerminated;
-}
-
 void Graphics::setRenderMode(unsigned int mode)
 {
     mRenderMode = mode;
+}
+
+void Graphics::setLogString(std::string inputString)
+{
+    mLogContents = inputString;
 }
 
 void Graphics::render(void)
@@ -274,7 +280,9 @@ void Graphics::render(void)
             mWindow->draw(grid[i]);
             // mWindow->draw(generateVertexText(i));
         }
-        
+        // Draw log
+        mLogText.setString(mLogContents);
+        mWindow->draw(mLogText);
         // Check if we're only showing the end result
         if(mRenderMode == MODE_VISUAL_END_RESULT && GraphWalk_IsRoutingRunning())
         {

@@ -117,10 +117,6 @@ int main(int argc, char *argv[])
         while(window.isOpen())
         {
             graphics.processEvents();
-            if(graphics.terminated())
-            {
-                renderThread.terminate();
-            }
             
             if(checkForRunning)
             {
@@ -140,6 +136,9 @@ int main(int argc, char *argv[])
                 }
             }
         }
+        // If we're here we've terminated
+        renderThread.terminate();
+        routingThread.terminate();
     }
     else
     {
@@ -160,7 +159,6 @@ int main(int argc, char *argv[])
         GraphWalk_DebugPrintRoutes(PRIO_LOW);
     }
     
-    OpenCl_GraphWalk_FreeAllData();
     GraphWalk_FreeWalkData();
     
     return EXIT_SUCCESS;

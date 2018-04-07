@@ -17,7 +17,7 @@
 #define MODE_VISUAL_END_RESULT      2   // Only show the end result
 #define MODE_DEFAULT                MODE_CLI
 // This increases the solution space to make the routing harder
-#define SPACE_ENLARGEMENT_FACTOR    10
+#define SPACE_ENLARGEMENT_FACTOR    1
 // Debug priorities
 #define PRIO_LOW                    0
 #define PRIO_NORM                   1
@@ -31,13 +31,13 @@
 #define ARCH_PADDING                2
 // Default input files
 #define DEBUG_TO_BENCHMARKS_FOLDER_PATH "../../../../../benchmarks/"
-#define DEFAULT_NET_FILE "apex4.txt"
-#define DEFAULT_PLACEMENT_FILE "apex4_placement.txt"
+//#define DEFAULT_NET_FILE "apex4.txt"
+//#define DEFAULT_PLACEMENT_FILE "apex4_placement.txt"
 //#define DEFAULT_NET_FILE "test.txt"
 //#define DEFAULT_PLACEMENT_FILE "test_placement.txt"
-//#define DEFAULT_NET_FILE "cm138a.txt"
-//#define DEFAULT_PLACEMENT_FILE "cm138a_placement.txt"
-
+#define DEFAULT_NET_FILE "pairb.txt"
+#define DEFAULT_PLACEMENT_FILE "pairb_placement.txt"
+//
 extern int g_debugLevel;
 extern int g_enlargementFactor;
 
