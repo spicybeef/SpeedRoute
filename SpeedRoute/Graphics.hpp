@@ -14,6 +14,7 @@
 #include "SFML/Graphics.hpp"
 #include "ConnectionGraph.hpp"
 #include "FileParser.hpp"
+#include "ProgramOptions.hpp"
 #include "Types.h"
 
 extern "C"
@@ -49,9 +50,9 @@ class Graphics
 {
 // Public members
 public:
-    Graphics(sf::RenderWindow * window, vertexGrid grid, int sideLength);
+    Graphics(sf::RenderWindow * window, vertexGrid grid, int sideLength, programOptions_t options);
     void setRenderMode(unsigned int mode);
-    void setLogString(std::string inputString);
+    void setLogString(void);
     void render(void);
     void processEvents(void);
     std::vector<sf::RectangleShape> generateGridGeometries(void);
@@ -89,6 +90,9 @@ private:
     static const unsigned int WINDOW_WIDTH = 1920;
     static const unsigned int WINDOW_HEIGHT = 1080;
     static const unsigned int FRAMERATE_LIM = 60;
+    
+    // Program options
+    programOptions_t mOptions;
 };
 
 #endif /* Graphics_hpp */

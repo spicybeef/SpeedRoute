@@ -8,9 +8,8 @@
 
 #include "Graphics.hpp"
 #include "OpenClApp.h"
-#include "GraphWalk.h"
 
-Graphics::Graphics(sf::RenderWindow * window, vertexGrid grid, int sideLength) :
+Graphics::Graphics(sf::RenderWindow * window, vertexGrid grid, int sideLength, programOptions_t options) :
     mWindow(window),
     mViewportSize(
                   static_cast<unsigned int>(WIN_VIEWPORT_WIDTH), static_cast<unsigned int>(WIN_VIEWPORT_HEIGHT))
@@ -33,6 +32,8 @@ Graphics::Graphics(sf::RenderWindow * window, vertexGrid grid, int sideLength) :
     mLogText.setFillColor(sf::Color::Green);
     mLogText.setStyle(sf::Text::Regular);
     mLogText.setPosition(sf::Vector2f(0.f + WIN_INFOPORT_PADDING, WIN_VIEWPORT_HEIGHT - WIN_INFOPORT_HEIGHT + WIN_INFOPORT_PADDING));
+    // Set program options
+    mOptions = options;
 }
 
 void Graphics::processEvents(void)
@@ -159,10 +160,8 @@ std::vector<std::vector<std::vector<sf::Vertex>>> Graphics::generateNetGeometrie
 {
     std::vector<std::vector<std::vector<sf::Vertex>>> netGeometries;
     
-    // Get the latest route data, safely
-    while(GraphWalk_IsTracingBack());
-    // Prevent them from changing!
-    GraphWalk_LockNetSegments(true);
+    // Wait for lock
+    GraphWalk_WaitLockNetsSegments();
     netRoutes_t netRoutes = GraphWalk_GetNetRoutes();
 
     // Net ID -> Segment ID -> Vertex ID
@@ -250,9 +249,41 @@ void Graphics::setRenderMode(unsigned int mode)
     mRenderMode = mode;
 }
 
-void Graphics::setLogString(std::string inputString)
+void Graphics::setLogString(void)
 {
-    mLogContents = inputString;
+    std::stringstream stringStream;
+    
+    stringStream << std::fixed << std::setprecision(3);
+    stringStream << "Routing Net:   " << std::setw(9) << GraphWalk_GetCurrentNetNum() << "/" << std::setw(3) << GraphWalk_GetTotalNetNum() << "   ";
+    stringStream << "Source Vertex: " << std::setw(9) << GraphWalk_GetCurrentSourceVertex() << "   ";
+    stringStream << "Sink Vertex:   " << std::setw(9) << GraphWalk_GetCurrentSinkVertex() << "   ";
+    stringStream << "Expansion:     " << std::setw(9) << GraphWalk_GetCurrentExpansion() << "   ";
+    stringStream << std::endl;
+    stringStream << "State:       ";
+    switch (GraphWalk_GetCurrentState())
+    {
+        case STATE_IDLE:
+            stringStream << "Idle.";
+            break;
+        case STATE_EXPANSION:
+            stringStream << "Exansion           Elapsed time: " << std::setw(10) << Util_GetElapsedTime() << " s" << std::endl;
+            break;
+        case STATE_TRACEBACK:
+            stringStream << "Traceback          Elapsed time: " << std::setw(10) << Util_GetElapsedTime() << " s" << std::endl;
+            break;
+        case STATE_ROUTE_SUCCESS:
+            stringStream << "* ROUTE SUCCESS! * Elapsed time: " << std::setw(10) << Util_GetFinishTime() << " s" << std::endl;
+            break;
+        case STATE_ROUTE_FAILURE:
+            stringStream << "* ROUTE FAILED! *  Elapsed time: " << std::setw(10) << Util_GetFinishTime() << " s" << std::endl;
+            break;
+        default:
+            break;
+    }
+    stringStream << "Net file:       " << mOptions.netFilenameIn << std::endl;
+    stringStream << "Placement file: " << mOptions.placementFilenameIn << std::endl;
+    
+    mLogContents = stringStream.str();
 }
 
 void Graphics::render(void)
@@ -281,6 +312,7 @@ void Graphics::render(void)
             // mWindow->draw(generateVertexText(i));
         }
         // Draw log
+        setLogString();
         mLogText.setString(mLogContents);
         mWindow->draw(mLogText);
         // Check if we're only showing the end result

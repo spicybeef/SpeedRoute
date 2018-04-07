@@ -15,9 +15,14 @@
 #include <ctime>
 #include <cstdlib>
 #include <random>
+#include <chrono>
 
-int getRandomInt(int i);
-std::vector<std::string> splitString(std::string inString, char delimiter);
+int Util_GetRandomInt(int i);
+std::vector<std::string> Util_SplitString(std::string inString, char delimiter);
 
+void Util_RecordStartTime(void);
+double Util_GetElapsedTime(void);
+void Util_RecordFinishTime(void);
+double Util_GetFinishTime(void);
 
 #endif /* Util_hpp */

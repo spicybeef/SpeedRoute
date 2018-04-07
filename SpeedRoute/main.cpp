@@ -95,7 +95,7 @@ int main(int argc, char *argv[])
     
     std::cout << "Routing starting..." << std::endl << std::endl;
     // Record start time
-    auto start = std::chrono::high_resolution_clock::now();
+    Util_RecordStartTime();
     
     // Initialize the graph walker arrays
     GraphWalk_InitWalkData(graphData, netData, ARCH_CHANNEL_WIDTH);
@@ -106,7 +106,7 @@ int main(int argc, char *argv[])
     // Start a renderer in another thread if we're not in CLI mode
     if(options.programVisualMode != MODE_CLI)
     {
-        Graphics graphics(&window, connectionGraph.getGrid(), graphData.sideLength);
+        Graphics graphics(&window, connectionGraph.getGrid(), graphData.sideLength, options);
         graphics.setRenderMode(options.programVisualMode);
         // Deactive the window's OpenGL context
         window.setActive(false);
@@ -125,9 +125,8 @@ int main(int argc, char *argv[])
                     // No longer check
                     checkForRunning = false;
                     // Record end time
-                    auto finish = std::chrono::high_resolution_clock::now();
-                    std::chrono::duration<double> elapsed = finish - start;
-                    std::cout << "Routing finished in: " << elapsed.count() << " s" << std::endl;
+                    Util_RecordFinishTime();
+                    std::cout << "Routing finished in: " << Util_GetFinishTime() << " s" << std::endl;
                     // Output grid
                     GraphWalk_DebugPrintGrid(PRIO_LOW, const_cast<char *>("Final weights"), GraphWalk_GetWeightArray());
                     outputGrid(GraphWalk_GetWeightArray());
@@ -149,9 +148,8 @@ int main(int argc, char *argv[])
         }
         
         // Record end time
-        auto finish = std::chrono::high_resolution_clock::now();
-        std::chrono::duration<double> elapsed = finish - start;
-        std::cout << "Routing finished in: " << elapsed.count() << " s" << std::endl;
+        Util_RecordFinishTime();
+        std::cout << "Routing finished in: " << Util_GetFinishTime() << " s" << std::endl;
         // Output grid
         GraphWalk_DebugPrintGrid(PRIO_LOW, const_cast<char *>("Final weights"), GraphWalk_GetWeightArray());
         outputGrid(GraphWalk_GetWeightArray());

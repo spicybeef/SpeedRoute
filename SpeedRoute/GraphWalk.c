@@ -55,6 +55,8 @@ static int g_currentSinkVertex;
 static int g_currentExpansion;
 static bool g_firstNetVertex;
 static bool g_sinkFound;
+static int g_currentNetNum;
+static routingState_e g_currentRoutingState = STATE_IDLE;
 static volatile bool g_routingRunning = true;
 static volatile bool g_tracingBack = false;
 static volatile bool g_netRoutesLock = false;
@@ -202,21 +204,59 @@ void GraphWalk_Main(bool clEnable)
     // Initialize the routing arrays
     GraphWalk_InitNetRoutes();
     bool routeFailed = false;
-    for(int i = 0; i < g_netVertexesArraySize; i++)
+    for(g_currentNetNum = 0; g_currentNetNum < g_netVertexesArraySize; g_currentNetNum++)
     {
-        GraphWalk_DebugPrint(PRIO_HIGH, "Routing net: %d of %d\n", i+1, g_netVertexesArraySize);
+        GraphWalk_DebugPrint(PRIO_HIGH, "Routing net: %d of %d\n", g_currentNetNum + 1, g_netVertexesArraySize);
         // Init a new net route
         GraphWalk_NewNetRoute();
         // Route the nets
-        if(!GraphWalk_RouteNet(clEnable, i))
+        if(!GraphWalk_RouteNet(clEnable, g_currentNetNum))
         {
             routeFailed = true;
             break;
         }
     }
-    GraphWalk_DebugPrint(PRIO_HIGH, "ROUTE SUCCESS!\n");
+    if(routeFailed)
+    {
+        g_currentRoutingState = STATE_ROUTE_FAILURE;
+        GraphWalk_DebugPrint(PRIO_HIGH, "ROUTE FAILURE!\n");
+    }
+    else
+    {
+        g_currentRoutingState = STATE_ROUTE_SUCCESS;
+        GraphWalk_DebugPrint(PRIO_HIGH, "ROUTE SUCCESS!\n");
+    }
     // No longer routing
     g_routingRunning = false;
+}
+
+routingState_e GraphWalk_GetCurrentState(void)
+{
+    return g_currentRoutingState;
+}
+
+int GraphWalk_GetCurrentNetNum(void)
+{
+    return g_currentNetNum;
+}
+
+int GraphWalk_GetTotalNetNum(void)
+{
+    return g_netVertexesArraySize;
+}
+
+int GraphWalk_GetCurrentSourceVertex(void)
+{
+    return g_currentSourceVertex;
+}
+int GraphWalk_GetCurrentSinkVertex(void)
+{
+    return g_currentSinkVertex;
+}
+
+int GraphWalk_GetCurrentExpansion(void)
+{
+    return g_currentExpansion;
 }
 
 bool GraphWalk_IsRoutingRunning(void)
@@ -245,6 +285,7 @@ void GraphWalk_WaitLock(bool * lockVar)
 void GraphWalk_WaitLockNetsSegments(void)
 {
     GraphWalk_WaitLock((bool*)&g_netRoutesLock);
+    g_netRoutesLock = true;
 }
 
 void GraphWalk_InitWalkData(graphData_t graph, netData_t nets, int channelWidth)
@@ -392,7 +433,7 @@ bool GraphWalk_RouteNet(bool openCl, int netId)
         
         /* Wavefront Expansion */
         g_currentExpansion = 0;
-        
+        g_currentRoutingState = STATE_EXPANSION;
         for(;;)
         {
             // Do a wavefront visit
@@ -465,7 +506,7 @@ bool GraphWalk_RouteNet(bool openCl, int netId)
         // We've got a new segment
         GraphWalk_NewSegment();
         
-        // Traceback
+        /* Traceback */
         GraphWalk_TraceBack();
         
         // Change vertexes at capacity into blocks
@@ -592,6 +633,7 @@ void GraphWalk_TraceBack(void)
 {
     /* Traceback */
     g_tracingBack = true;
+    g_currentRoutingState = STATE_TRACEBACK;
     GraphWalk_DebugPrint(PRIO_LOW, "Tracing back from %d\n", g_currentSinkVertex);
     GraphWalk_SegmentAppend(g_currentSinkVertex);
     bool foundSource = false;
@@ -695,7 +737,7 @@ void GraphWalk_InitNetRoutes(void)
 {
     // Init all net routes
     // Our route is initially completely empty
-    GraphWalk_LockNetSegments(true);
+    GraphWalk_WaitLockNetsSegments();
     GraphWalk_FreeNetRoutes();
     memset((void*)&g_netRoutes, 0, sizeof(netRoutes_t));
     GraphWalk_LockNetSegments(false);
@@ -703,7 +745,7 @@ void GraphWalk_InitNetRoutes(void)
 
 void GraphWalk_FreeNetRoutes(void)
 {
-    GraphWalk_LockNetSegments(true);
+    GraphWalk_WaitLockNetsSegments();
     free(g_netRoutes.netRouteArrayPointer);
     free(g_netRoutes.netRouteArrayPointer);
     free(g_netRoutes.segmentIdArrayPointer);
@@ -714,7 +756,6 @@ void GraphWalk_FreeNetRoutes(void)
 void GraphWalk_NewNetRoute(void)
 {
     GraphWalk_WaitLockNetsSegments();
-    GraphWalk_LockNetSegments(true);
     // Increment the size of the net route array
     g_netRoutes.netRouteArraySize++;
     // Reallocate memory
@@ -727,7 +768,6 @@ void GraphWalk_NewNetRoute(void)
 void GraphWalk_NewSegment(void)
 {
     GraphWalk_WaitLockNetsSegments();
-    GraphWalk_LockNetSegments(true);
     g_netRoutes.lastSafeSegment = g_netRoutes.segmentIdArraySize;
     // Increment the size of the segment ID array
     g_netRoutes.segmentIdArraySize++;
@@ -741,7 +781,6 @@ void GraphWalk_NewSegment(void)
 void GraphWalk_SegmentAppend(int vertex)
 {
     GraphWalk_WaitLockNetsSegments();
-    GraphWalk_LockNetSegments(true);
     // Increment the size of the segment vertex array
     g_netRoutes.segmentVertexArraySize++;
     // Reallocate the memory

@@ -15,7 +15,7 @@
 #define MODE_CLI                    0   // Only command line
 #define MODE_VISUAL_PROGRESS        1   // Show the progress
 #define MODE_VISUAL_END_RESULT      2   // Only show the end result
-#define MODE_DEFAULT                MODE_CLI
+#define MODE_DEFAULT                MODE_VISUAL_END_RESULT
 // This increases the solution space to make the routing harder
 #define SPACE_ENLARGEMENT_FACTOR    1
 // Debug priorities

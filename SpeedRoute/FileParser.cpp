@@ -77,7 +77,7 @@ bool FileParser::parseNetFile(void)
     
     // Get number of cells, number of nets, and grid size
     std::getline(inputFile, line);
-    stringVec = splitString(line, ' ');
+    stringVec = Util_SplitString(line, ' ');
     mParsedInput.numNodes = stoi(stringVec[0]);
     mParsedInput.numConnections = stoi(stringVec[1]);
     mParsedInput.numRows = stoi(stringVec[2]) * g_enlargementFactor;
@@ -91,7 +91,7 @@ bool FileParser::parseNetFile(void)
     for (i = 0; i < mParsedInput.numConnections; i++)
     {
         std::getline(inputFile, line);
-        stringVec = splitString(line, ' ');
+        stringVec = Util_SplitString(line, ' ');
         // Get number of nodes for this net
         numNodes = stoi(stringVec[0]);
         // Now get all nodes for this net
@@ -133,7 +133,7 @@ bool FileParser::parsePlacementFile(void)
     for(i = 0; i < mParsedInput.numNodes; i++)
     {
         std::getline(inputFile, line);
-        stringVec = splitString(line, ' ');
+        stringVec = Util_SplitString(line, ' ');
         
         // Row comes first followed by column
         tempPos.row = stoi(stringVec[1]) * g_enlargementFactor;

@@ -1,6 +1,9 @@
 #include "Util.hpp"
 
-int getRandomInt(int i)
+std::chrono::high_resolution_clock::time_point startTime;
+std::chrono::high_resolution_clock::time_point endTime;
+
+int Util_GetRandomInt(int i)
 {
     std::random_device rd;   // non-deterministic generator  
     std::mt19937 gen(rd());  // to seed mersenne twister
@@ -8,7 +11,7 @@ int getRandomInt(int i)
     return gen() % i;
 }
 
-std::vector<std::string> splitString(std::string inString, char delimiter)
+std::vector<std::string> Util_SplitString(std::string inString, char delimiter)
 {
     std::vector<std::string> internal;
     std::stringstream ss(inString); // Turn the string into a stream.
@@ -20,4 +23,27 @@ std::vector<std::string> splitString(std::string inString, char delimiter)
     }
 
     return internal;
+}
+
+void Util_RecordStartTime(void)
+{
+    startTime = std::chrono::high_resolution_clock::now();
+}
+
+double Util_GetElapsedTime(void)
+{
+    std::chrono::high_resolution_clock::time_point currentTime = std::chrono::high_resolution_clock::now();
+    std::chrono::duration<double> elapsed = currentTime - startTime;
+    return elapsed.count();
+}
+
+void Util_RecordFinishTime(void)
+{
+    endTime = std::chrono::high_resolution_clock::now();
+}
+
+double Util_GetFinishTime(void)
+{
+    std::chrono::duration<double> elapsed = endTime - startTime;
+    return elapsed.count();
 }
