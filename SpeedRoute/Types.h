@@ -15,7 +15,7 @@
 #define MODE_CLI                    0   // Only command line
 #define MODE_VISUAL_PROGRESS        1   // Show the progress
 #define MODE_VISUAL_END_RESULT      2   // Only show the end result
-#define MODE_DEFAULT                MODE_VISUAL_END_RESULT
+#define MODE_DEFAULT                MODE_VISUAL_PROGRESS
 // This increases the solution space to make the routing harder
 #define SPACE_ENLARGEMENT_FACTOR    1
 // Debug priorities
@@ -30,7 +30,8 @@
 // Architecture padding
 #define ARCH_PADDING                2
 // Default input files
-#define DEBUG_TO_BENCHMARKS_FOLDER_PATH "../../../../../benchmarks/"
+//#define DEBUG_TO_BENCHMARKS_FOLDER_PATH "../../../../../benchmarks/"
+#define DEBUG_TO_BENCHMARKS_FOLDER_PATH "./benchmarks/"
 //#define DEFAULT_NET_FILE "apex4.txt"
 //#define DEFAULT_PLACEMENT_FILE "apex4_placement.txt"
 //#define DEFAULT_NET_FILE "test.txt"

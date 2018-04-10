@@ -285,7 +285,6 @@ void GraphWalk_WaitLock(bool * lockVar)
 void GraphWalk_WaitLockNetsSegments(void)
 {
     GraphWalk_WaitLock((bool*)&g_netRoutesLock);
-    g_netRoutesLock = true;
 }
 
 void GraphWalk_InitWalkData(graphData_t graph, netData_t nets, int channelWidth)
@@ -737,15 +736,14 @@ void GraphWalk_InitNetRoutes(void)
 {
     // Init all net routes
     // Our route is initially completely empty
-    GraphWalk_WaitLockNetsSegments();
     GraphWalk_FreeNetRoutes();
     memset((void*)&g_netRoutes, 0, sizeof(netRoutes_t));
-    GraphWalk_LockNetSegments(false);
 }
 
 void GraphWalk_FreeNetRoutes(void)
 {
     GraphWalk_WaitLockNetsSegments();
+    GraphWalk_LockNetSegments(true);
     free(g_netRoutes.netRouteArrayPointer);
     free(g_netRoutes.netRouteArrayPointer);
     free(g_netRoutes.segmentIdArrayPointer);
@@ -756,6 +754,7 @@ void GraphWalk_FreeNetRoutes(void)
 void GraphWalk_NewNetRoute(void)
 {
     GraphWalk_WaitLockNetsSegments();
+    GraphWalk_LockNetSegments(true);
     // Increment the size of the net route array
     g_netRoutes.netRouteArraySize++;
     // Reallocate memory
@@ -768,7 +767,7 @@ void GraphWalk_NewNetRoute(void)
 void GraphWalk_NewSegment(void)
 {
     GraphWalk_WaitLockNetsSegments();
-    g_netRoutes.lastSafeSegment = g_netRoutes.segmentIdArraySize;
+    GraphWalk_LockNetSegments(true);
     // Increment the size of the segment ID array
     g_netRoutes.segmentIdArraySize++;
     // Reallocate the memory
@@ -781,6 +780,7 @@ void GraphWalk_NewSegment(void)
 void GraphWalk_SegmentAppend(int vertex)
 {
     GraphWalk_WaitLockNetsSegments();
+    GraphWalk_LockNetSegments(true);
     // Increment the size of the segment vertex array
     g_netRoutes.segmentVertexArraySize++;
     // Reallocate the memory

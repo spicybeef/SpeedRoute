@@ -310,6 +310,7 @@
 			buildSettings = {
 				CODE_SIGN_STYLE = Automatic;
 				GCC_OPTIMIZATION_LEVEL = fast;
+				GCC_THREADSAFE_STATICS = NO;
 				HEADER_SEARCH_PATHS = (
 					"$(inherited)",
 					/usr/local/Cellar/boost/1.66.0/include,
@@ -318,7 +319,7 @@
 					"$(inherited)",
 					/usr/local/Cellar/boost/1.66.0/lib,
 				);
-				LLVM_LTO = YES_THIN;
+				LLVM_LTO = YES;
 				OPENCL_AUTO_VECTORIZE_ENABLE = NO;
 				OPENCL_COMPILER_VERSION = CL1.2;
 				OPENCL_OPTIMIZATION_LEVEL = s;
@@ -331,6 +332,7 @@
 			buildSettings = {
 				CODE_SIGN_STYLE = Automatic;
 				GCC_OPTIMIZATION_LEVEL = fast;
+				GCC_THREADSAFE_STATICS = NO;
 				HEADER_SEARCH_PATHS = (
 					"$(inherited)",
 					/usr/local/Cellar/boost/1.66.0/include,
@@ -339,7 +341,7 @@
 					"$(inherited)",
 					/usr/local/Cellar/boost/1.66.0/lib,
 				);
-				LLVM_LTO = YES_THIN;
+				LLVM_LTO = YES;
 				OPENCL_AUTO_VECTORIZE_ENABLE = NO;
 				OPENCL_COMPILER_VERSION = CL1.2;
 				OPENCL_OPTIMIZATION_LEVEL = s;

@@ -157,6 +157,8 @@ int main(int argc, char *argv[])
         GraphWalk_DebugPrintRoutes(PRIO_LOW);
     }
     
+    // Wait a bit before freeing data, to let the renderer or whatever finish what it's doing.
+    usleep(500);
     GraphWalk_FreeWalkData();
     
     return EXIT_SUCCESS;

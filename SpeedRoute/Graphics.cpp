@@ -156,19 +156,20 @@ std::vector<sf::RectangleShape> Graphics::generateGridGeometries(void)
     return grid;
 }
 
-std::vector<std::vector<std::vector<sf::Vertex>>> Graphics::generateNetGeometries()
+std::vector<std::vector<std::vector<sf::Vertex>>> Graphics::generateNetGeometries(void)
 {
     std::vector<std::vector<std::vector<sf::Vertex>>> netGeometries;
     
     // Wait for lock
     GraphWalk_WaitLockNetsSegments();
+    GraphWalk_LockNetSegments(true);
     netRoutes_t netRoutes = GraphWalk_GetNetRoutes();
 
     // Net ID -> Segment ID -> Vertex ID
     for(int net = 0; net < netRoutes.netRouteArraySize; net++)
     {
         int segmentStart = netRoutes.netRouteArrayPointer[net];
-        int segmentEnd = netRoutes.lastSafeSegment;
+        int segmentEnd = netRoutes.netRouteArraySize;
         
         std::vector<std::vector<sf::Vertex>> netSegments;
         for(int segment = segmentStart; segment < segmentEnd; segment++)
@@ -296,6 +297,7 @@ void Graphics::render(void)
     auto grid = generateGridGeometries();
     // Render at specified rate
     auto start = std::chrono::high_resolution_clock::now();
+    std::vector<std::vector<std::vector<sf::Vertex>>> netGeometries;
     while(mWindow->isOpen())
     {
         auto now = std::chrono::high_resolution_clock::now();
@@ -315,6 +317,13 @@ void Graphics::render(void)
         setLogString();
         mLogText.setString(mLogContents);
         mWindow->draw(mLogText);
+        for(int net = 0; net < netGeometries.size(); net++)
+        {
+            for(int segment = 0; segment < netGeometries[net].size(); segment++)
+            {
+                mWindow->draw((sf::Vertex*)(&netGeometries[net][segment].front()), netGeometries[net][segment].size(), sf::LinesStrip);
+            }
+        }
         // Check if we're only showing the end result
         if(mRenderMode == MODE_VISUAL_END_RESULT && GraphWalk_IsRoutingRunning())
         {
@@ -324,14 +333,7 @@ void Graphics::render(void)
         else if(elapsed.count() > RENDER_PERIOD_S || mRenderMode == MODE_VISUAL_END_RESULT)
         {
             // Draw nets
-            std::vector<std::vector<std::vector<sf::Vertex>>> netGeometries = generateNetGeometries();
-            for(int net = 0; net < netGeometries.size(); net++)
-            {
-                for(int segment = 0; segment < netGeometries[net].size(); segment++)
-                {
-                    mWindow->draw((sf::Vertex*)(&netGeometries[net][segment].front()), netGeometries[net][segment].size(), sf::LinesStrip);
-                }
-            }
+            netGeometries = generateNetGeometries();
             start = std::chrono::high_resolution_clock::now();
         }
         
